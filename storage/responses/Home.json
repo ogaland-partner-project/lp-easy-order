@@ -1,0 +1,11 @@
+{
+    "dataArray": {
+        "id": 1,
+        "product_name": "ミックスナッツ",
+        "description": "楽天みつぎ工作のミックスナッツ",
+        "status": 0,
+        "requirement_flag": 0
+    },
+    "normalMessage": "検索完了",
+    "errorMessage": ""
+}

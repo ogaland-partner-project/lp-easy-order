@@ -1,0 +1,4272 @@
+openapi: 3.0.3
+info:
+  title: lp-easy-order
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:21400'
+paths:
+  '/api/lp_easy_order/basic_knowledge/{lpOrderId}':
+    get:
+      summary: 基礎知識画面の各項目を検索(機能ID：F-00004-00001)
+      description: "### API仕様\n1. 下記条件のデータを取得\n   * テーブル《t_basic_knowledges》\n     * t_basic_knowledges.lp_order_id = lpOrderId\n   * テーブル《t_basic_knowledge_details》\n     * t_basic_knowledge_details.basic_knowledge_id = t_basic_knowledges.id\n   * テーブル《t_basic_knowledge_images》\n     * t_basic_knowledge_images.basic_knowledge_id = t_basic_knowledges.id\n   * テーブル《t_basic_knowledge_urls》\n     * t_basic_knowledge_urls.basic_knowledge_id = t_basic_knowledges.id\n1. 《t_basic_knowledge_details》のデータ整形\n   * [col]でグループ化\n   * 上記の配列を[col]の昇順に並べ替える\n   * 上記配列内の配列を[sort_order]の昇順に並べ替える\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    question: 尾賀太郎
+                    others: 尾賀次郎
+                    details:
+                      -
+                        -
+                          id: 1
+                          title: 商品/成分名
+                          detail: ポン酢
+                          row: 1
+                          sort_order: 1
+                        -
+                          id: 2
+                          title: 一般的な認知度
+                          detail: 高
+                          row: 1
+                          sort_order: 2
+                      -
+                        -
+                          id: 3
+                          title: 商品/成分名
+                          detail: 蜂蜜
+                          row: 2
+                          sort_order: 1
+                        -
+                          id: 4
+                          title: 一般的な認知度
+                          detail: 高
+                          row: 2
+                          sort_order: 2
+                    images:
+                      -
+                        id: 1
+                        image_path: storage/app/~~~.png
+                        memo: ~~~の画像
+                      -
+                        id: 2
+                        image_path: storage/app/~~~.png
+                        memo: ~~~の画像
+                    urls:
+                      -
+                        id: 1
+                        url: 'https://~~~~~~'
+                      -
+                        id: 2
+                        url: 'https://~~~~~~'
+                  normalMessage: 検索完了
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: object
+                    example:
+                      question: 尾賀太郎
+                      others: 尾賀次郎
+                      details:
+                        -
+                          -
+                            id: 1
+                            title: 商品/成分名
+                            detail: ポン酢
+                            row: 1
+                            sort_order: 1
+                          -
+                            id: 2
+                            title: 一般的な認知度
+                            detail: 高
+                            row: 1
+                            sort_order: 2
+                        -
+                          -
+                            id: 3
+                            title: 商品/成分名
+                            detail: 蜂蜜
+                            row: 2
+                            sort_order: 1
+                          -
+                            id: 4
+                            title: 一般的な認知度
+                            detail: 高
+                            row: 2
+                            sort_order: 2
+                      images:
+                        -
+                          id: 1
+                          image_path: storage/app/~~~.png
+                          memo: ~~~の画像
+                        -
+                          id: 2
+                          image_path: storage/app/~~~.png
+                          memo: ~~~の画像
+                      urls:
+                        -
+                          id: 1
+                          url: 'https://~~~~~~'
+                        -
+                          id: 2
+                          url: 'https://~~~~~~'
+                  normalMessage:
+                    type: string
+                    example: 検索完了
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - BasicKnowledgeApi
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/basic_knowledge:
+    post:
+      summary: 基礎知識画面の各項目を新規登録(機能ID：F-00004-00002)
+      description: "### API仕様\n### やりたいこと\n* t_basic_knowledgesテーブルの関連テーブルへ情報の登録\n### リレーション\n* t_basic_knowledges\n  * t_basic_knowledge_details（1対Nでbasic_knowledge_idでリレーション）\n  * t_basic_knowledge_images（1対Nでbasic_knowledge_idでリレーション）\n  * t_basic_knowledge_urls（1対Nでbasic_knowledge_idでリレーション）\n### リクエストパラメータとテーブルのマッピング\n* details ⇒ t_basic_knowledge_details\n  * t_basic_knowledge_details.col => details[]のインデックス番号\n  * t_basic_knowledge_details.sort_order => details[][]のインデックス番号\n* images ⇒ t_basic_knowledge_images\n  * t_basic_knowledge_images.image_path => /storage/lp_order/{{lp_order_id}}/basicknowledge/{{t_basic_knowledge_images.id}}.jpg\n  * └{{xxxx}}⇒ここは該当IDに置き換えて処理する\n* urls ⇒ t_basic_knowledge_urls\n* 上記以外 ⇒ t_basic_knowledges\n\n### 処理詳細\n\n#### トランザクション制御\n* 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### t_basic_knowledgesへの操作\n* マッピング情報を元に登録処理\n\n#### t_basic_knowledge_imagesへの操作\n* images[].file にファイルが入力されていた場合は、マッピング情報のパスを参考にして画像の保存処理\n* マッピング情報を元に登録処理\n\n#### t_basic_knowledge_urlsへの操作\n* マッピング情報を元に登録処理"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - BasicKnowledgeApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                details:
+                  type: array
+                  description: 基礎知識内容.
+                  example:
+                    -
+                      -
+                        id: null
+                        title: 商品/成分名
+                        text: ミックスナッツ
+                      -
+                        id: null
+                        title: 一般的な認知度
+                        text: 高い
+                    -
+                      -
+                        id: null
+                        title: 商品/成分名
+                        text: ピーナッツ
+                      -
+                        id: null
+                        title: 一般的な認知度
+                        text: 最高
+                  items:
+                    type: string
+                images:
+                  type: array
+                  description: 基礎知識画像.
+                  example:
+                    -
+                      id: null
+                      image_path: ''
+                      file: mix.jpg
+                      memo: ミックスナッツの画像です
+                    -
+                      id: null
+                      image_path: ''
+                      file: peanuts.jpg
+                      memo: ピーナッツの画像です
+                  items:
+                    type: string
+                urls:
+                  type: array
+                  description: url.
+                  example:
+                    -
+                      id: null
+                      url: 'https://~~~~'
+                    -
+                      id: null
+                      url: 'https://~~~~'
+                    -
+                      id: null
+                      url: 'https://~~~~'
+                  items:
+                    type: string
+                question:
+                  type: string
+                  description: 疑問点.
+                  example: ミックスナッツ市場はどうなのか
+                others:
+                  type: string
+                  description: 他社で掲載している証明書など.
+                  example: 特になし
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/basic_knowledge/copy:
+    post:
+      summary: 基礎知識画面の各項目を他構成からコピーする(機能ID：F-00004-00008)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lp_order_id]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_basic_knowledges》\n     * テーブル:《t_basic_knowledge_details》\n     * テーブル:《t_basic_knowledge_images》\n     * テーブル:《t_basic_knowledge_urls》\n\n1. 下記条件のデータを取得\n   * テーブル《t_basic_knowledges》\n     * t_basic_knowledges.lp_order_id = other_lp_order_id\n   * テーブル《t_basic_knowledge_details》\n     * t_basic_knowledges.id = t_basic_knowledge_details.basic_knowledge_id\n   * テーブル《t_basic_knowledge_images》\n     * t_basic_knowledges.id = t_basic_knowledge_images.basic_knowledge_id\n   * テーブル《t_basic_knowledge_urls》\n     * t_basic_knowledges.id = t_basic_knowledge_urls.basic_knowledge_id\n   - 上記条件でデータが取得できなかった場合、例外とする\n        - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_basic_knowledges》の登録処理\n   * リクエストパラメータ[lp_order_id]を[lp_order_id]へセット\n   * 上記で取得したデータをオブジェクトへセット\n   * 登録処理\n1. 各オブジェクトの登録処理\n   * 《t_basic_knowledges》の最新IDを各オブジェクトの[basic_knowledge_id]へセット\n   * 上記で取得したデータを各オブジェクトへセット\n   * 登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - BasicKnowledgeApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/basic_knowledge/{BasicKnowledgeId}':
+    put:
+      summary: 基礎知識画面の各項目を更新(機能ID：F-00004-00003)
+      description: "### API仕様\n### やりたいこと\n* t_basic_knowledgesテーブルの関連テーブルへ情報の登録・更新・削除\n### リレーション\n* t_basic_knowledges\n  * t_basic_knowledge_details（1対Nでbasic_knowledge_idでリレーション）\n  * t_basic_knowledge_images（1対Nでbasic_knowledge_idでリレーション）\n  * t_basic_knowledge_urls（1対Nでbasic_knowledge_idでリレーション）\n### リクエストパラメータとテーブルのマッピング\n* details ⇒ t_basic_knowledge_details\n  * t_basic_knowledge_details.col => details[]のインデックス番号\n  * t_basic_knowledge_details.sort_order => details[][]のインデックス番号\n* images ⇒ t_basic_knowledge_images\n  * t_basic_knowledge_images.image_path => /storage/lp_order/{{lpOrderId}}/basicknowledge/{{t_basic_knowledge_images.id}}.jpg\n  * └{{xxxx}}⇒ここは該当IDに置き換えて処理する\n* urls ⇒ t_basic_knowledge_urls\n* 上記以外 ⇒ t_basic_knowledges\n\n### 処理詳細\n\n#### トランザクション制御\n* 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### t_basic_knowledgesへの操作\n* マッピング情報を元に更新処理\n\n#### t_basic_knowledge_details,t_basic_knowledge_images,t_basic_knowledge_urlsへの操作\n* リクエストパラメータ、テーブルともに同一IDのデータが存在する場合 ⇒ 更新処理\n  * マッピング情報を元に更新処理\n* リクエストパラメータのIDが空の場合 ⇒ 登録処理\n  * マッピング情報を元に登録処理\n* テーブルにIDが存在するがリクエストパラメータにそのIDが含まれていない（存在しない）場合 ⇒ 削除処理\n  * 対象レコードを論理削除\n* images[].file にファイルが入力されている場合は、マッピング情報のパスを参考にして画像の保存処理\n  * t_basic_knowledge_images.image_pathへ保存先のパスをセットして更新"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - BasicKnowledgeApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                details:
+                  type: array
+                  description: 基礎知識内容.
+                  example:
+                    -
+                      -
+                        id: 1
+                        title: 商品/成分名
+                        text: ミックスナッツ
+                      -
+                        id: 2
+                        title: 一般的な認知度
+                        text: 高い
+                    -
+                      -
+                        id: 4
+                        title: 商品/成分名
+                        text: ピーナッツ
+                      -
+                        id: 5
+                        title: 一般的な認知度
+                        text: 最高
+                    -
+                      -
+                        id: null
+                        title: 商品/成分名
+                        text: マカダミアナッツ
+                      -
+                        id: null
+                        title: 一般的な認知度
+                        text: 中
+                  items:
+                    type: string
+                images:
+                  type: array
+                  description: 基礎知識画像.
+                  example:
+                    -
+                      id: 1
+                      image_path: /storage/lp_order/1/BasicKnowledge/1.jpg
+                      file: ''
+                      memo: ミックスナッツの画像です～
+                    -
+                      id: 2
+                      image_path: /storage/lp_order/1/BasicKnowledge/2.jpg
+                      image: ''
+                      memo: ピーナッツの画像です
+                    -
+                      id: null
+                      image_path: ''
+                      file: maka.jpg
+                      memo: マカダミアナッツの画像です～
+                  items:
+                    type: string
+                urls:
+                  type: array
+                  description: url.
+                  example:
+                    -
+                      id: 1
+                      url: 'https://~~~~'
+                    -
+                      id: 3
+                      url: 'https://~~~~'
+                    -
+                      id: null
+                      url: 'https://~~~~'
+                  items:
+                    type: string
+                question:
+                  type: string
+                  description: 疑問点.
+                  example: ミックスナッツ市場はどうなのか
+                others:
+                  type: string
+                  description: 他社で掲載している証明書など.
+                  example: 特になし
+      security: []
+    parameters:
+      -
+        in: path
+        name: BasicKnowledgeId
+        description: ''
+        example: rem
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: basicKnowledgeId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/lp_easy_order/companies_comparison/{lpOrderId}':
+    get:
+      summary: 他社構成比較テーブル情報の検索(機能ID：F-00006-00006)
+      description: "### API仕様\n1. 下記条件のデータを取得\n   * テーブル《t_companies_comparison_headers》\n     * t_companies_comparison_headers.lp_order_id = lpOrderId\n     * t_companies_comparison_headers.deleted_at is null\n     * t_companies_comparison_headers.sort_order 昇順で並べ替え\n   * テーブル《t_companies_comparison_items》\n     * リレーション先《t_companies_comparison_headers》\n       * t_companies_comparison_items.comparison_header_id = t_companies_comparison_headers.id\n     * t_companies_comparison_items.sort_order でグループ化し昇順で並べ替え\n     * t_companies_comparison_items.t_companies_comparison_headers.sort_order 昇順で並べ替え\n 2. 他社比較入力\n   * テーブル《t_comparison_insert_headers》\n     * t_comparison_insert_headers.lp_order_id = lpOrderId\n     * t_comparison_insert_headers.deleted_at is null\n     * t_comparison_insert_headers.sort_order 昇順で並べ替え\n   * テーブル《t_comparison_insert_items》\n     * リレーション先《t_comparison_insert_headers》\n       * t_comparison_insert_items.comparison_header_id = t_comparison_insert_headers.id\n     * t_comparison_insert_items.sort_order でグループ化し昇順で並べ替え\n     * t_comparison_insert_items.t_comparison_insert_headers.sort_order 昇順で並べ替え\n     * editable => false\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    -
+                      header:
+                        -
+                          id: 1
+                          header_name: 店舗名
+                          header_type: text
+                          calculation_type: ''
+                          calculation_row: []
+                          sort_order: 1
+                        -
+                          id: 4
+                          header_name: 価格
+                          header_type: calculation
+                          calculation_type: sum
+                          calculation_row:
+                            - 8
+                            - 9
+                          sort_order: 2
+                        -
+                          id: 4
+                          header_name: 画像
+                          header_type: image
+                          calculation_type: ''
+                          calculation_row: []
+                          sort_order: 3
+                      items:
+                        -
+                          -
+                            id: 1
+                            text: '福助 楽天市場店'
+                            editable: false
+                          -
+                            id: 2
+                            text: ''
+                            editable: false
+                          -
+                            id: 3
+                            text: /storage/~~~
+                            editable: false
+                        -
+                          -
+                            id: 12
+                            text: キュットスリムと下着通販GB-style
+                            editable: false
+                          -
+                            id: 13
+                            text: ''
+                            editable: false
+                          -
+                            id: 14
+                            text: /storage/~~~
+                            editable: false
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: array
+                    example:
+                      -
+                        header:
+                          -
+                            id: 1
+                            header_name: 店舗名
+                            header_type: text
+                            calculation_type: ''
+                            calculation_row: []
+                            sort_order: 1
+                          -
+                            id: 4
+                            header_name: 価格
+                            header_type: calculation
+                            calculation_type: sum
+                            calculation_row:
+                              - 8
+                              - 9
+                            sort_order: 2
+                          -
+                            id: 4
+                            header_name: 画像
+                            header_type: image
+                            calculation_type: ''
+                            calculation_row: []
+                            sort_order: 3
+                        items:
+                          -
+                            -
+                              id: 1
+                              text: '福助 楽天市場店'
+                              editable: false
+                            -
+                              id: 2
+                              text: ''
+                              editable: false
+                            -
+                              id: 3
+                              text: /storage/~~~
+                              editable: false
+                          -
+                            -
+                              id: 12
+                              text: キュットスリムと下着通販GB-style
+                              editable: false
+                            -
+                              id: 13
+                              text: ''
+                              editable: false
+                            -
+                              id: 14
+                              text: /storage/~~~
+                              editable: false
+                    items:
+                      type: object
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - CompaniesComparisonApi
+      security: []
+    put:
+      summary: 他社構成比較テーブル情報の編集(機能ID：F-00006-00008)
+      description: "### API仕様\n\n### やりたいこと\n* t_companies_comparison_headers,t_companies_comparison_itemsテーブルへ情報の登録・更新・削除\n\n### リレーション\n* t_companies_comparison_headers\n  * t_companies_comparison_items（1対Nでcompanies_header_idでリレーション）\n\n### リクエストパラメータとテーブルのマッピング\n* headers ⇒ t_companies_comparison_headers\n  * t_companies_comparison_headers.sort_order => headers[]のインデックス番号\n* items ⇒ t_companies_comparison_items\n  * t_companies_comparison_items.col => items[]のインデックス番号\n\n### 処理詳細\n\n#### トランザクション制御\n* 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### 《t_companies_comparison_headers》《t_companies_comparison_items》への操作\n* リクエストパラメータ、テーブルともに同一IDのデータが存在する場合 ⇒ 更新処理\n  * マッピング情報を元に更新処理\n* リクエストパラメータのIDが空の場合 ⇒ 登録処理\n  * マッピング情報を元に登録処理\n* itesm[].file が存在する場合(更新、登録どちらでも行う)\n  * 画像の保存処理を行う\n    * パス=>/storage/lp_order/{{lpOrderId}}/ComparisonInsert/{{t_companies_comparison_items.id}}.jpg\n  * t_companies_comparison_items.text に上記パスをセット\n* テーブルにIDが存在するがリクエストパラメータにそのIDが含まれていない（存在しない）場合 ⇒ 削除処理\n  * 対象レコードを論理削除"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - CompaniesComparisonApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                headers:
+                  type: array
+                  description: ヘッダー.
+                  example:
+                    -
+                      id: 1
+                      header_name: 店舗名
+                      header_type: text
+                      calculation_type: ''
+                      calculation_row: []
+                    -
+                      id: null
+                      header_name: 価格
+                      header_type: calculation
+                      calculation_type: sum
+                      calculation_row:
+                        - 8
+                        - 9
+                  items:
+                    type: string
+                items:
+                  type: array
+                  description: テーブルの要素.
+                  example:
+                    -
+                      -
+                        id: 1
+                        text: '福助 楽天市場店'
+                        color: white
+                        editable: false
+                      -
+                        id: 2
+                        text: ''
+                        color: white
+                        editable: false
+                      -
+                        id: 3
+                        text: /storage/~~~
+                        file: XXX.jpg
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: '2090'
+                        editable: false
+                    -
+                      -
+                        id: 4
+                        text: キュットスリムと下着通販GB-style
+                        color: white
+                        editable: false
+                      -
+                        id: 5
+                        text: ''
+                        color: white
+                        editable: false
+                      -
+                        id: 6
+                        text: /storage/~~~
+                        file: XXX.jpg
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: '2090'
+                        color: white
+                        editable: false
+                  items:
+                    type: string
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/companies_comparison:
+    post:
+      summary: 他社構成比較テーブル情報を新規登録(機能ID：F-00006-00007)
+      description: "### API仕様\n\n### やりたいこと\n* 《t_companies_comparison_headers》《t_companies_comparison_items》テーブルへ情報の登録\n\n### リレーション\n* t_companies_comparison_headers\n  * t_companies_comparison_items（1対Nでcomparison_header_idでリレーション）\n\n### リクエストパラメータとテーブルのマッピング\n* headers ⇒ t_companies_comparison_items\n  * t_companies_comparison_items.sort_order => headers[]のインデックス番号\n* items ⇒ t_companies_comparison_items\n  * t_companies_comparison_items.col => items[]のインデックス番号\n\n### 処理詳細\n#### トランザクション制御\n  * 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### リクエストパラメータの値を《t_constitution_plans》《t_plan_images》《t_plan_image_memos》に登録（対象分繰り返す）\n  * マッピング情報を元にリクエストパラメータの値をオブジェクトにセット\n   * itesm[].file が存在する場合\n     * 画像の保存処理を行う\n       * パス=>/storage/lp_order/{{lp_order_id}}/ComparisonInsert/{{t_companies_comparison_items.id}}.jpg\n       * └{{xxxx}}⇒ここは該当IDに置き換えて処理する\n     * t_companies_comparison_items.text に上記パスをセット\n   * 上記オブジェクトの登録処理"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - CompaniesComparisonApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                headers:
+                  type: array
+                  description: 他社構成比較テーブルのヘッダー情報.
+                  example:
+                    -
+                      id: null
+                      header_name: 店舗名
+                      header_type: text
+                      calculation_type: ''
+                      calculation_row: []
+                    -
+                      id: null
+                      header_name: 価格
+                      header_type: calculation
+                      calculation_type: sum
+                      calculation_row:
+                        - 8
+                        - 9
+                  items:
+                    type: string
+                items:
+                  type: array
+                  description: 他社構成比較テーブルの各要素.
+                  example:
+                    -
+                      -
+                        id: null
+                        text: '福助 楽天市場店'
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: ''
+                        file: XXX.jpg
+                        color: white
+                        editable: false
+                    -
+                      -
+                        id: null
+                        text: キュットスリムと下着通販GB-style
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: ''
+                        file: XXX.jpg
+                        color: white
+                        editable: false
+                  items:
+                    type: string
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/companies_comparison/copy:
+    post:
+      summary: 他社構成比較テーブルを他構成からコピーする(機能ID：F-00006-00013)
+      description: "### API仕様\n1. DBトランザクション開始\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lp_order_id]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_companies_comparison_headers》\n     * テーブル:《t_companies_comparison_items》\n1. 登録用のオブジェクト生成\n   * テーブル:《t_companies_comparison_headers》\n   * テーブル:《t_companies_comparison_items》\n1. 下記条件のデータを取得\n   * テーブル《t_companies_comparison_headers》\n     * t_companies_comparison_headers.lp_order_id = other_lp_order_id\n   * テーブル《t_companies_comparison_items》\n     * t_companies_comparison_items.id = t_companies_comparison_items.comparison_header_id\n1. 《t_companies_comparison_headers》の登録処理\n   * リクエストパラメータ[lp_order_id]を[lp_order_id]へセット\n   * 上記で取得したデータをオブジェクトへセット\n   * 登録処理\n1. 《t_companies_comparison_items》の登録処理\n   * 《t_companies_comparison_headers》の最新IDを各オブジェクトの[basic_knowledge_id]へセット\n   * 上記で取得したデータを各オブジェクトへセット\n   * 登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - CompaniesComparisonApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/comparison_insert/{lpOrderId}':
+    get:
+      summary: 他社比較入力テーブル情報の検索(機能ID：F-00005-00005)
+      description: "### API仕様\n1. 下記条件のデータを取得\n   * テーブル《t_comparison_insert_headers》\n     * t_comparison_insert_headers.lp_order_id = lpOrderId\n     * t_comparison_insert_headers.deleted_at is null\n     * t_comparison_insert_headers.sort_order 昇順で並べ替え\n   * テーブル《t_comparison_insert_items》\n     * リレーション先《t_comparison_insert_headers》\n       * t_comparison_insert_items.comparison_header_id = t_comparison_insert_headers.id\n     * t_comparison_insert_items.sort_order でグループ化し昇順で並べ替え\n     * t_comparison_insert_items.t_comparison_insert_headers.sort_order 昇順で並べ替え\n     * editable => false\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    -
+                      header:
+                        -
+                          id: 1
+                          header_name: 店舗名
+                          header_type: text
+                          calculation_type: ''
+                          calculation_row: []
+                          sort_order: 1
+                        -
+                          id: 4
+                          header_name: 価格
+                          header_type: calculation
+                          calculation_type: sum
+                          calculation_row:
+                            - 8
+                            - 9
+                          sort_order: 2
+                        -
+                          id: 4
+                          header_name: 画像
+                          header_type: image
+                          calculation_type: ''
+                          calculation_row: []
+                          sort_order: 3
+                      items:
+                        -
+                          -
+                            id: 1
+                            text: '福助 楽天市場店'
+                            editable: false
+                          -
+                            id: 2
+                            text: ''
+                            editable: false
+                          -
+                            id: 3
+                            text: /storage/~~~
+                            editable: false
+                        -
+                          -
+                            id: 12
+                            text: キュットスリムと下着通販GB-style
+                            editable: false
+                          -
+                            id: 13
+                            text: ''
+                            editable: false
+                          -
+                            id: 14
+                            text: /storage/~~~
+                            editable: false
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: array
+                    example:
+                      -
+                        header:
+                          -
+                            id: 1
+                            header_name: 店舗名
+                            header_type: text
+                            calculation_type: ''
+                            calculation_row: []
+                            sort_order: 1
+                          -
+                            id: 4
+                            header_name: 価格
+                            header_type: calculation
+                            calculation_type: sum
+                            calculation_row:
+                              - 8
+                              - 9
+                            sort_order: 2
+                          -
+                            id: 4
+                            header_name: 画像
+                            header_type: image
+                            calculation_type: ''
+                            calculation_row: []
+                            sort_order: 3
+                        items:
+                          -
+                            -
+                              id: 1
+                              text: '福助 楽天市場店'
+                              editable: false
+                            -
+                              id: 2
+                              text: ''
+                              editable: false
+                            -
+                              id: 3
+                              text: /storage/~~~
+                              editable: false
+                          -
+                            -
+                              id: 12
+                              text: キュットスリムと下着通販GB-style
+                              editable: false
+                            -
+                              id: 13
+                              text: ''
+                              editable: false
+                            -
+                              id: 14
+                              text: /storage/~~~
+                              editable: false
+                    items:
+                      type: object
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ComparisonInsertApi
+      security: []
+    put:
+      summary: 他社比較入力テーブル情報の編集(機能ID：F-00005-00007)
+      description: "### API仕様\n\n### やりたいこと\n* t_companies_comparison_headers,t_companies_comparison_itemsテーブルへ情報の登録・更新・削除\n\n### リレーション\n* t_companies_comparison_headers\n  * t_companies_comparison_items（1対Nでcompanies_header_idでリレーション）\n\n### リクエストパラメータとテーブルのマッピング\n* headers ⇒ t_companies_comparison_headers\n  * t_companies_comparison_headers.sort_order => headers[]のインデックス番号\n* items ⇒ t_companies_comparison_items\n  * t_companies_comparison_items.col => items[]のインデックス番号\n\n### 処理詳細\n\n#### トランザクション制御\n* 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### 《t_companies_comparison_headers》《t_companies_comparison_items》への操作\n* リクエストパラメータ、テーブルともに同一IDのデータが存在する場合 ⇒ 更新処理\n  * マッピング情報を元に更新処理\n* リクエストパラメータのIDが空の場合 ⇒ 登録処理\n  * マッピング情報を元に登録処理\n* itesm[].file が存在する場合(更新、登録どちらでも行う)\n  * 画像の保存処理を行う\n    * パス=>/storage/lp_order/{{lpOrderId}}/ComparisonInsert/{{t_comparison_insert_items.id}}.jpg\n  * t_comparison_insert_items.text に上記パスをセット\n* テーブルにIDが存在するがリクエストパラメータにそのIDが含まれていない（存在しない）場合 ⇒ 削除処理\n  * 対象レコードを論理削除"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ComparisonInsertApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                headers:
+                  type: array
+                  description: ヘッダー.
+                  example:
+                    -
+                      id: 1
+                      header_name: 店舗名
+                      header_type: text
+                      calculation_type: ''
+                      calculation_row: []
+                    -
+                      id: null
+                      header_name: 価格
+                      header_type: calculation
+                      calculation_type: sum
+                      calculation_row:
+                        - 8
+                        - 9
+                  items:
+                    type: string
+                items:
+                  type: array
+                  description: テーブルの要素.
+                  example:
+                    -
+                      -
+                        id: 1
+                        text: '福助 楽天市場店'
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: '2090'
+                        editable: false
+                    -
+                      -
+                        id: 4
+                        text: キュットスリムと下着通販GB-style
+                        color: white
+                        editable: false
+                      -
+                        id: null
+                        text: '2090'
+                        color: white
+                        editable: false
+                  items:
+                    type: string
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/comparison_insert:
+    post:
+      summary: 他社比較入力テーブル情報の初期登録(機能ID：F-00005-00006)
+      description: "### API仕様\n\n### やりたいこと\n* 《t_companies_comparison_headers》《t_comparison_insert_items》テーブルの初期登録\n\n### リレーション\n* t_companies_comparison_headers\n  * t_comparison_insert_items（1対Nでcomparison_header_idでリレーション）\n\n### 処理詳細\n#### トランザクション制御\n  * 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n\n#### 初期登録処理\n  * ヘッダーの初期登録\n    *「店舗名」「商品名」「URL」のみの登録\n  * テーブル情報の初期登録\n    * 初期登録として3行分空文字を新規登録。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ComparisonInsertApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/comparison_insert/copy:
+    post:
+      summary: 他社比較入力テーブル情報を他構成からコピーする(機能ID：F-00005-00013)
+      description: "### API仕様\n1. DBトランザクション開始\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lp_order_id]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_comparison_insert_headers》\n     * テーブル:《t_comparison_insert_items》\n1. 下記条件のデータを取得\n   * テーブル《t_comparison_insert_headers》\n     * t_comparison_insert_headers.lp_order_id = other_lp_order_id\n   * テーブル《t_comparison_insert_items》\n     * t_comparison_insert_items.id = t_comparison_insert_items.comparison_header_id\n1. 《t_comparison_insert_headers》の登録処理\n   * リクエストパラメータ[lp_order_id]を[lp_order_id]へセット\n   * 上記で取得したデータをオブジェクトへセット\n   * 登録処理\n1. 《t_comparison_insert_items》の登録処理\n   * 《t_comparison_insert_headers》の最新IDを各オブジェクトの[basic_knowledge_id]へセット\n   * 上記で取得したデータを各オブジェクトへセット\n   * 登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ComparisonInsertApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/constitution_plan/{lpOrderId}':
+    get:
+      summary: 構成案情報の検索(機能ID：F-00008-00002)
+      description: "### API仕様\n1. 下記条件のデータを取得\n   * テーブル《t_constitution_plans》\n     * t_constitution_plans.lp_order_id = lpOrderId\n     * t_constitution_plans.deleted_at is null\n     * t_constitution_plans.sort_order 昇順で並べ替え\n   * テーブル《t_plan_images》\n     * リレーション先《t_constitution_plans》\n       * t_constitution_plans.constitution_plan_id = t_constitution_plans.id\n     * t_plan_images.constitution_plan_id でグループ化\n     * t_plan_images.sort_order 昇順で並べ替え\n   * テーブル《t_plan_image_memos》\n     * リレーション先《t_plan_images》\n       * t_plan_image_memos.plan_image_id = t_plan_images.id\n     * t_plan_image_memos.sort_order 昇順で並べ替え\n   * テーブル《m_categories》\n     * m_categories.deleted_at is null\n1. 上記抽出結果をresponsesを参考に整形\n   * images => t_plan_images.constitution_plan_id でグループ化\n   * memos => t_plan_image_memos.constitution_plan_id でグループ化\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    -
+                      Constitution_plan:
+                        -
+                          id: 1
+                          block: 店舗名
+                          requester_fix: ''
+                          pharmaceutical_affairs_fix: ''
+                          information_management_memo: ''
+                        -
+                          id: 2
+                          block: 構成
+                          requester_fix: ''
+                          pharmaceutical_affairs_fix: ''
+                          information_management_memo: ''
+                      images:
+                        -
+                          -
+                            id: 1
+                            image_path: /storage/lp_order/1/constitutionPlan/1.jpg
+                          -
+                            id: 2
+                            image_path: /storage/lp_order/1/constitutionPlan/2.jpg
+                        -
+                          -
+                            id: 3
+                            image_path: /storage/lp_order/1/constitutionPlan/3.jpg
+                      memos:
+                        -
+                          -
+                            id: 1
+                            memo: メモ~~~~~
+                            memo_category: 大
+                        -
+                          -
+                            id: 2
+                            memo: メモ~~~~~2
+                            memo_category: 大
+                          -
+                            id: 3
+                            memo: メモ~~~~~3
+                            memo_category: 中
+                      categories:
+                        -
+                          category: 大
+                          color: '#ED7D31'
+                        -
+                          category: 中
+                          color: '#F4B084'
+                        -
+                          category: 小
+                          color: '#F8CBAD'
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: array
+                    example:
+                      -
+                        Constitution_plan:
+                          -
+                            id: 1
+                            block: 店舗名
+                            requester_fix: ''
+                            pharmaceutical_affairs_fix: ''
+                            information_management_memo: ''
+                          -
+                            id: 2
+                            block: 構成
+                            requester_fix: ''
+                            pharmaceutical_affairs_fix: ''
+                            information_management_memo: ''
+                        images:
+                          -
+                            -
+                              id: 1
+                              image_path: /storage/lp_order/1/constitutionPlan/1.jpg
+                            -
+                              id: 2
+                              image_path: /storage/lp_order/1/constitutionPlan/2.jpg
+                          -
+                            -
+                              id: 3
+                              image_path: /storage/lp_order/1/constitutionPlan/3.jpg
+                        memos:
+                          -
+                            -
+                              id: 1
+                              memo: メモ~~~~~
+                              memo_category: 大
+                          -
+                            -
+                              id: 2
+                              memo: メモ~~~~~2
+                              memo_category: 大
+                            -
+                              id: 3
+                              memo: メモ~~~~~3
+                              memo_category: 中
+                        categories:
+                          -
+                            category: 大
+                            color: '#ED7D31'
+                          -
+                            category: 中
+                            color: '#F4B084'
+                          -
+                            category: 小
+                            color: '#F8CBAD'
+                    items:
+                      type: object
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionPlanApi
+      security: []
+    put:
+      summary: 構成案画面の各項目編集(機能ID：F-00008-00004)
+      description: "### API仕様\n### やりたいこと\n* 《t_constitution_plans》《t_plan_images》《t_plan_image_memos》テーブルへ情報の登録,更新,削除\n### リレーション\n* t_constitution_plans\n  * t_plan_images（1対Nでconstitution_plan_idでリレーション）\n  * t_plan_image_memos（1対Nでconstitution_plan_idでリレーション）\n### リクエストパラメータとテーブルのマッピング\n* constitution_plan ⇒ t_constitution_plans\n  * t_constitution_plans.sort_order => constitution_plan[]のインデックス番号\n* images ⇒ t_plan_images\n  * t_plan_images.constitution_plan_id => 同じ階層(インデックス番号が同じ)にあるconstitution_plan[]のid\n  * t_plan_images.sort_order => images[]のインデックス番号\n  * t_plan_images.image_path => /storage/lp_order/{{lpOrderId}}/constitutionPlan/{{t_plan_images.id}}.jpg\n  * └{{xxxx}}⇒ここは該当IDに置き換えて処理する\n* memos ⇒ t_plan_image_memos\n  * t_plan_images.constitution_plan_id => 同じ階層(インデックス番号が同じ)にあるconstitution_plan[]のid\n  * t_plan_image_memos.sort_order => memos[]のインデックス番号\n### 処理詳細\n#### トランザクション制御\n* 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n#### 《t_constitution_plans》《t_plan_images》《t_plan_image_memos》への操作（対象分繰り返す）\n* リクエストパラメータ、テーブルともに同一IDのデータが存在する場合 ⇒ 更新処理\n  * マッピング情報を元に更新処理\n* リクエストパラメータのIDが空の場合 ⇒ 登録処理\n  * マッピング情報を元に登録処理\n* テーブルにIDが存在するがリクエストパラメータにそのIDが含まれていない（存在しない）場合 ⇒ 削除処理\n  * 対象レコードを論理削除\n* images[].file が存在する場合\n  * 画像の保存処理を行う\n    * パス=>/storage/lp_order/{{lpOrderId}}/constitutionPlan/{{t_plan_images.id}}.jpg"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionPlanApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                constitution_plan:
+                  type: array
+                  description: LPブロック内容.
+                  example:
+                    -
+                      id: 1
+                      block_detail: 店舗名2
+                      requester_fix: 店舗名を修正してください
+                      pharmaceutical_affairs_fix: 店舗名をチェックしてください
+                      information_management_memo: 店舗名を管理します
+                    -
+                      id: 2
+                      block_detail: 構成2
+                      requester_fix: 構成を修正してください
+                      pharmaceutical_affairs_fix: 構成をチェックしてください
+                      information_management_memo: 構成を管理します
+                  items:
+                    type: string
+                image_paths:
+                  type: array
+                  description: 画像.
+                  example:
+                    -
+                      -
+                        id: 1
+                        extension: ''
+                        images_key: ''
+                    -
+                      -
+                        id: 3
+                        extension: ''
+                        images_key: ''
+                      -
+                        id: null
+                        extension: jpg
+                        images_key: '0'
+                  items:
+                    type: string
+                memos:
+                  type: array
+                  description: 画像メモ.
+                  example:
+                    -
+                      -
+                        id: 1
+                        memo: みつぎのメモ
+                        category: 小
+                    -
+                      -
+                        id: 2
+                        memo: バッグのめも
+                        category: 中
+                      -
+                        id: 3
+                        memo: テスト
+                        category: テスト
+                  items:
+                    type: string
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/constitution_plan:
+    post:
+      summary: 構成案画像の各項目新規登録(機能ID：F-00008-00003)
+      description: "### API仕様\n### やりたいこと\n* 《t_constitution_plans》《t_plan_images》《t_plan_image_memos》テーブルへ情報の登録\n### リレーション\n* t_constitution_plans\n  * t_plan_images（1対Nでconstitution_plan_idでリレーション）\n  * t_plan_image_memos（1対Nでconstitution_plan_idでリレーション）\n### リクエストパラメータとテーブルのマッピング\n* constitution_plan ⇒ t_constitution_plans\n  * t_constitution_plans.sort_order => constitution_plan[]のインデックス番号\n* images ⇒ t_plan_images\n  * t_plan_images.constitution_plan_id => 同じ階層(インデックス番号が同じ)にあるconstitution_plan[]のid\n  * t_plan_images.sort_order => images[]のインデックス番号\n  * t_plan_images.image_path => /storage/lp_order/{{lp_order_id}}/constitutionPlan/{{t_plan_images.id}}.jpg\n  * └{{xxxx}}⇒ここは該当IDに置き換えて処理する\n* memos ⇒ t_plan_image_memos\n  * t_plan_image_memos.constitution_plan_id => 同じ階層(インデックス番号が同じ)にあるconstitution_plan[]のid\n  * t_plan_image_memos.sort_order => memos[]のインデックス番号\n### 処理詳細\n#### トランザクション制御\n  * 関連テーブルへの全操作を1トランザクションとして扱う。\n  * どこかで失敗（エラー）になった際はロールバック。\n  * 問題なく、全DB操作が完了した際はコミット。\n#### リクエストパラメータの値を《t_constitution_plans》《t_plan_images》《t_plan_image_memos》に登録（対象分繰り返す）\n  * マッピング情報を元にリクエストパラメータの値をオブジェクトにセット\n  * images[].file が存在する場合\n    * 画像の保存処理を行う\n      * パス=>/storage/lp_order/{{lp_order_id}}/constitutionPlan/{{t_plan_images.id}}.jpg"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionPlanApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                constitution_plan:
+                  type: array
+                  description: LPブロック内容.
+                  example:
+                    -
+                      id: null
+                      block_detail: 店舗名
+                      requester_fix: 店舗名を修正してください
+                      pharmaceutical_affairs_fix: 店舗名をチェックしてください
+                      information_management_memo: 店舗名を管理します
+                    -
+                      id: null
+                      block_detail: 構成
+                      requester_fix: 構成を修正してください
+                      pharmaceutical_affairs_fix: 構成をチェックしてください
+                      information_management_memo: 構成を管理します
+                  items:
+                    type: string
+                image_paths:
+                  type: array
+                  description: 画像.
+                  example:
+                    -
+                      -
+                        id: null
+                        extension: png
+                        images_key: 0
+                    -
+                      -
+                        id: null
+                        extension: png
+                        images_key: 1
+                      -
+                        id: null
+                        extension: jpg
+                        images_key: 2
+                  items:
+                    type: string
+                memos:
+                  type: array
+                  description: 画像メモ.
+                  example:
+                    -
+                      -
+                        id: null
+                        memo: みつぎのメモ
+                        memo_category: 大
+                    -
+                      -
+                        id: null
+                        memo: バッグのめも
+                        memo_category: 中
+                      -
+                        id: null
+                        memo: ''
+                        memo_category: 小
+                  items:
+                    type: string
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/constitution_plan/copy:
+    post:
+      summary: 構成案画像の各項目を他構成からコピーする(機能ID：F-00008-00008)
+      description: "### API仕様\n1. DBトランザクション開始\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lpOrderId]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_constitution_plans》\n     * テーブル:《t_plan_images》\n     * テーブル:《t_plan_image_memos》\n\n1. 下記条件のデータを取得\n   * テーブル《t_constitution_plans》\n     * t_constitution_plans.lp_order_id = other_lp_order_id\n   * テーブル《t_plan_images》\n     * t_plan_images.id = t_constitution_plans.constitution_plan_id\n   * テーブル《t_plan_image_memos》\n     * t_plan_image_memos.id = t_constitution_plans.constitution_plan_id\n   - 上記条件でデータが取得できなかった場合、例外とする\n        - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_constitution_plans》の登録処理\n   * リクエストパラメータ[lpOrderId]を[lp_order_id]へセット\n   * 上記で取得したデータをオブジェクトへセット\n   * 登録処理\n1. 《t_plan_images》《t_plan_image_memos》の登録処理\n   * 《t_constitution_plans》の最新IDを各オブジェクトの[constitution_plan_id]へセット\n   * 上記で取得したデータを各オブジェクトへセット\n   * 登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionPlanApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/constitution_process/{lpOrderId}':
+    get:
+      summary: 構成の手順の各項目を検索(機能ID：F-00007-00001)
+      description: "### API仕様\n\n1. 下記条件で構成の手順のデータを取得\n   * テーブル《t_constitution_processes》\n     * t_constitution_processes.lp_order_id = [lpOrderId]\n     * t_constitution_processes.deleted_at IS NULL\n     * リレーション先《t_constitution_blocks》も含む\n       * t_constitution_processes.id = t_constitution_blocks.constitution_process_id\n       * ORDER BY t_constitution_blocks.sort_order ASC\n     * リレーション先《t_constitution_fix_blocks》も含む\n       * t_constitution_processes.id = t_constitution_fix_blocks.constitution_process_id\n       * ORDER BY t_constitution_fix_blocks.sort_order ASC\n\n1. 取得結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    -
+                      id: 1
+                      product_name: LP構成名
+                      description: 簡易説明
+                      status: 0
+                      requirement_flag: 1
+                      constitution_blocks_list:
+                        -
+                          id: 1
+                          constitution_process_id: 1
+                          block_detail: サイズチャート
+                          sort_order: 1
+                      constitution_fix_block_list:
+                        -
+                          id: 1
+                          constitution_process_id: 1
+                          block_detail: 毎日のお仕事はもちろん　結婚式や入学式にも
+                          sort_order: 1
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        product_name: LP構成名
+                        description: 簡易説明
+                        status: 0
+                        requirement_flag: 1
+                        constitution_blocks_list:
+                          -
+                            id: 1
+                            constitution_process_id: 1
+                            block_detail: サイズチャート
+                            sort_order: 1
+                        constitution_fix_block_list:
+                          -
+                            id: 1
+                            constitution_process_id: 1
+                            block_detail: 毎日のお仕事はもちろん　結婚式や入学式にも
+                            sort_order: 1
+                    items:
+                      type: object
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionProcessApi
+      security: []
+    put:
+      summary: 構成の手順の各項目を更新(機能ID：F-00007-00003)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 下記条件により更新対象データを取得\n   * テーブル《t_constitution_processes》\n     * t_constitution_processes.lp_order_id = [lpOrderId]\n     * t_constitution_processes.deleted_at IS NULL\n   * リレーション先テーブル《t_constitution_blocks》も含む\n   * リレーション先テーブル《t_constitution_fix_blocks》も含む\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_constitution_processes》の更新処理\n     * Request bodyパラメータを元に更新処理\n\n1. 《t_constitution_blocks》への操作\n     * Request bodyパラメータの[constitution_blocks_list.id]（※以降（イ））と、<br>\n       更新対象データのt_constitution_blocks.id（※以降（ロ））の状態を比較判断して処理を行う。\n         * （イ）が（ロ）に存在する場合\n             * 更新処理 ⇒ （イ）に属する各パラメーターの値で（ロ）を更新\n         * （イ）が空の場合\n             * 登録処理 ⇒ （イ）に属する各パラメーターの値を（ロ）に追加\n         * （ロ）が（イ）に存在しない場合\n             * 削除処理 ⇒ （ロ）のdeleted_atに処理日付を設定し更新\n\n1. 《t_constitution_fix_blocks》への操作\n     * Request bodyパラメータの[constitution_fix_block_list.id]（※以降（ハ））と、<br>\n       更新対象データのt_constitution_fix_blocks.id（※以降（ニ））の状態を比較判断して処理を行う。\n         * （ハ）が（ニ）に存在する場合\n             * 更新処理 ⇒ （ハ）に属する各パラメーターの値で（ニ）を更新\n         * （ハ）が空の場合\n             * 登録処理 ⇒ （ハ）に属する各パラメーターの値を（ニ）に追加\n         * （ニ）が（ハ）に存在しない場合\n             * 削除処理 ⇒ （ニ）のdeleted_atに処理日付を設定し更新\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000002をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000102をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"編集完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionProcessApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                concept_word:
+                  type: string
+                  description: コンセプト名.
+                  example: コンセプト名
+                concept_catch:
+                  type: string
+                  description: キャッチコピー.
+                  example: キャッチコピー
+                how_block:
+                  type: string
+                  description: ブロック.
+                  example: ブロック
+                constitution_blocks_list:
+                  type: string
+                  description: ''
+                  example: null
+                constitution_fix_blocks_list:
+                  type: string
+                  description: ''
+                  example: null
+              required:
+                - lp_order_id
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/constitution_process:
+    post:
+      summary: 構成の手順の各項目を新規登録(機能ID：F-00007-00002)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 登録用のオブジェクト生成\n   * テーブル:《t_constitution_processes》\n   * テーブル:《t_constitution_blocks》\n   * テーブル:《t_constitution_fix_blocks》\n\n1. 上記オブジェクトに登録データをセット\n   * 登録データ：リクエストパラメータの値\n\n1. 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionProcessApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                concept_word:
+                  type: string
+                  description: コンセプト名.
+                  example: コンセプト名
+                concept_catch:
+                  type: string
+                  description: キャッチコピー.
+                  example: キャッチコピー
+                how_block:
+                  type: string
+                  description: ブロック.
+                  example: ブロック
+                constitution_blocks_list:
+                  type: string
+                  description: ''
+                  example: null
+                constitution_fix_blocks_list:
+                  type: string
+                  description: ''
+                  example: null
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/constitution_process/copy:
+    post:
+      summary: 構成の手順を他構成からのコピー作成(機能ID：F-00007-00005)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lpOrderId]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_constitution_processes》\n     * テーブル:《t_constitution_blocks》\n     * テーブル:《t_constitution_fix_blocks》\n\n1. 下記条件でコピー元データを取得\n   * テーブル《t_constitution_processes》\n     * t_constitution_processes.lp_order_id = [other_lp_order_id]\n   * テーブル《t_constitution_blocks》\n     * t_constitution_processes.id = t_constitution_blocks.constitution_process_id\n   * テーブル《t_constitution_fix_blocks》\n     * t_constitution_processes.id = t_constitution_fix_blocks.constitution_process_id\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_constitution_processes》の登録処理\n   * リクエストパラメータ[lpOrderId]を[lp_order_id]へセット\n   * 上記で取得したコピー元データをオブジェクトへセット\n   * 登録処理\n\n1. 《t_constitution_blocks》の登録処理\n   * 《t_constitution_processes》の最新IDを《t_constitution_blocks》オブジェクトの[constitution_process_id]へセット\n   * 上記で取得したコピー元データを《t_constitution_blocks》オブジェクトへセット\n   * 登録処理\n\n1. 《t_constitution_fix_blocks》の登録処理\n   * 《t_constitution_processes》の最新IDを《t_constitution_fix_blocks》オブジェクトの[constitution_process_id]へセット\n   * 上記で取得したコピー元データを《t_constitution_fix_blocks》オブジェクトへセット\n   * 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ConstitutionProcessApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/final_design_confirmation/{lpOrderId}':
+    get:
+      summary: 最終デザイン確認の各項目を検索(機能ID：F-00009-00003)
+      description: "### API仕様\n\n1. 下記条件の最終デザイン確認のデータを取得\n   * テーブル《t_final_design_confirmations》\n     * t_final_design_confirmations.lp_order_id = [lpOrderId]\n     * t_final_design_confirmations.deleted_at IS NULL\n     * ORDER BY t_final_design_confirmations.id ASC\n\n1. 取得結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    design_parts:
+                      -
+                        id: 1
+                        lp_order_id: 2
+                        image_path: /storage/lp_order/1/finaldesignconfirmation/2_origenal.jpg
+                        design_memo: '<P>ここにHTML記法で修正必要内容が入る</P>'
+                        law_support_memo: '<P>ここにHTML記法で再修正・メモが入る</P>'
+                        info_manage_memo: '<P>ここにHTML記法で再修正・メモが入る</P>'
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: object
+                    example:
+                      design_parts:
+                        -
+                          id: 1
+                          lp_order_id: 2
+                          image_path: /storage/lp_order/1/finaldesignconfirmation/2_origenal.jpg
+                          design_memo: '<P>ここにHTML記法で修正必要内容が入る</P>'
+                          law_support_memo: '<P>ここにHTML記法で再修正・メモが入る</P>'
+                          info_manage_memo: '<P>ここにHTML記法で再修正・メモが入る</P>'
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - FinalDesignConfirmationApi
+      security: []
+    put:
+      summary: 最終デザイン確認の各項目を更新(機能ID：F-00009-00005)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 下記条件により更新対象データを取得\n   * テーブル《t_final_design_confirmations》\n     * t_final_design_confirmations.lp_order_id = [lpOrderId]\n     * t_final_design_confirmations.deleted_at IS NULL\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_final_design_confirmations》への操作\n     * Request bodyパラメータの[id]（※以降（イ））と、<br>\n       更新対象データのt_final_design_confirmations.id（※以降（ロ））の状態を比較判断して処理を行う。\n         * （イ）が（ロ）に存在する場合\n             * 更新処理 ⇒ （イ）に属する各パラメーターの値で（ロ）を更新\n         * （イ）が空の場合\n             * 登録処理 ⇒ （イ）に属する各パラメーターの値を（ロ）に追加\n         * （ロ）が（イ）に存在しない場合\n             * 削除処理 ⇒ （ロ）のdeleted_atに処理日付を設定し更新\n     * design_parts.fileの値が”\"でない場合\n         * 画像の登録処理、または更新処理を行う。\n             * 格納パス=>/storage/lp_order/{{lpOrderId}}/finaldesignconfirmation/{{t_final_design_confirmations.id}} + \".\" + 画像ファイルの拡張子\n             * t_final_design_confirmations.image_pathに上記格納パスをセット\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000002をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000102をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"編集完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - FinalDesignConfirmationApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                design_parts:
+                  type: array
+                  description: ''
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: ''
+                        example: null
+                      image_path:
+                        type: string
+                        description: ''
+                        example: null
+                      file:
+                        type: string
+                        description: ''
+                        example: null
+                      design_memo:
+                        type: string
+                        description: ''
+                        example: null
+                      law_support_memo:
+                        type: string
+                        description: ''
+                        example: null
+                      info_manage_memo:
+                        type: string
+                        description: ''
+                        example: null
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/final_design_confirmation:
+    post:
+      summary: 最終デザイン確認の各項目を新規登録(機能ID：F-00009-00004)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 登録用のオブジェクト生成\n   * テーブル:《t_final_design_confirmations》\n\n1. 上記オブジェクトに登録データをセット\n   * 登録データ：リクエストパラメータの値\n   * design_parts.fileの値が”\"でない場合\n     * 画像の登録処理を行う。\n         * 格納パス=>/storage/lp_order/{{lp_order_id}}/finaldesignconfirmation/{{t_final_design_confirmations.id}} + \".\" + 画像ファイルの拡張子\n         * t_final_design_confirmations.image_pathに上記格納パスをセット\n\n1. 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - FinalDesignConfirmationApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                design_parts:
+                  type: array
+                  description: ''
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      lp_order_id:
+                        type: integer
+                        description: ''
+                        example: 18
+                      image_path:
+                        type: string
+                        description: ''
+                        example: null
+                      file:
+                        type: string
+                        description: ''
+                        example: null
+                      design_memo:
+                        type: string
+                        description: ''
+                        example: null
+                      law_support_memo:
+                        type: string
+                        description: ''
+                        example: null
+                      info_manage_memo:
+                        type: string
+                        description: ''
+                        example: null
+                    required:
+                      - lp_order_id
+      security: []
+  /api/lp_easy_order/final_design_confirmation/copy:
+    post:
+      summary: 最終デザイン確認を他構成からのコピー作成(機能ID：F-00009-00006)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lpOrderId]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_final_design_confirmations》\n\n1. 下記条件でコピー元データを取得\n   * テーブル《t_final_design_confirmations》\n     * t_final_design_confirmations.lp_order_id = [other_lp_order_id]\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_final_design_confirmations》の登録処理\n   * リクエストパラメータ[lpOrderId]を[lp_order_id]へセット\n   * 上記で取得したコピー元データをオブジェクトへセット\n   * 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - FinalDesignConfirmationApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  /api/lp_easy_order/home:
+    get:
+      summary: LP構成の一覧を検索(機能ID：F-00001-00001)
+      description: "### API仕様\n1. 全ての削除されていないLP構成を抽出する\n   * 下記条件に合致するデータを取得\n     * 《t_lp_order》の「deleted_at」がnullのデータのみ\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    id: 1
+                    product_name: ミックスナッツ
+                    description: 楽天みつぎ工作のミックスナッツ
+                    status: 0
+                    requirement_flag: 0
+                  normalMessage: 検索完了
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: object
+                    example:
+                      id: 1
+                      product_name: ミックスナッツ
+                      description: 楽天みつぎ工作のミックスナッツ
+                      status: 0
+                      requirement_flag: 0
+                  normalMessage:
+                    type: string
+                    example: 検索完了
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - HomeApi
+      security: []
+    post:
+      summary: LP構成の新規登録(機能ID：F-00001-00002)
+      description: "### API仕様\n1. DBトランザクション開始\n1. 登録用のオブジェクト生成\n   * テーブル:《t_lp_order》\n1. 上記オブジェクトに登録データをセット\n   * 登録データ：リクエストパラメータの値\n1. 登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - HomeApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_name:
+                  type: string
+                  description: 構成名.
+                  example: ミックスナッツ
+                product_code:
+                  type: string
+                  description: 品目コード.
+                  example: MN001
+                description:
+                  type: string
+                  description: 簡易説明.
+                  example: 楽天みつぎ工作のミックスナッツ
+                status:
+                  type: integer
+                  description: 新着情報.
+                  example: 0
+                requirement_flag:
+                  type: integer
+                  description: 必要フラグ.
+                  example: 1
+      security: []
+  '/api/lp_easy_order/home/{lpOrderId}':
+    delete:
+      summary: LP構成の削除(機能ID：F-00001-00004)
+      description: "### API仕様\n1. DBトランザクション開始\n1. 削除(softdelete)用のオブジェクト生成\n   * urlパラメータで渡ってくるLP構成IDで《t_lp_order》のデータを抽出\n1. 上記オブジェクトにsoftdeleteの処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000003をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000103をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"削除完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - HomeApi
+      security: []
+    put:
+      summary: LP構成の更新(機能ID：F-00001-00003)
+      description: "### API仕様\n1. DBトランザクション開始\n1. 更新用のオブジェクト生成\n   * urlパラメータで渡ってくるLP構成IDで《t_lp_order》のデータを抽出\n1. 上記オブジェクトに更新データをセット\n   * 更新データ：リクエストパラメータの値\n1. 更新処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000002をセットして返す。\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000102をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - HomeApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_name:
+                  type: string
+                  description: 構成名.
+                  example: ミックスナッツ2
+                product_code:
+                  type: string
+                  description: 品目コード.
+                  example: MN0012
+                description:
+                  type: string
+                  description: 簡易説明.
+                  example: 楽天みつぎ工作のミックスナッツ2
+                status:
+                  type: integer
+                  description: 新着情報.
+                  example: 1
+                requirement_flag:
+                  type: integer
+                  description: 必要フラグ.
+                  example: 0
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/home/copy:
+    post:
+      summary: 構成コピー作成(機能ID：F-00001-00005)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1.《t_lp_order》のコピー元データ活性確認\n   * テーブル《t_lp_order》\n     * t_lp_order.id = [lp_order_id]\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1.《t_lp_order》のコピー元データを新規登録\n   * t_lp_order.product_nameの接頭に「コピー - 」を付加する。\n   * 《t_lp_order》へ新規登録されたデータのidを取得\n\n1. リクエストパラメーターのキー['lp_order_id']に新規登録で取得したidを設定\n\n1. 各サービスが提供する一連のデータ複製処理を呼び出す。\n     1. レベル別質問事項\n     1. 商品カルテ入力\n     1. 基礎知識\n     1. 他社比較入力\n     1. 他社構成比較\n     1. 構成の手順\n     1. 構成案\n     1. 最終デザイン確認\n\n1. 登録処理\n   * 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - HomeApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: string
+                  description: LP構成ID.
+                  example: ''
+                other_lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+              required:
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/item_karte/{lpOrderId}':
+    get:
+      summary: 商品カルテの各項目を検索(機能ID：F-00003-00001)
+      description: "### API仕様\n\n1. 下記条件で商品カルテの情報を取得\n   * テーブル《t_item_kartes》\n     * t_item_kartes.lp_order_id = [lpOrderId]\n     * t_item_kartes.deleted_at IS NULL\n   * リレーション先テーブル《t_raw_materials》も含む\n       * t_item_kartes.id = t_raw_materials.item_karte_id\n       * ORDER BY t_raw_materials.id ASC\n\n1. 取得結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    -
+                      id: 1
+                      lp_order_id: 1
+                      goods_name: 10種のミックスナッツ
+                      trademark_flag: 1
+                      chinese_characters: 10種のミックスナッツ
+                      kana: 10シュノミックスナッツ
+                      romaji: 10shunomikkusunattsu
+                      material_list:
+                        -
+                          id: 1
+                          item_karte_id: 1
+                          raw_material_name: アーモンド
+                          production_area: アメリカ
+                          raw_material_detail: 大きい
+                          production_area_publish_flag: 1
+                          photo_material_flag: 1
+                          certificate_flag: 1
+                          coverage_content_flag: 1
+                          document_path: storage/documents/Almond.doc
+                      goods_specifications: 商品仕様：10粒入り
+                      price_including_tax: 1980
+                      jas_mark: ''
+                      jas_mark_folder: storage/jas/JasAlmond.svg
+                      jas_mark_certification: 鹿児島県
+                      target_jendar: 男性
+                      target_age: 30
+                      target_statue: 中間層
+                      BM_goods_name1: 10種のミックスナッツ
+                      BM_url1: 'http://bm_url1_1.com/Almond'
+                      BM_goods_name2: ミックスナッツ
+                      BM_url2: 'http://bm_url1_2.com/Almond'
+                      difference_point: 価格
+                      concept: 安くたくさん
+                      supplier_information_sharing: 価格が1年を通して安定しています。
+                      strong_point: 安定感
+                  normalMessage: ''
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        lp_order_id: 1
+                        goods_name: 10種のミックスナッツ
+                        trademark_flag: 1
+                        chinese_characters: 10種のミックスナッツ
+                        kana: 10シュノミックスナッツ
+                        romaji: 10shunomikkusunattsu
+                        material_list:
+                          -
+                            id: 1
+                            item_karte_id: 1
+                            raw_material_name: アーモンド
+                            production_area: アメリカ
+                            raw_material_detail: 大きい
+                            production_area_publish_flag: 1
+                            photo_material_flag: 1
+                            certificate_flag: 1
+                            coverage_content_flag: 1
+                            document_path: storage/documents/Almond.doc
+                        goods_specifications: 商品仕様：10粒入り
+                        price_including_tax: 1980
+                        jas_mark: ''
+                        jas_mark_folder: storage/jas/JasAlmond.svg
+                        jas_mark_certification: 鹿児島県
+                        target_jendar: 男性
+                        target_age: 30
+                        target_statue: 中間層
+                        BM_goods_name1: 10種のミックスナッツ
+                        BM_url1: 'http://bm_url1_1.com/Almond'
+                        BM_goods_name2: ミックスナッツ
+                        BM_url2: 'http://bm_url1_2.com/Almond'
+                        difference_point: 価格
+                        concept: 安くたくさん
+                        supplier_information_sharing: 価格が1年を通して安定しています。
+                        strong_point: 安定感
+                    items:
+                      type: object
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ItemKarteApi
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/item_karte:
+    post:
+      summary: 商品カルテの各項目を新規登録(機能ID：F-00003-00002)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 登録用のオブジェクト生成\n   * テーブル:《t_item_kartes》\n   * テーブル:《t_raw_materials》\n\n1. 上記オブジェクトに登録データをセット\n   * 登録データ：リクエストパラメータの値\n\n1. 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ItemKarteApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                goods_name:
+                  type: string
+                  description: 正式な商品名.
+                  example: 10種のミックスナッツ
+                trademark_flag:
+                  type: integer
+                  description: 商品登録可能性.
+                  example: 1
+                chinese_characters:
+                  type: string
+                  description: 漢字.
+                  example: 10種のミックスナッツ
+                kana:
+                  type: string
+                  description: カナ.
+                  example: 10シュノミックスナッツ
+                romaji:
+                  type: string
+                  description: ローマ字.
+                  example: 10shunomikkusunattsu
+                goods_specifications:
+                  type: string
+                  description: 商品仕様.
+                  example: 商品仕様：10粒入り
+                price_including_tax:
+                  type: integer
+                  description: 税込販売価格.
+                  example: 1980
+                jas_mark:
+                  type: string
+                  description: JASマーク.
+                  example: ''
+                jas_mark_folder:
+                  type: string
+                  description: JASマークデータフォルダ.
+                  example: storage/jas/JasAlmond.svg
+                jas_mark_certification:
+                  type: string
+                  description: JASマーク認定(都道府県).
+                  example: 鹿児島県
+                target_jendar:
+                  type: string
+                  description: ターゲット性別.
+                  example: 男性
+                target_age:
+                  type: string
+                  description: ターゲット年齢層.
+                  example: 30
+                target_statue:
+                  type: string
+                  description: ターゲット人間層.
+                  example: 参考値
+                BM_goods_name1:
+                  type: string
+                  description: BM商品名.
+                  example: 10種のミックスナッツ
+                BM_url1:
+                  type: string
+                  description: 'BM URL.'
+                  example: 'http://bm_url1_1.com/Almond'
+                BM_goods_name2:
+                  type: string
+                  description: BM商品名.
+                  example: ミックスナッツ
+                BM_url2:
+                  type: string
+                  description: 'BM URL.'
+                  example: 'http://bm_url1_2.com/Almond'
+                difference_point:
+                  type: string
+                  description: 差別化ポイント.
+                  example: 参考値
+                concept:
+                  type: string
+                  description: コンセプト.
+                  example: 安くたくさん
+                supplier_information_sharing:
+                  type: string
+                  description: 業者情報共有欄.
+                  example: 価格が1年を通して安定しています。
+                strong_point:
+                  type: string
+                  description: 強み.
+                  example: 安定感
+                material_list:
+                  type: array
+                  description: ''
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      raw_material_name:
+                        type: string
+                        description: 原材料.
+                        example: アーモンド
+                      production_area:
+                        type: string
+                        description: 産地.
+                        example: アメリカ
+                      raw_material_detail:
+                        type: string
+                        description: 原料(成分)の詳細・強み.
+                        example: 大きい
+                      production_area_publish_flag:
+                        type: integer
+                        description: 産地掲載の有無.
+                        example: 1
+                      photo_material_flag:
+                        type: integer
+                        description: 写真素材の有無.
+                        example: 1
+                      certificate_flag:
+                        type: integer
+                        description: 証明書関係の有無.
+                        example: 1
+                      coverage_content_flag:
+                        type: integer
+                        description: 取材内容の有無.
+                        example: 1
+                      document_path:
+                        type: string
+                        description: 資料保管場所.
+                        example: storage/documents/Almond.doc
+              required:
+                - lp_order_id
+      security: []
+  /api/lp_easy_order/item_karte/copy:
+    post:
+      summary: 商品カルテを他構成からのコピー作成(機能ID：F-00003-00005)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. コピー先の既存データ削除処理（※既存データとコピーされたデータを混在させないための処置）\n   * リクエストパラメータ[lpOrderId]に紐づく下記テーブルのデータを論理削除\n     * テーブル:《t_item_kartes》\n     * テーブル:《t_raw_materials》\n\n1. 下記条件でコピー元データを取得\n   * テーブル《t_item_kartes》\n     * t_item_kartes.lp_order_id = [other_lp_order_id]\n   * テーブル《t_raw_materials》\n     * t_item_kartes.id = t_raw_materials.item_karte_id\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_item_kartes》の登録処理\n   * リクエストパラメータ[lpOrderId]を[lp_order_id]へセット\n   * 上記で取得したコピー元データをオブジェクトへセット\n   * 登録処理\n\n1. 《t_raw_materials》の登録処理\n   * 《t_item_kartes》の最新IDを《t_raw_materials》オブジェクトの[item_karte_id]へセット\n   * 上記で取得したコピー元データを《t_raw_materials》オブジェクトへセット\n   * 登録処理\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ItemKarteApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                other_lp_order_id:
+                  type: integer
+                  description: 他構成のLP構成ID.
+                  example: 1
+              required:
+                - lp_order_id
+                - other_lp_order_id
+      security: []
+  '/api/lp_easy_order/item_karte/{itemKarteId}':
+    put:
+      summary: 商品カルテの各項目を更新(機能ID：F-00003-00003)
+      description: "### API仕様\n\n1. DBトランザクション開始\n\n1. 下記条件により更新対象データを取得\n   * テーブル《t_item_kartes》\n     * t_item_kartes.lp_order_id = [lpOrderId]\n     * t_item_kartes.deleted_at IS NULL\n   * リレーション先テーブル《t_raw_materials》も含む\n   - 上記条件でデータが取得できなかった場合、例外とする\n     - エラーメッセージにCommonMsg::MSG_ID_000006をセットして、例外をthrowする\n\n1. 《t_item_kartes》の更新処理\n     * Request bodyパラメータを元に更新処理\n\n1. 《t_raw_materials》への操作\n     * Request bodyパラメータの[material_list.id]（※以降（イ））と、<br>\n       更新対象データのt_raw_materials.id（※以降（ロ））の状態を比較判断して処理を行う。\n         * （イ）が（ロ）に存在する場合\n             * 更新処理 ⇒ （イ）に属する各パラメーターの値で（ロ）を更新\n         * （イ）が空の場合\n             * 登録処理 ⇒ （イ）に属する各パラメーターの値を（ロ）に追加\n         * （ロ）が（イ）に存在しない場合\n             * 削除処理 ⇒ （ロ）のdeleted_atに処理日付を設定し更新\n\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000002をセットして返す。\n\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000102をセットして返す。"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"編集完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - ItemKarteApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goods_name:
+                  type: string
+                  description: 正式な商品名.
+                  example: 10種のミックスナッツ
+                trademark_flag:
+                  type: string
+                  description: 商品登録可能性.
+                  example: 1
+                chinese_characters:
+                  type: string
+                  description: 漢字.
+                  example: 10種のミックスナッツ
+                kana:
+                  type: string
+                  description: カナ.
+                  example: 10シュノミックスナッツ
+                romaji:
+                  type: string
+                  description: ローマ字.
+                  example: 10shunomikkusunattsu
+                goods_specifications:
+                  type: string
+                  description: 商品仕様.
+                  example: 商品仕様：10粒入り
+                price_including_tax:
+                  type: integer
+                  description: 税込販売価格.
+                  example: 1980
+                jas_mark:
+                  type: string
+                  description: JASマーク.
+                  example: ''
+                jas_mark_folder:
+                  type: string
+                  description: JASマークデータフォルダ.
+                  example: storage/jas/JasAlmond.svg
+                jas_mark_certification:
+                  type: string
+                  description: JASマーク認定(都道府県).
+                  example: 鹿児島県
+                target_jendar:
+                  type: string
+                  description: ターゲット性別.
+                  example: 男性
+                target_age:
+                  type: string
+                  description: ターゲット年齢層.
+                  example: 30
+                target_statue:
+                  type: string
+                  description: ターゲット人間層.
+                  example: 参考値
+                BM_goods_name1:
+                  type: string
+                  description: BM商品名.
+                  example: 10種のミックスナッツ
+                BM_url1:
+                  type: string
+                  description: 'BM URL.'
+                  example: 'http://bm_url1_1.com/Almond'
+                BM_goods_name2:
+                  type: string
+                  description: BM商品名.
+                  example: ミックスナッツ
+                BM_url2:
+                  type: string
+                  description: 'BM URL.'
+                  example: 'http://bm_url1_2.com/Almond'
+                difference_point:
+                  type: string
+                  description: 差別化ポイント.
+                  example: 参考値
+                concept:
+                  type: string
+                  description: コンセプト.
+                  example: 安くたくさん
+                supplier_information_sharing:
+                  type: string
+                  description: 業者情報共有欄.
+                  example: 価格が1年を通して安定しています。
+                strong_point:
+                  type: string
+                  description: 強み.
+                  example: 安定感
+                material_list:
+                  type: array
+                  description: ''
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 素材ID.
+                        example: 1
+                      item_karte_id:
+                        type: integer
+                        description: カルテID.
+                        example: 1
+                      raw_material_name:
+                        type: string
+                        description: 原材料.
+                        example: アーモンド
+                      production_area:
+                        type: string
+                        description: 産地.
+                        example: アメリカ
+                      raw_material_detail:
+                        type: string
+                        description: 原料(成分)の詳細・強み.
+                        example: 大きい
+                      production_area_publish_flag:
+                        type: integer
+                        description: 産地掲載の有無.
+                        example: 1
+                      photo_material_flag:
+                        type: integer
+                        description: 写真素材の有無.
+                        example: 1
+                      certificate_flag:
+                        type: integer
+                        description: 証明書関係の有無.
+                        example: 1
+                      coverage_content_flag:
+                        type: integer
+                        description: 取材内容の有無.
+                        example: 1
+                      document_path:
+                        type: string
+                        description: 資料保管場所.
+                        example: storage/documents/Almond.doc
+                    required:
+                      - item_karte_id
+      security: []
+    parameters:
+      -
+        in: path
+        name: itemKarteId
+        description: 商品カルテID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/lp_easy_order/level_select/{lpOrderId}':
+    get:
+      summary: レベル別質問事項画面の各項目を検索(機能ID：F-00002-00001)
+      description: "### API仕様\n1. 下記条件のデータを取得\n   * テーブル《t_level_selects》\n     * t_level_selects.lp_order_id = lpOrderId\n     * t_level_selects.deleted_at is null\n   * テーブル《t_level_select_lp_blocks》\n     * t_level_select_lp_blocks.level_select_id = t_level_selects.id\n     * t_level_select_lp_blocks.deleted_at is null\n1. 抽出結果を返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray:
+                    Promoter: 尾賀太郎
+                    configurator: 尾賀次郎
+                    designer: 尾賀三郎
+                    level: 2
+                    purpose: 誰でも分かりやすいデザイン
+                    point1: 清潔感のある
+                    point2: おしゃれな
+                    point3: すばらしい
+                    taste: ～みたいなデザイン
+                    lp_block:
+                      -
+                        id: 1
+                        text: 商品画像を大きく目立させる
+                      -
+                        id: 2
+                        text: 商品の細かい仕様をわかりやすく
+                  normalMessage: 検索完了
+                  errorMessage: ''
+                properties:
+                  dataArray:
+                    type: object
+                    example:
+                      Promoter: 尾賀太郎
+                      configurator: 尾賀次郎
+                      designer: 尾賀三郎
+                      level: 2
+                      purpose: 誰でも分かりやすいデザイン
+                      point1: 清潔感のある
+                      point2: おしゃれな
+                      point3: すばらしい
+                      taste: ～みたいなデザイン
+                      lp_block:
+                        -
+                          id: 1
+                          text: 商品画像を大きく目立させる
+                        -
+                          id: 2
+                          text: 商品の細かい仕様をわかりやすく
+                  normalMessage:
+                    type: string
+                    example: 検索完了
+                  errorMessage:
+                    type: string
+                    example: ''
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - LevelSelectApi
+      security: []
+    put:
+      summary: レベル別質問事項画面の各項目を更新(機能ID：F-00002-00004)
+      description: "### API仕様\n1. DBトランザクション開始\n1. 《t_level_selects》の更新\n   * urlパラメータで渡ってくる[levelSelectId]で《t_level_selects》のオブジェクトを抽出\n   * 各カラムに対応するリクエストパラメータの値をオブジェクトにセットし、更新する\n1. 《t_level_select_lp_blocks》に対する処理（リクエストパラメータ[lp_block]と《t_level_select_lp_blocks》の状況に応じた処理を行う）\n   1. リクエストパラメータ[lp_block]と、《t_level_select_lp_blocks》双方に対象のidを持つデータが存在する場合\n      * 《t_level_select_lp_blocks》の更新処理（対象分繰り返す）\n         * リクエストパラメータ[lp_block]の各idで《t_level_select_lp_blocks》のオブジェクトを抽出\n         * リクエストパラメータ[lp_block][text]の値を各オブジェクトにセット\n         * リクエストパラメータ[lp_block]のindexをカラム[sort_order]にセット\n         * 上記オブジェクトの更新処理\n   1. リクエストパラメータ[lp_block]のidが空のデータが存在する場合\n      * 《t_level_select_lp_blocks》の新規登録処理（対象分繰り返す）\n         * 新規登録用のオブジェクトを生成\n         * リクエストパラメータ[lp_block][text]の値を各オブジェクトにセット\n         * リクエストパラメータ[lp_block]のindexをカラム[sort_order]にセット\n         * 上記オブジェクトの登録処理\n   1. 《t_level_select_lp_blocks》にデータが存在するが、リクエストパラメータ[lp_block]に対象のidを持つデータが存在しない場合。\n      * 対象レコードに論理削除処理を行う\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000002をセットして返す\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000102をセットして返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"更新完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - LevelSelectApi
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                promoter:
+                  type: string
+                  description: 販促担当者.
+                  example: 尾賀太郎
+                configurator:
+                  type: string
+                  description: 構成担当者.
+                  example: 尾賀次郎
+                designer:
+                  type: string
+                  description: デザイン担当者.
+                  example: 尾賀三郎
+                level:
+                  type: integer
+                  description: 'レベル 1~4.'
+                  example: 2
+                purpose:
+                  type: string
+                  description: 訴求内容、目的.
+                  example: 誰でも分かりやすいデザイン
+                point1:
+                  type: string
+                  description: ポイント1.
+                  example: 清潔感のある
+                point2:
+                  type: string
+                  description: ポイント2.
+                  example: おしゃれな
+                point3:
+                  type: string
+                  description: ポイント3.
+                  example: すばらしい
+                taste:
+                  type: string
+                  description: デザイン・テイスト.
+                  example: ～みたいなデザイン
+                lp_block:
+                  type: array
+                  description: 構成ブロック.
+                  example:
+                    -
+                      id: 1
+                      text: 商品画像を大きく目立させる
+                    -
+                      id: 2
+                      text: 商品の細かい仕様をわかりやすく
+                  items:
+                    type: string
+      security: []
+    parameters:
+      -
+        in: path
+        name: lpOrderId
+        description: LP構成ID
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/lp_easy_order/level_select:
+    post:
+      summary: レベル別質問事項画面の各項目を新規登録(機能ID：F-00002-00003)
+      description: "### API仕様\n1. DBトランザクション開始\n1. 《t_level_selects》の登録\n   * 《t_level_selects》のオブジェクト作成\n   * 各カラムに対応するリクエストパラメータの値をオブジェクトにセットし、登録する\n1. 《t_level_select_lp_blocks》の登録（対象分繰り返す）\n   * 《t_level_select_lp_blocks》のオブジェクト作成\n   * リクエストパラメータ[lp_block][text]の値を各オブジェクトにセット\n   * リクエストパラメータ[lp_block]のindexをカラム[sort_order]にセット\n   * 上記オブジェクトの登録処理\n1. 成功時\n   * コミット\n   * setResponseのノーマルメッセージにCommonMsg::MSG_ID_000001をセットして返す\n1. 失敗時\n   * ロールバック\n   * 例外をthrow\n   * setResponseのエラーメッセージにCommonMsg::MSG_ID_000101をセットして返す"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"dataArray\": \"\",\n  \"normalMessage\": \"登録完了しました。\",\n  \"errorMessage\": \"\",\n}"
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  dataArray: []
+                  normalMessage: ''
+                  errorMessage: ※エラーメッセージ.
+                  errorFile: XXX/XXXX/XXXX.php
+                  errorLine: 75
+                  errorDetail: ※トレースログ
+                properties:
+                  dataArray:
+                    type: array
+                    example: []
+                  normalMessage:
+                    type: string
+                    example: ''
+                  errorMessage:
+                    type: string
+                    example: ※エラーメッセージ.
+                  errorFile:
+                    type: string
+                    example: XXX/XXXX/XXXX.php
+                  errorLine:
+                    type: integer
+                    example: 75
+                  errorDetail:
+                    type: string
+                    example: ※トレースログ
+      tags:
+        - LevelSelectApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lp_order_id:
+                  type: integer
+                  description: LP構成ID.
+                  example: 1
+                promoter:
+                  type: string
+                  description: ''
+                  example: aut
+                configurator:
+                  type: string
+                  description: 構成担当者.
+                  example: 尾賀次郎
+                designer:
+                  type: string
+                  description: デザイン担当者.
+                  example: 尾賀三郎
+                level:
+                  type: integer
+                  description: 'レベル 1~4.'
+                  example: 2
+                purpose:
+                  type: string
+                  description: 訴求内容、目的.
+                  example: 誰でも分かりやすいデザイン
+                point1:
+                  type: string
+                  description: ポイント1.
+                  example: 清潔感のある
+                point2:
+                  type: string
+                  description: ポイント2.
+                  example: おしゃれな
+                point3:
+                  type: string
+                  description: ポイント3.
+                  example: すばらしい
+                taste:
+                  type: string
+                  description: デザイン・テイスト.
+                  example: ～みたいなデザイン
+                lp_block:
+                  type: array
+                  description: 構成ブロック.
+                  example:
+                    -
+                      id: 0
+                      text: 商品画像を大きく目立させる
+                    -
+                      id: 0
+                      text: 商品の細かい仕様をわかりやすく
+                  items:
+                    type: string
+              required:
+                - lp_order_id
+      security: []
+tags:
+  -
+    name: BasicKnowledgeApi
+    description: ''
+  -
+    name: CompaniesComparisonApi
+    description: ''
+  -
+    name: ComparisonInsertApi
+    description: ''
+  -
+    name: ConstitutionPlanApi
+    description: ''
+  -
+    name: ConstitutionProcessApi
+    description: ''
+  -
+    name: FinalDesignConfirmationApi
+    description: ''
+  -
+    name: HomeApi
+    description: ''
+  -
+    name: ItemKarteApi
+    description: ''
+  -
+    name: LevelSelectApi
+    description: ''

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 334 1080">
+  <defs>
+    <style>
+      .v {
+        fill: #fff;
+      }
+
+      .w {
+        fill: url(#h);
+      }
+
+      .x {
+        fill: url(#i);
+      }
+
+      .y {
+        fill: url(#o);
+      }
+
+      .y, .z {
+        opacity: .8;
+      }
+
+      .aa {
+        filter: url(#k);
+      }
+
+      .ab {
+        filter: url(#q);
+      }
+
+      .z {
+        fill: url(#u);
+      }
+
+      .ac {
+        fill: url(#f);
+      }
+
+      .ad {
+        fill: url(#g);
+      }
+
+      .ae {
+        clip-path: url(#b);
+      }
+
+      .af {
+        fill: url(#e);
+      }
+
+      .ag {
+        mask: url(#l);
+      }
+
+      .ah {
+        opacity: .75;
+      }
+
+      .ai {
+        mask: url(#r);
+      }
+
+      .aj {
+        fill: url(#d);
+      }
+
+      .ak {
+        fill: none;
+      }
+
+      .al {
+        clip-path: url(#c);
+      }
+
+      .am {
+        fill: url(#n);
+      }
+
+      .am, .an {
+        mix-blend-mode: multiply;
+      }
+
+      .ao {
+        mask: url(#j);
+      }
+
+      .ap {
+        mask: url(#p);
+      }
+
+      .an {
+        fill: url(#t);
+      }
+    </style>
+    <clipPath id="b">
+      <rect class="ak" width="334" height="1080"/>
+    </clipPath>
+    <clipPath id="c">
+      <rect class="ak" x="-397.805556" y="332.304715" width="1093.777778" height="410.166667" transform="translate(686.471381 388.304715) rotate(90)"/>
+    </clipPath>
+    <linearGradient id="d" x1="-1083.829553" y1="-3588.074967" x2="29.267621" y2="-3032.911122" gradientTransform="translate(677.12745 3848.261718)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".395647" stop-color="#f9f9f9"/>
+      <stop offset=".86958" stop-color="#ebebeb"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <linearGradient id="e" x1="-727.951255" y1="-3159.469587" x2="132.706534" y2="-3435.001438" gradientTransform="translate(-3161.790337 1065.432164) rotate(90)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#f2f2f2"/>
+    </linearGradient>
+    <linearGradient id="f" x1="-723.836296" y1="-3019.018042" x2="-313.669441" y2="-3461.500744" xlink:href="#e"/>
+    <linearGradient id="g" x1="-1199.663067" y1="-3169.952994" x2="249.883145" y2="-3726.474541" xlink:href="#e"/>
+    <linearGradient id="h" x1="-707.034339" y1="-3036.745919" x2="-802.739671" y2="-3377.308399" xlink:href="#e"/>
+    <linearGradient id="i" x1="-1137.188853" y1="-3319.884597" x2="-330.871925" y2="-3714.554959" gradientTransform="translate(-3161.790337 1065.432164) rotate(90)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <filter id="k" x="81.791231" y="172.795451" width="272.375447" height="911.481486" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="SourceGraphic" in2="bg"/>
+    </filter>
+    <filter id="m" x="81.791231" y="-8685.320914" width="272.375447" height="32766" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="SourceGraphic" in2="bg"/>
+    </filter>
+    <mask id="l" data-name="mask-1" x="81.791231" y="-8685.320914" width="272.375447" height="32766" maskUnits="userSpaceOnUse"/>
+    <linearGradient id="n" x1="2071.779458" y1="-3505.492587" x2="1901.660235" y2="-3062.124897" gradientTransform="translate(-3161.790337 2704.33083) rotate(-90) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <mask id="j" data-name="mask" x="81.791231" y="172.795451" width="272.375447" height="911.481486" maskUnits="userSpaceOnUse">
+      <g class="aa">
+        <g class="ag">
+          <path class="am" d="m354.166677,1084.276937H85.281252c38.932487-125.291287,33.329446-206.249574,13.553151-260.820526-6.680166-18.433314-18.246811-42.877593-16.941442-78.746764,4.292613-117.956714,139.81276-140.314188,174.255166-269.461576,24.335038-91.248151-32.148754-121.964152-1.210101-196.866943,17.67091-42.781409,55.858301-80.598064,99.228652-105.585678v911.481486Z"/>
+        </g>
+      </g>
+    </mask>
+    <linearGradient id="o" x1="2071.779458" y1="-3505.492587" x2="1901.660235" y2="-3062.124897" gradientTransform="translate(-3161.790337 2704.33083) rotate(-90) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <filter id="q" x="159.534091" y="277.798117" width="194.632575" height="806.478819" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="SourceGraphic" in2="bg"/>
+    </filter>
+    <filter id="s" x="159.534091" y="-8685.320914" width="194.632575" height="32766" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="SourceGraphic" in2="bg"/>
+    </filter>
+    <mask id="r" data-name="mask-3" x="159.534091" y="-8685.320914" width="194.632575" height="32766" maskUnits="userSpaceOnUse"/>
+    <linearGradient id="t" x1="2019.449168" y1="-3317.01815" x2="2023.492099" y2="-3526.244935" xlink:href="#n"/>
+    <mask id="p" data-name="mask-2" x="159.534091" y="277.798117" width="194.632575" height="806.478819" maskUnits="userSpaceOnUse">
+      <g class="ab">
+        <g class="ai">
+          <path class="an" d="m354.166667,1084.276937h-176.255125c-32.611586-123.470872-17.150832-206.503098,10.160184-263.661887,34.965027-73.177767,70.487894-64.467125,104.847419-147.650676,65.159418-157.749143-24.150148-282.143423,52.942768-384.946352,2.681724-3.576093,5.457267-6.977947,8.304754-10.219904v806.478819Z"/>
+        </g>
+      </g>
+    </mask>
+    <linearGradient id="u" x1="2019.449168" y1="-3317.01815" x2="2023.492099" y2="-3526.244935" xlink:href="#o"/>
+  </defs>
+  <rect class="v" y="0" width="334" height="1080"/>
+  <g class="ah">
+    <g class="ae">
+      <g class="al">
+        <rect class="aj" x="-397.805556" y="332.304715" width="1093.777778" height="410.166667" transform="translate(686.471381 388.304715) rotate(90)"/>
+        <path class="af" d="m261.39193,1086.079154v-573.536966s-406.294557-251.554082-396.294201-33.50065c15.077863,328.766508,327.811284,157.818133,179.873697,559.188981-6.328544,17.170124-11.391026,33.091522-15.303564,47.848635h231.724069Z"/>
+        <path class="ac" d="m354.614119,1086.079154V346.085317c-125.457475-63.501962-512.845153-242.209832-499.847832-20.464801,15.500513,264.451185,342.492981-162.938367,294.317047,636.821704-2.94851,48.947554,4.637413,89.717546,18.740064,123.636935h186.790722Z"/>
+        <path class="ad" d="m354.614119,1086.079154V191.027797C235.141701,124.205122-95.770512-41.937327-84.409319,174.922247c13.854541,264.451157,485.417852,163.88041,335.114561,675.099784-44.176126,150.254126-5.030708,211.79634,43.813279,236.057124h60.095598Z"/>
+        <path class="w" d="m354.166667,569.267569V25.897485c-8.832843-8.498571-22.4575-21.108913-39.593621-35.398326H-45.47619c-30.000574,151.443418,36.352525,446.262742,251.584776,424.964181,102.575-10.150422,132.436815,62.007411,148.05808,153.804228Z"/>
+        <path class="x" d="m354.166667-9.500841h-114.270929c-96.801124,119.309865-180.78454,345.589493,90.529198,367.939776,8.525314.702301,16.423292,2.509933,23.741732,5.275195V-9.500841Z"/>
+        <g class="ao">
+          <path class="y" d="m354.166677,1084.276937H85.281252c38.932487-125.291287,33.329446-206.249574,13.553151-260.820526-6.680166-18.433314-18.246811-42.877593-16.941442-78.746764,4.292613-117.956714,139.81276-140.314188,174.255166-269.461576,24.335038-91.248151-32.148754-121.964152-1.210101-196.866943,17.67091-42.781409,55.858301-80.598064,99.228652-105.585678v911.481486Z"/>
+        </g>
+        <g class="ap">
+          <path class="z" d="m354.166667,1084.276937h-176.255125c-32.611586-123.470872-17.150832-206.503098,10.160184-263.661887,34.965027-73.177767,70.487894-64.467125,104.847419-147.650676,65.159418-157.749143-24.150148-282.143423,52.942768-384.946352,2.681724-3.576093,5.457267-6.977947,8.304754-10.219904v806.478819Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+{
+    "dataArray": {
+        "question"      :"尾賀太郎",
+        "others"        :"尾賀次郎",
+        "details"       :[
+            [
+                {"id":1, "title":"商品/成分名", "detail":"ポン酢", "row":1, "sort_order":1},
+                {"id":2, "title":"一般的な認知度", "detail":"高", "row":1, "sort_order":2}
+            ],
+            [
+                {"id":3, "title":"商品/成分名", "detail":"蜂蜜", "row":2, "sort_order":1},
+                {"id":4, "title":"一般的な認知度", "detail":"高", "row":2, "sort_order":2}
+            ]
+        ],
+        "images"        :[
+            {"id":1, "image_path":"storage/app/~~~.png", "memo":"~~~の画像"},
+            {"id":2, "image_path":"storage/app/~~~.png", "memo":"~~~の画像"}
+        ],
+        "urls" :[
+            {
+                "id":1, "url":"https://~~~~~~"
+            },
+            {
+                "id":2, "url":"https://~~~~~~"
+            }
+        ]
+    },
+    "normalMessage": "検索完了",
+    "errorMessage": ""
+}

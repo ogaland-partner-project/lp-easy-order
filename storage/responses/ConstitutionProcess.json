@@ -1,0 +1,29 @@
+{
+    "dataArray": [
+        {
+            "id":1,
+            "product_name":"LP構成名",
+            "description":"簡易説明",
+            "status":0 ,
+            "requirement_flag":1,
+            "constitution_blocks_list":[
+                {
+                    "id":1 ,
+                    "constitution_process_id":1,
+                    "block_detail":"サイズチャート" ,
+                    "sort_order":1
+                }
+            ],
+            "constitution_fix_block_list":[
+                {
+                    "id":1 ,
+                    "constitution_process_id": 1 ,
+                    "block_detail":"毎日のお仕事はもちろん　結婚式や入学式にも" ,
+                    "sort_order":1
+                }
+            ]
+        }
+    ],
+    "normalMessage": "",
+    "errorMessage": ""
+}

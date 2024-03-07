@@ -1,0 +1,8 @@
+{
+    "dataArray": [],
+    "normalMessage": "",
+    "errorMessage": "※エラーメッセージ.",
+    "errorFile": "XXX/XXXX/XXXX.php",
+    "errorLine": 75,
+    "errorDetail": "※トレースログ"
+}

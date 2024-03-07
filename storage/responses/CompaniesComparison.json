@@ -1,0 +1,46 @@
+{
+    "dataArray": [
+        {
+            "header":[
+                {
+                    "id":1,
+                    "header_name":"店舗名",
+                    "header_type":"text",
+                    "calculation_type":"",
+                    "calculation_row":[],
+                    "sort_order":1
+                },
+                {
+                    "id":4,
+                    "header_name":"価格",
+                    "header_type":"calculation",
+                    "calculation_type":"sum",
+                    "calculation_row":[8,9],
+                    "sort_order":2
+                },
+                {
+                    "id":4,
+                    "header_name":"画像",
+                    "header_type":"image",
+                    "calculation_type":"",
+                    "calculation_row":[],
+                    "sort_order":3
+                }
+            ],
+            "items": [
+                [
+                    {"id":1,"text":"福助 楽天市場店","editable":false},
+                    {"id":2,"text":"","editable":false},
+                    {"id":3,"text":"/storage/~~~","editable":false}
+                ],
+                [
+                    {"id":12,"text":"キュットスリムと下着通販GB-style","editable":false},
+                    {"id":13,"text":"","editable":false},
+                    {"id":14,"text":"/storage/~~~","editable":false}
+                ]
+            ]
+        }
+    ],
+    "normalMessage": "",
+    "errorMessage": ""
+}

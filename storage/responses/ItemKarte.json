@@ -1,0 +1,45 @@
+{
+    "dataArray": [
+        {
+            "id":1,
+            "lp_order_id":1,
+            "goods_name":"10種のミックスナッツ",
+            "trademark_flag": 1,
+            "chinese_characters":"10種のミックスナッツ",
+            "kana":"10シュノミックスナッツ",
+            "romaji":"10shunomikkusunattsu",
+            "material_list":[
+                {
+                    "id": 1,
+                    "item_karte_id":1,
+                    "raw_material_name":"アーモンド",
+                    "production_area":"アメリカ",
+                    "raw_material_detail":"大きい",
+                    "production_area_publish_flag":1,
+                    "photo_material_flag":1,
+                    "certificate_flag":1,
+                    "coverage_content_flag":1,
+                    "document_path":"storage/documents/Almond.doc"
+                }
+            ],
+            "goods_specifications":"商品仕様：10粒入り",
+            "price_including_tax":1980,
+            "jas_mark":"",
+            "jas_mark_folder":"storage/jas/JasAlmond.svg",
+            "jas_mark_certification":"鹿児島県",
+            "target_jendar":"男性",
+            "target_age":30,
+            "target_statue": "中間層",
+            "BM_goods_name1":"10種のミックスナッツ",
+            "BM_url1":"http://bm_url1_1.com/Almond",
+            "BM_goods_name2":"ミックスナッツ",
+            "BM_url2":"http://bm_url1_2.com/Almond",
+            "difference_point":"価格",
+            "concept":"安くたくさん",
+            "supplier_information_sharing": "価格が1年を通して安定しています。",
+            "strong_point":"安定感"
+        }
+    ],
+    "normalMessage": "",
+    "errorMessage": ""
+}

@@ -1,0 +1,19 @@
+{
+    "dataArray": {
+        "Promoter"      :"尾賀太郎",
+        "configurator"  :"尾賀次郎",
+        "designer"      :"尾賀三郎",
+        "level"         :2,
+        "purpose"       :"誰でも分かりやすいデザイン",
+        "point1"        :"清潔感のある",
+        "point2"        :"おしゃれな",
+        "point3"        :"すばらしい",
+        "taste"         :"～みたいなデザイン",
+        "lp_block" :[
+            {"id":1, "text":"商品画像を大きく目立させる"},
+            {"id":2, "text":"商品の細かい仕様をわかりやすく"}
+        ]
+    },
+    "normalMessage": "検索完了",
+    "errorMessage": ""
+}

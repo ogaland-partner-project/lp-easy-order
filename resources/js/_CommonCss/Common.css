@@ -1,0 +1,189 @@
+/* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓　NaviComponent　↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
+.font_color_white {
+    color: white !important;
+}
+.divider_border_color_white {
+    border-color: white !important;
+}
+.font_size_14 {
+    font-size: 14px !important;
+}
+
+.logout_button {
+    background-color: white;
+}
+.navi_append_icon .v-icon {
+    color:white !important;
+}
+/* ナビゲーションのスクロールバー非表示 */
+.v-navigation-drawer__content::-webkit-scrollbar {
+    display: none;
+}
+#menu_list .v-icon {
+    height: 24px !important;
+    width: 24px !important;
+}
+#menu_list .v-list-group__header {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#menu_list .v-list-item__icon {
+    padding-left: 13px !important;
+    margin-right: 20px !important;
+}
+nav > .v-navigation-drawer__content > .container > .v-list > #menu_list > .v-list-group:first-child {
+    padding: 7px 0 5px!important;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+    margin: 10px 0;
+}
+/* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑　NaviComponent　↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
+
+/* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓　共通スタイル　↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
+/* 不要なスクロールバーを非表示 */
+html {
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+/* 検索ボタン */
+.common_search_button {
+    background-color: #1867c0 !important;
+    color: white !important;
+}
+/* 登録・更新ボタン */
+.common_create_button {
+    background-color: #4caf50 !important;
+    color: white !important;
+}
+/* 編集ボタン */
+.common_edit_button {
+    background-color: #4c91af !important;
+    color: white !important;
+}
+/* 削除ボタン */
+.common_delete_button {
+    background-color: #F94639 !important;
+    color: white !important;
+}
+/* 閉じるボタン */
+.common_close_button {
+    color: #838383 !important;
+}
+/* ボタンエリアの中央寄せ */
+.common_button_center {
+    margin-top: 8px;
+    justify-content: center;
+}
+/* ボタンスタイル */
+.common_button_size {
+    width: 90%;
+}
+/* アイコンマージン */
+.common_icon_margin {
+    padding-right: 8px;
+}
+/* アイコン用v-cardスタイル */
+.common_icon_card {
+    position: relative;
+    z-index: 1;
+}
+/* アイコン（中央寄せ） */
+.common_icon {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+/* データテーブルのヘッダースタイル */
+.v-data-table--fixed-header > .v-data-table__wrapper > table > thead > tr > th {
+    border-bottom: thin solid #ff5722 !important;
+    font-size: 0.875rem !important;
+}
+/* 未読行の背景色 */
+.common_un_read_row {
+    background-color: #feffe7;
+}
+/* 無効行の背景色 */
+.common_disabled_row {
+    background-color: #d7d7d8;
+}
+/* ダイアログのスクロール無くし */
+.v-dialog {
+    border-radius: 4px;
+    margin: 24px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    pointer-events: auto;
+    transition: .3s cubic-bezier(.25,.8,.25,1);
+    width: 100%;
+    z-index: inherit;
+    box-shadow: none !important;
+}
+.v-dialog::-webkit-scrollbar {
+    display: none;
+}
+/* ダイアログのカードコンテンツのマージンを設定 */
+.v-dialog>.v-card>.v-card__text {
+    padding: 24px 20px 0px;
+}
+/* ダイアログのスクロールバー非表示 */
+.v-dialog--scrollable>.v-card>.v-card__text::-webkit-scrollbar {
+    display: none !important;
+}
+/* データテーブルのpaddingを追加 */
+.v-data-table {
+    padding: 2%;
+}
+/* ボタン押下時のボタンにかかる枠線の無効化 */
+button:focus {
+    outline: 0 !important;
+}
+/* メニューボタン右上配置 */
+.common_menu_button{
+    position: fixed;
+    height: 50px !important;
+    top: 65px;
+    right: 0px;
+}
+/* アラート時にpaddingされて画面がズレるのを防止 */
+.swal2-shown {
+    padding-right: 0 !important;
+}
+/* メンバープルダウンを枠線で囲む用（親要素） */
+.common_pull_down_box {
+    position: relative;
+    padding: 0.5em 9px;
+    border: solid 1px black;
+}
+/* メンバープルダウンを枠線で囲む用（子要素） */
+.common_pull_down_box .common_pull_down_box_title{
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    line-height: 1;
+    background: #FFF;
+}
+/* データテーブルのスマホ用CSS */
+.common_data_table .v-data-table__mobile-row {
+    display: block !important;
+    padding: 7px 5px !important;
+}
+.common_data_table .v-data-table__mobile-row__header {
+    width: 100% !important;
+}
+.common_data_table .v-data-table__mobile-row__cell {
+    width: 100% !important;
+    text-align: left !important;
+    padding-top: 4px !important;
+}
+.common_table_pointer {
+    cursor: pointer;
+}
+/* 検索プルダウン */
+.v-list--dense .v-list-item .v-list-item__subtitle, .v-list--dense .v-list-item .v-list-item__title, .v-list-item--dense .v-list-item__subtitle, .v-list-item--dense .v-list-item__title {
+    font-size: 0.95rem;
+}
+/* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑　共通スタイル　↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
