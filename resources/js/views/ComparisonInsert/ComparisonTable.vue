@@ -65,9 +65,9 @@
                             </template>
                             <b v-if="!getCheckEdit" class="td_left" @click="itemAdd(Iindex,'left')"></b>
                             <b v-if="Iindex+1 == items.length && !getCheckEdit" class="td_right" @click="itemAdd(Iindex,'right')"></b>
-                            <v-hover v-if="!getCheckEdit" v-slot="{ hover }" style="position:absolute; top:0; right:0; width:20px; height:20px;">
-                                <div style="position:relative; top:0; right:0; width:30px; height:30px; z-index:3;">
-                                    <v-btn v-if="hover" @click="rowDelete(Iindex)" class="comparison_image_delete" fab x-small depressed color="rgb(110,110,110)"><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
+                            <v-hover v-if="!getCheckEdit" v-slot="{ hover }" style="position:absolute; top:0; right:5px; width:20px; height:20px;">
+                                <div style="position:relative; top:0; right:5px; width:30px; height:30px; z-index:3;">
+                                    <v-btn v-if="hover" @click="rowDelete(Iindex)" class="comparison_row_delete" icon depressed><v-icon size="25px">mdi-map-marker-remove-variant</v-icon></v-btn>
                                 </div>
                             </v-hover>
                         </tr>

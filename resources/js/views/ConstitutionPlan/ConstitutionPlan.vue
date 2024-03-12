@@ -155,13 +155,13 @@
                                             </div>
                                         </v-hover>
                                         <v-hover v-slot="{ hover }">
-                                            <div style="width:100%; height:10px;">
+                                            <div style="width:100%; height:20px;">
                                                 <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
                                             </div>
                                         </v-hover>
                                     </div>
                                     <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
-                                        <div style="width:100%; height:10px;">
+                                        <div style="width:100%; height:20px;">
                                             <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
                                         </div>
                                     </v-hover>
@@ -293,7 +293,7 @@
                                 </div>
                             </div>
                         </div>
-                        <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: -6px;">
+                        <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
                             <div style="width:100%; height:10px;">
                                 <div v-if="hover && checkDisabledHover()" @click="blockAdd(n)" class="blockadd_gyou">&nbsp;</div>
                             </div>
