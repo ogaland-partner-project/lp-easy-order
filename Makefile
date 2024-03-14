@@ -3,7 +3,7 @@ du:
 de:
 	docker-compose exec -u root work bash
 due:
-	docker-compose up -d nginx
+	docker-compose up -d
 	docker-compose exec -u root work bash
 dd:
 	docker-compose down

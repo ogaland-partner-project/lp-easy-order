@@ -1,5 +1,5 @@
 <template>
-        <div>
+        <div class="comparison_disp">
             <!-- テーブル部分 -->
             <v-simple-table id="comparison_table">
                 <template v-slot:default>
@@ -65,11 +65,7 @@
                             </template>
                             <b v-if="!getCheckEdit" class="td_left" @click="itemAdd(Iindex,'left')"></b>
                             <b v-if="Iindex+1 == items.length && !getCheckEdit" class="td_right" @click="itemAdd(Iindex,'right')"></b>
-                            <v-hover v-if="!getCheckEdit" v-slot="{ hover }" style="position:absolute; top:0; right:5px; width:20px; height:20px;">
-                                <div style="position:relative; top:0; right:5px; width:30px; height:30px; z-index:3;">
-                                    <v-btn v-if="hover" @click="rowDelete(Iindex)" class="comparison_row_delete" icon depressed><v-icon size="25px">mdi-map-marker-remove-variant</v-icon></v-btn>
-                                </div>
-                            </v-hover>
+                            <v-btn v-if="!getCheckEdit" @click="rowDelete(Iindex)" color="red" class="comparison_row_delete white--text" depressed>削除</v-btn>
                         </tr>
                     </draggable>
                 </template>
