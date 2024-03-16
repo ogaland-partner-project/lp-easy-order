@@ -1084,6 +1084,7 @@ nav > .v-navigation-drawer__border {
     background-color: red;
     color: white;
     min-width: 50px !important;
+    border-radius: 4px 4px 0px 0px;
 }
 
 #comparison_table{
@@ -1383,6 +1384,18 @@ nav > .v-navigation-drawer__border {
 }
 .hikaku_img_prev img {
     max-width: 200px;
+}
+
+.comparison-drag-block-handle{
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: #9F9F9F;
+    display: flex;
+    border-radius: 4px 4px 0px 0px;
+    position: absolute;
+    top: -31px;
+    left: 32px;
+    padding: 4px 10px 3px 10px;
 }
 
 

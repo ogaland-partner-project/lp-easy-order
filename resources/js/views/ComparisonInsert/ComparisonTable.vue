@@ -31,6 +31,7 @@
                         :options="{animation:300}"
                         :force-fallback="true"
                         :scroll-sensitivity="200"
+                        handle=".handle"
                     >
                         <tr v-for="(item,Iindex) in items" :key="Iindex" style="position:relative;">
                             <template v-for="(cell,Cindex) in item">
@@ -65,7 +66,10 @@
                             </template>
                             <b v-if="!getCheckEdit" class="td_left" @click="itemAdd(Iindex,'left')"></b>
                             <b v-if="Iindex+1 == items.length && !getCheckEdit" class="td_right" @click="itemAdd(Iindex,'right')"></b>
-                            <v-btn v-if="!getCheckEdit" @click="rowDelete(Iindex)" color="red" class="comparison_row_delete white--text" depressed>削除</v-btn>
+                            <div v-if="!getCheckEdit" class="comparison-drag-block-handle">
+                                <v-icon  class="handle">fas fa-bars</v-icon>
+                            </div>
+                            <v-btn v-if="!getCheckEdit" @click="rowDelete(Iindex)" color="#E84B4A" class="comparison_row_delete white--text" depressed>削除</v-btn>
                         </tr>
                     </draggable>
                 </template>
