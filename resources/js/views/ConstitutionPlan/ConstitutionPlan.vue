@@ -182,7 +182,9 @@
                                                         item-value="text"
                                                         hide-details="auto"
                                                         class="plan_combo"
+                                                        :class="'plan_combo_attach'+n+'_'+index"
                                                         density="compact"
+                                                        :attach="'.plan_combo_attach'+n+'_'+index"
                                                         :disabled="isCheckMedicineStatus()"
                                                     >
                                                         <template slot="item" slot-scope="{ item }">
