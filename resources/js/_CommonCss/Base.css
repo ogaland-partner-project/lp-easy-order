@@ -1529,6 +1529,17 @@ nav > .v-navigation-drawer__border {
     z-index: 100;
     background-color: rgb(255, 255, 255);
 }
+.plan-drag-block-handle{
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: #9F9F9F;
+    display: flex;
+    padding: 5px 10px;
+    border-radius: 4px 0px 0px 4px;
+    position: absolute;
+    top: 45%;
+    left: 0px;
+}
 .category_text{
     background-color: rgb(112, 173, 71);
     width: 17%;

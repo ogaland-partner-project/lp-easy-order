@@ -107,11 +107,15 @@
                 :options="{animation:300}"
                 :force-fallback="true"
                 :scroll-sensitivity="200"
+                handle=".handle"
             >
                 <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="n">
                     <div :class="hover ? 'plan_active':'none'">
                         <!-- 画像系 -->
                         <div style="width:55% !important; display:flex;" v-if="planTab==1">
+                            <div class="plan-drag-block-handle">
+                                <v-icon  class="handle">fas fa-bars</v-icon>
+                            </div>
                             <span style="font-size:17px; width:5%;">{{n+1}}.</span>
                             <div style="display:flex; width:95%;">
                                 <div style="width:40%;">
