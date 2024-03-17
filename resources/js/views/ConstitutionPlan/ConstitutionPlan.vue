@@ -113,7 +113,7 @@
                     <div :class="hover ? 'plan_active':'none'">
                         <!-- 画像系 -->
                         <div style="width:55% !important; display:flex;" v-if="planTab==1">
-                            <div class="plan-drag-block-handle">
+                            <div v-if="!getCheckEdit" class="plan-drag-block-handle">
                                 <v-icon  class="handle">fas fa-bars</v-icon>
                             </div>
                             <span style="font-size:17px; width:5%;">{{n+1}}.</span>
