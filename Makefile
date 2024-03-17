@@ -7,3 +7,7 @@ due:
 	docker-compose exec -u root work bash
 dd:
 	docker-compose down
+dues:
+	service docker start
+	docker-compose up -d nginx
+	docker-compose exec -u root work bash
