@@ -177,11 +177,15 @@
                                         :force-fallback="true"
                                         :scroll-sensitivity="200"
                                         :disabled="!editorInput || checkDisabled()"
+                                        handle=".wording-handle"
                                     >
                                         <div style="margin-bottom:4px;" v-for="(memo,index) in memos[n]" :key="index">
                                             <v-hover v-slot="{ hover }">
-                                                <div style="position:relative; display:flex;">
-                                                    <div style="width:25%">
+                                                <div class="wording-area">
+                                                    <div class="wording-select">
+                                                        <div v-if="!getCheckEdit" class="wording-drag-handle">
+                                                            <v-icon small class="wording-handle">fas fa-bars</v-icon>
+                                                        </div>
                                                         <v-combobox
                                                             v-model="memo.memo_category"
                                                             autocomplete="off"
@@ -207,7 +211,7 @@
                                                             </template>
                                                         </v-combobox>
                                                     </div>
-                                                    <div style="width:75%;">
+                                                    <div style="width:70%;">
                                                         <quill-editor
                                                             class="plan_editor plan_editor_block"
                                                             :class="memo.memo_category == '質問' ? 'plan_editor_question':''"

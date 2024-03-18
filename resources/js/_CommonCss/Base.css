@@ -1540,6 +1540,30 @@ nav > .v-navigation-drawer__border {
     top: 45%;
     left: 0px;
 }
+.wording-drag-handle{
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: #9F9F9F;
+    display: flex;
+    width: 20px;
+    height: 18px;
+    padding-left: 2px;
+    border-radius: 4px 0px 0px 4px;
+}
+.wording-area{
+    position:relative;
+    display:flex;
+    align-items: center;
+}
+.wording-select{
+    width:30%;
+    display:flex;
+    align-items: center;
+    padding-right: 5px;
+}
+.wording-select * .v-menu__content{
+    min-width: 120px !important;
+}
 .category_text{
     background-color: rgb(112, 173, 71);
     width: 17%;
