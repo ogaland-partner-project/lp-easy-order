@@ -67,6 +67,7 @@ Vue.prototype.Utils = Utils;
 //  全画面利用コンポーネント
  Vue.component("com-copy", require("@/_CommonComponents/copy.vue").default);
  Vue.component("com-clear", require("@/_CommonComponents/clear.vue").default);
+ Vue.component("com-delete", require("@/_CommonComponents/delete.vue").default);
  Vue.component("com-cancel", require("@/_CommonComponents/cancel.vue").default);
  Vue.component("saving-dialog", require("@/_CommonComponents/SavingDialogComponent.vue").default);
  Vue.component("img-dialog", require("@/_CommonComponents/imgDialogComponent.vue").default);

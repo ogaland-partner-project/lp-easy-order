@@ -69,7 +69,7 @@
                             <div v-if="!getCheckEdit" class="comparison-drag-block-handle">
                                 <v-icon  class="handle">fas fa-bars</v-icon>
                             </div>
-                            <v-btn v-if="!getCheckEdit" @click="rowDelete(Iindex)" color="#E84B4A" class="comparison_row_delete white--text" depressed>削除</v-btn>
+                            <v-btn v-if="!getCheckEdit" @click="rowDeleteDialog(Iindex)" color="#E84B4A" class="comparison_row_delete white--text" depressed>削除</v-btn>
                         </tr>
                     </draggable>
                 </template>
@@ -78,6 +78,8 @@
             <header-dialog ref="header_dialog" :headers="headers" :targetHeader="targetHeader" :parent="parent" @headerDelete="headerDelete"></header-dialog>
             <!-- 画像拡大表示ダイアログ -->
             <img-dialog ref="img_dialog"></img-dialog>
+            <!-- 削除確認ダイアログ -->
+            <com-delete ref="delete_dialog" @delete_action="rowDelete"></com-delete>
         </div>
 </template>
 
@@ -116,6 +118,7 @@ export default {
             },
             targetHeader:{header_name:'',header_type:'text',calculation_type:'',calculation_row:[]},
             search_flg:false,
+            deleteIndex:null
         };
     },
     computed:{
@@ -346,9 +349,15 @@ export default {
             return array;
         },
 
+        // 列削除確認ダイアログ
+        rowDeleteDialog(Iindex){
+            this.deleteIndex = Iindex;
+            this.$refs.delete_dialog.open();
+        },
+
         // 列の削除
-        rowDelete(targetRow){
-            this.items.splice(targetRow,1);
+        rowDelete(){
+            this.items.splice(this.deleteIndex,1);
         },
 
         // 他社比較入力の項目を表示するか、他社構成比較の項目を表示するかの判断
