@@ -1218,7 +1218,7 @@ nav > .v-navigation-drawer__border {
     z-index: 9999;
 }
 .th_top:hover{
-    height: 5px;
+    height: 10px;
     background: rgb(255,221,148);
 }
 .th_top:hover::before {
@@ -1241,13 +1241,13 @@ nav > .v-navigation-drawer__border {
 .th_bottom {
     width: calc(100% + 10px);
     position: absolute;
-    bottom: -3px;
+    bottom: -4px;
     height: 10px;
     left: 0;
     z-index: 9999;
 }
 .th_bottom:hover{
-    height: 5px;
+    height: 10px;
     background: rgb(255,221,148);
 }
 .th_bottom:hover::before {
