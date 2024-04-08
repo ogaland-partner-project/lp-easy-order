@@ -74,7 +74,7 @@
                                 :disabled="isCheckMedicineStatus()"
                                 ></v-textarea>
                                 <div class="drag-block-handle">
-                                    <v-icon  class="handle">fas fa-bars</v-icon>
+                                    <v-icon class="handle">fas fa-bars</v-icon>
                                 </div>
                             </div>
                         </div>
@@ -107,11 +107,15 @@
                 :options="{animation:300}"
                 :force-fallback="true"
                 :scroll-sensitivity="200"
+                handle=".handle"
             >
                 <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="n">
                     <div :class="hover ? 'plan_active':'none'">
                         <!-- 画像系 -->
                         <div style="width:55% !important; display:flex;" v-if="planTab==1">
+                            <div v-if="!getCheckEdit" class="plan-drag-block-handle">
+                                <v-icon class="handle">fa-solid fa-bars</v-icon>
+                            </div>
                             <span style="font-size:17px; width:5%;">{{n+1}}.</span>
                             <div style="display:flex; width:95%;">
                                 <div style="width:40%;">
@@ -155,72 +159,86 @@
                                             </div>
                                         </v-hover>
                                         <v-hover v-slot="{ hover }">
-                                            <div style="width:100%; height:10px;">
+                                            <div style="width:100%; height:20px;">
                                                 <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
                                             </div>
                                         </v-hover>
                                     </div>
                                     <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
-                                        <div style="width:100%; height:10px;">
+                                        <div style="width:100%; height:20px;">
                                             <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
                                         </div>
                                     </v-hover>
                                 </div>
                                 <div style="width:60%;">
-                                    <div style="margin-bottom:4px;" v-for="(memo,index) in memos[n]" :key="index">
-                                        <v-hover v-slot="{ hover }">
-                                            <div style="position:relative; display:flex;">
-                                                <div style="width:25%">
-                                                    <v-combobox
-                                                        v-model="memo.memo_category"
-                                                        autocomplete="off"
-                                                        :items="categories"
-                                                        outlined
-                                                        dense
-                                                        :background-color="comboColor(memo.memo_category)"
-                                                        :return-object="false"
-                                                        item-value="text"
-                                                        hide-details="auto"
-                                                        class="plan_combo"
-                                                        density="compact"
-                                                        :disabled="isCheckMedicineStatus()"
-                                                    >
-                                                        <template slot="item" slot-scope="{ item }">
-                                                            <v-hover v-slot="{ hover }">
-                                                                <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
-                                                                    <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
-                                                                </div>
-                                                            </v-hover>
-                                                        </template>
-                                                    </v-combobox>
+                                    <draggable
+                                        v-model="memos[n]"
+                                        :options="{animation:300}"
+                                        :force-fallback="true"
+                                        :scroll-sensitivity="200"
+                                        :disabled="!editorInput || checkDisabled()"
+                                        handle=".wording-handle"
+                                    >
+                                        <div style="margin-bottom:4px;" v-for="(memo,index) in memos[n]" :key="index">
+                                            <v-hover v-slot="{ hover }">
+                                                <div class="wording-area">
+                                                    <div class="wording-select">
+                                                        <div v-if="!getCheckEdit" class="wording-drag-handle">
+                                                            <v-icon small class="wording-handle">fa-solid fa-bars</v-icon>
+                                                        </div>
+                                                        <v-combobox
+                                                            v-model="memo.memo_category"
+                                                            autocomplete="off"
+                                                            :items="categories"
+                                                            outlined
+                                                            dense
+                                                            :background-color="comboColor(memo.memo_category)"
+                                                            :return-object="false"
+                                                            item-value="text"
+                                                            hide-details="auto"
+                                                            class="plan_combo"
+                                                            :class="'plan_combo_attach'+n+'_'+index"
+                                                            density="compact"
+                                                            :attach="'.plan_combo_attach'+n+'_'+index"
+                                                            :disabled="isCheckMedicineStatus()"
+                                                        >
+                                                            <template slot="item" slot-scope="{ item }">
+                                                                <v-hover v-slot="{ hover }">
+                                                                    <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
+                                                                        <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
+                                                                    </div>
+                                                                </v-hover>
+                                                            </template>
+                                                        </v-combobox>
+                                                    </div>
+                                                    <div style="width:70%;">
+                                                        <quill-editor
+                                                            class="plan_editor plan_editor_block"
+                                                            :class="memo.memo_category == '質問' ? 'plan_editor_question':''"
+                                                            style="width:95%;"
+                                                            ref="myTextEditor"
+                                                            v-model="memo.memo"
+                                                            @focus="editorInput=false"
+                                                            @blur="editorInput=true"
+                                                            :disabled="getCheckEdit"
+                                                        />
+                                                    </div>
+                                                    <v-btn
+                                                        v-if="hover && checkDisabledHover()"
+                                                        class="plan_combo_delete"
+                                                        @click="comboTextDelete(memos[n],index)"
+                                                        fab x-small depressed
+                                                        color="rgb(110,110,110)"
+                                                    ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
                                                 </div>
-                                                <div style="width:75%;">
-                                                    <quill-editor
-                                                        class="plan_editor plan_editor_block"
-                                                        :class="memo.memo_category == '質問' ? 'plan_editor_question':''"
-                                                        style="width:95%;"
-                                                        ref="myTextEditor"
-                                                        v-model="memo.memo"
-                                                        @focus="editorInput=false"
-                                                        @blur="editorInput=true"
-                                                        :disabled="getCheckEdit"
-                                                    />
+                                            </v-hover>
+                                            <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
+                                                <div style="width:100%; height:5px;">
+                                                    <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],index)" class="blockadd_gyou">&nbsp;</div>
                                                 </div>
-                                                <v-btn
-                                                    v-if="hover && checkDisabledHover()"
-                                                    class="plan_combo_delete"
-                                                    @click="comboTextDelete(memos[n],index)"
-                                                    fab x-small depressed
-                                                    color="rgb(110,110,110)"
-                                                ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
-                                            </div>
-                                        </v-hover>
-                                        <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
-                                            <div style="width:100%; height:5px;">
-                                                <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],index)" class="blockadd_gyou">&nbsp;</div>
-                                            </div>
-                                        </v-hover>
-                                    </div>
+                                            </v-hover>
+                                        </div>
+                                    </draggable>
                                     <v-hover v-if="memos[n].length==0" v-slot="{ hover }" style="width:100%; height:10px;">
                                         <div style="width:100%; height:10px;">
                                             <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],0)" class="blockadd_gyou">&nbsp;</div>
@@ -293,7 +311,7 @@
                                 </div>
                             </div>
                         </div>
-                        <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: -6px;">
+                        <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
                             <div style="width:100%; height:10px;">
                                 <div v-if="hover && checkDisabledHover()" @click="blockAdd(n)" class="blockadd_gyou">&nbsp;</div>
                             </div>
