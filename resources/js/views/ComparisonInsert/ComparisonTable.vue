@@ -1,5 +1,5 @@
 <template>
-        <div>
+        <div class="comparison_disp">
             <!-- テーブル部分 -->
             <v-simple-table id="comparison_table">
                 <template v-slot:default>
@@ -31,6 +31,7 @@
                         :options="{animation:300}"
                         :force-fallback="true"
                         :scroll-sensitivity="200"
+                        handle=".handle"
                     >
                         <tr v-for="(item,Iindex) in items" :key="Iindex" style="position:relative;">
                             <template v-for="(cell,Cindex) in item">
@@ -65,11 +66,13 @@
                             </template>
                             <b v-if="!getCheckEdit" class="td_left" @click="itemAdd(Iindex,'left')"></b>
                             <b v-if="Iindex+1 == items.length && !getCheckEdit" class="td_right" @click="itemAdd(Iindex,'right')"></b>
-                            <v-hover v-if="!getCheckEdit" v-slot="{ hover }" style="position:absolute; top:0; right:0; width:20px; height:20px;">
-                                <div style="position:relative; top:0; right:0; width:30px; height:30px; z-index:3;">
-                                    <v-btn v-if="hover" @click="rowDelete(Iindex)" class="comparison_image_delete" fab x-small depressed color="rgb(110,110,110)"><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
-                                </div>
-                            </v-hover>
+                            <div v-if="!getCheckEdit" class="comparison-drag-block-handle">
+                                <v-icon class="handle">fas fa-bars</v-icon>
+                            </div>
+                            <v-btn v-if="!getCheckEdit" @click="rowDeleteDialog(Iindex)" color="#E84B4A" class="comparison_row_delete white--text" depressed>
+                                <v-icon class="del_icon">fa-solid fa-trash-can</v-icon>
+                                削除
+                            </v-btn>
                         </tr>
                     </draggable>
                 </template>
@@ -78,6 +81,8 @@
             <header-dialog ref="header_dialog" :headers="headers" :targetHeader="targetHeader" :parent="parent" @headerDelete="headerDelete"></header-dialog>
             <!-- 画像拡大表示ダイアログ -->
             <img-dialog ref="img_dialog"></img-dialog>
+            <!-- 削除確認ダイアログ -->
+            <com-delete ref="delete_dialog" @delete_action="rowDelete"></com-delete>
         </div>
 </template>
 
@@ -116,6 +121,7 @@ export default {
             },
             targetHeader:{header_name:'',header_type:'text',calculation_type:'',calculation_row:[]},
             search_flg:false,
+            deleteIndex:null
         };
     },
     computed:{
@@ -346,9 +352,15 @@ export default {
             return array;
         },
 
+        // 列削除確認ダイアログ
+        rowDeleteDialog(Iindex){
+            this.deleteIndex = Iindex;
+            this.$refs.delete_dialog.open();
+        },
+
         // 列の削除
-        rowDelete(targetRow){
-            this.items.splice(targetRow,1);
+        rowDelete(){
+            this.items.splice(this.deleteIndex,1);
         },
 
         // 他社比較入力の項目を表示するか、他社構成比較の項目を表示するかの判断

@@ -341,7 +341,7 @@ nav > .v-navigation-drawer__border {
 }
 .blockadd_gyou {
     width: 100%;
-    height: 5px;
+    height: 10px;
     background: linear-gradient(-45deg, rgba(238,132,119,1), rgb(243, 197, 99)) !important;
     position: relative;
     cursor: pointer;
@@ -355,7 +355,7 @@ nav > .v-navigation-drawer__border {
     position: absolute;
     width: 18px;
     height: 18px;
-    top: -7px;
+    top: -5px;
     left: -10px;
     background-color: rgb(244,158,0);
     border-radius: 50%;
@@ -1062,6 +1062,11 @@ nav > .v-navigation-drawer__border {
 
 
 /***** 【他社比較入力】メインエリア *****/
+.comparison_disp{
+    position: relative;
+    top: -20px;
+}
+
 .comparison_image_delete{
     position: absolute;
     top: -8px;
@@ -1070,19 +1075,42 @@ nav > .v-navigation-drawer__border {
     width: 20px !important;
 }
 
+.comparison_row_delete {
+    position: absolute;
+    top: -30px;
+    right: 32px;
+    height: 30px !important;
+    background: rgb(250,137,123);
+    background: linear-gradient(90deg, rgba(250,137,123,1) 80%, rgba(252,172,133,1) 100%);
+    color: white;
+    border-radius: 30px 0px 0px 0px;
+    padding: 4px 8px 0 20px !important;
+    box-sizing: border-box;
+}
+.comparison_row_delete .del_icon {
+    font-size: 1em !important;
+    margin-right: 3px;
+    vertical-align: top;
+}
+
 #comparison_table{
     padding-bottom: 0px !important;
+    padding-top: 0px !important;
 }
+
+#comparison_table > .v-data-table__wrapper{
+    padding-top: 40px !important;
+}
+
 .koumoku_icontitle {
-    width: 98%;
     padding: 0 1.65%;
     box-sizing: border-box;
     font-weight: bold;
     font-size: 1.1em;
     margin-bottom: -20px;
-    z-index: 2;
     position: relative;
-    background-color: white;
+    z-index: 2;
+    display: inline-block;
 }
 #comparison_table * table{
     -ms-writing-mode : tb-lr;
@@ -1196,7 +1224,7 @@ nav > .v-navigation-drawer__border {
     z-index: 9999;
 }
 .th_top:hover{
-    height: 5px;
+    height: 10px;
     background: rgb(255,221,148);
 }
 .th_top:hover::before {
@@ -1219,13 +1247,13 @@ nav > .v-navigation-drawer__border {
 .th_bottom {
     width: calc(100% + 10px);
     position: absolute;
-    bottom: -3px;
+    bottom: -4px;
     height: 10px;
     left: 0;
     z-index: 9999;
 }
 .th_bottom:hover{
-    height: 5px;
+    height: 10px;
     background: rgb(255,221,148);
 }
 .th_bottom:hover::before {
@@ -1249,7 +1277,7 @@ nav > .v-navigation-drawer__border {
     width: 10px;
     position: absolute;
     height: 100%;
-    left: -8px;
+    left: -10px;
     top: 0;
 }
 .td_left:hover::before {
@@ -1270,7 +1298,7 @@ nav > .v-navigation-drawer__border {
     z-index: 9999;
 }
 .td_left:hover{
-    width: 5px;
+    width: 10px;
     background: rgb(255,221,148);
 }
 .td_right{
@@ -1298,7 +1326,7 @@ nav > .v-navigation-drawer__border {
     z-index: 9999;
 }
 .td_right:hover{
-    width: 5px;
+    width: 10px;
     background: rgb(255,221,148);
 }
 .right_menu{
@@ -1362,6 +1390,19 @@ nav > .v-navigation-drawer__border {
 }
 .hikaku_img_prev img {
     max-width: 200px;
+}
+
+.comparison-drag-block-handle {
+    cursor: grab;
+    color: rgb(255, 255, 255);
+    background: rgb(114,113,113);
+    background: linear-gradient(0deg, rgba(114,113,113,1) 0%, rgba(167,167,167,1) 100%);
+    display: flex;
+    border-radius: 6px 6px 0px 0px;
+    position: absolute;
+    top: -31px;
+    left: 32px;
+    padding: 4px 8px 3px 8px;
 }
 
 
@@ -1528,6 +1569,44 @@ nav > .v-navigation-drawer__border {
     left: 0;
     z-index: 100;
     background-color: rgb(255, 255, 255);
+}
+.plan-drag-block-handle {
+    cursor: grab;
+    color: #727171 !important;
+    display: flex;
+    padding: 5px 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1%;
+}
+
+.wording-handle {
+    width: 20px;
+    height: 18px;
+}
+.wording-drag-handle {
+    cursor: grab;
+    color: rgb(100, 100, 100);
+    display: flex;
+    width: 20px;
+    height: 18px;
+}
+.wording-area{
+    position:relative;
+    display:flex;
+    align-items: center;
+}
+
+.wording-select {
+    width: 30%;
+    min-width: 126px;
+    display: flex;
+    align-items: center;
+    padding-right: 5px;
+}
+.wording-select * .v-menu__content{
+    min-width: 120px !important;
 }
 .category_text{
     background-color: rgb(112, 173, 71);
