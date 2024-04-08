@@ -1,7 +1,8 @@
 <template>
-        <div id="comparison_main">
-            <!-- ヘッダー編集ダイアログ -->
-            <v-dialog max-width="500" scrollable v-model="headerEditDialog">
+    <div id="comparison_main">
+        <!-- ヘッダー編集ダイアログ -->
+        <v-dialog max-width="500" scrollable v-model="headerEditDialog">
+            <v-form v-model="valid">
                 <v-card class="dialog_box">
                     <v-card-title class="card_title_ComparisonInsert">
                         <v-icon size="30px" class="pr-4">mdi-table-arrow-right</v-icon>
@@ -9,7 +10,17 @@
                         <v-icon @click="headerEditDialog=false" medium>fa-times</v-icon>
                     </v-card-title>
                     <v-card-text>
-                        <v-text-field label="タイトル" v-model="targetHeader.header_name" outlined clearable dense hide-details></v-text-field>
+                        <div class="mt-5">
+                            <v-text-field
+                                label="タイトル"
+                                v-model="targetHeader.header_name"
+                                outlined
+                                clearable
+                                dense
+                                hide-details="auto"
+                                :rules="[rules.required]"
+                            ></v-text-field>
+                        </div>
                         <div style="display:flex;" class="mb-5">
                             <v-checkbox
                                 class="mr-3"
@@ -34,7 +45,10 @@
                             <v-radio value="calculation" label="計算"></v-radio>
                         </v-radio-group>
                         <div class="selectboxsub_ComparisonInsert" v-if="targetHeader.header_type == 'calculation'">
-                            <v-radio-group v-model="targetHeader.calculation_type">
+                            <v-radio-group
+                                v-model="targetHeader.calculation_type"
+                                :rules="[rules.required]"
+                            >
                                 <v-radio value="sum" label="合計"></v-radio>
                                 <v-radio value="subtraction" label="引き算"></v-radio>
                                 <v-radio value="average" label="平均"></v-radio>
@@ -52,6 +66,7 @@
                                     :items="selectHeaders()"
                                     item-text="header_name"
                                     item-value="id"
+                                    :rules="[rules.requiredSelectItems]"
                                 ></v-autocomplete>
                             </div>
                             <!--　▼▼引き算・割り算選択時▼▼　-->
@@ -59,32 +74,34 @@
                                 <v-autocomplete
                                     style="width:40%"
                                     label="対象の項目を選択"
-                                    hide-details
+                                    hide-details="auto"
                                     outlined
                                     dense
                                     v-model="targetHeader.calculation_row[0]"
                                     :items="selectHeaders()"
                                     item-text="header_name"
                                     item-value="id"
+                                    :rules="[rules.required]"
                                 ></v-autocomplete>
                                 <span v-if="targetHeader.calculation_type == 'subtraction'" class="cal_mark">－</span>
                                 <span v-if="targetHeader.calculation_type == 'division'" class="cal_mark">÷</span>
                                 <v-autocomplete
                                     style="width:40%"
                                     label="対象の項目を選択"
-                                    hide-details
+                                    hide-details="auto"
                                     outlined
                                     dense
                                     v-model="targetHeader.calculation_row[1]"
                                     :items="selectHeaders()"
                                     item-text="header_name"
                                     item-value="id"
+                                    :rules="[rules.required]"
                                 ></v-autocomplete>
                             </div>
                         </div>
                         <div class="select_btn_box">
                             <div class="dialog_item_edit_btn color__ComparisonInsert">
-                                <v-btn @click="headerEditDialog=false">更新</v-btn>
+                                <v-btn @click="headerEditDialog=false" :disabled="!valid">更新</v-btn>
                             </div>
                             <div v-if="!getCheckEdit" class="dialog_item_delete_btn">
                                 <v-btn @click="headerDelete()">この項目を削除</v-btn>
@@ -92,8 +109,9 @@
                         </div>
                     </v-card-text>
                 </v-card>
-            </v-dialog>
-        </div>
+            </v-form>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
@@ -123,6 +141,12 @@ export default {
                 targetRow:null,
                 targetColmun:null,
                 color:"#FFFFFF",
+            },
+            valid: false,
+            rules: {
+                //バリデーション
+                required: (v) => !!v || "必須項目です。",
+                requiredSelectItems: (v) => !!v.length || "必須項目です。",
             },
         };
     },
