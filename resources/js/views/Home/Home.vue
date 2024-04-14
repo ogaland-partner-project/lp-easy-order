@@ -3,6 +3,7 @@
         <v-data-table id="home-table" :headers="headers" :items="desserts" :search="searchText"
             :items-per-page="-1"
             :footer-props="{'disable-items-per-page': true}"
+            :custom-filter="tableFilter"
         >
             <template v-slot:top>
                 <div class="d-flex align-center">
@@ -285,6 +286,12 @@ export default {
             });
             this.search();
         },
+
+        // テーブルに表示してないデータからも検索する
+        tableFilter(index,searchText,row){
+            const regex = new RegExp(searchText, 'i');
+            return Object.values(row).some(value => regex.test(value));
+        }
     },
 };
 </script>

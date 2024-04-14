@@ -23,6 +23,9 @@ class LpOrderResource extends JsonResource
             'lock' => $locks,
             'status' => $this->status,
             'requirement_flag' => $this->requirement_flag,
+            'promoter' => $this->tLevelSelects[0]->promoter,
+            'configurator' => $this->tLevelSelects[0]->configurator,
+            'designer' => $this->tLevelSelects[0]->designer,
             'rightmenu' => 0,
         ];
     }
