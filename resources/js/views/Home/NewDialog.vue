@@ -20,7 +20,7 @@
                         :rules="[rules.half]"
                     ></v-text-field>
                     <v-text-field
-                        label="簡易説明（薬機修正/楽天用リニュ/生産者変更 等）"
+                        label="簡易説明（薬機修正/楽天用リニュ/新規LP作成 等）"
                         v-model="model.description"
                         outlined
                         clearable
