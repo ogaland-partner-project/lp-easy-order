@@ -9,6 +9,7 @@ const state = {
     // 表示中の画面が編集中かどうか
     checkLock:false,
     checkEdit:true,
+    selectedProductId:null
 };
 
 const getters = {
@@ -29,6 +30,9 @@ const getters = {
     },
     getCheckEdit(state){
         return state.checkEdit;
+    },
+    getSelectedProductId(state){
+        return state.selectedProductId
     }
 };
 
@@ -51,6 +55,9 @@ const mutations = {
     setCheckEdit: (state, payload) => {
         state.checkEdit = payload
     },
+    setSelectedProductId: (state, payload) => {
+        state.selectedProductId = payload
+    },
 };
 
 const actions = {
@@ -71,6 +78,9 @@ const actions = {
     },
     setCheckEdit: ({ commit }, payload) => {
         commit("setCheckEdit", payload);
+    },
+    setSelectedProductId: ({ commit }, payload) => {
+        commit("setSelectedProductId", payload);
     },
 };
 

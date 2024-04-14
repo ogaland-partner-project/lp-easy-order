@@ -162,7 +162,7 @@ export default {
     },
 
     methods: {
-        ...mapActions("common",["setSelectionMenu", "setSelectedProductName", "setSelectedProductStatus"]),
+        ...mapActions("common",["setSelectionMenu", "setSelectedProductName", "setSelectedProductStatus", "setSelectedProductId"]),
 
         // APIs----------------------------
         // 検索
@@ -206,6 +206,7 @@ export default {
         moveNext(item) {
             // レベル別質問事項画面に遷移
             this.setSelectedProductName(item.product_name);
+            this.setSelectedProductId(item.id);
             this.setSelectedProductStatus(item.status);
             this.setSelectionMenu(1);
             this.$router.push("/level_select/" + item.id);
