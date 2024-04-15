@@ -310,8 +310,8 @@ export default {
                 header_type:'text',
                 calculation_type:'',
                 calculation_row:[],
-                comparison_insert_flag:this.parent == 'insert' ? 1 : 0,
-                companies_comparison_flag:this.parent == 'companies' ? 1 : 0
+                comparison_insert_flag: 1,
+                companies_comparison_flag: 1
                 }
             );
             Object.keys(this.items).forEach(item => {
