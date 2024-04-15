@@ -80,7 +80,7 @@ class CreateService
             array_push($ids,$data->id);
 
         }
-        for($i=1;$i<=20;$i++){
+        for($i=1;$i<=30;$i++){
             $data = $model->create([
                 'lp_order_id' => $param['lp_order_id'],
                 'header_name' => $i,
