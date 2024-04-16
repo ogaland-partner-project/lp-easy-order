@@ -11,7 +11,7 @@
             <div class="titlearia" style="display:flex;">
                 <div style="width:47%; display:flex;">
                     <div class="itembox" style="margin-left: 53px;">イメージ</div>
-                    <div class="itembox" style="margin-left: 28px;">制作メモ</div>
+                    <div class="itembox" style="margin-left: 28px;">依頼者修正・メモ等</div>
                 </div>
                 <div style="width:6%;"></div>
                 <div style="width:47%; display:flex;">
