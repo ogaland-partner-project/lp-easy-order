@@ -1057,9 +1057,19 @@ nav > .v-navigation-drawer__border {
 .knowledge_url_aria > .url_aria_info {
     font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
-
+.knowledge_url > p {
+    margin-bottom: 0px !important;
+}
+.knowledge_url > p > a{
+    color: #337ab7 !important;
+    border-bottom: solid 1px #337ab7;
+}
+.url_body * .ql-editing{
+    left: 55px !important;
+    top: -52px !important;
+}
 
 /***** 【他社比較入力】メインエリア *****/
 .comparison_disp{
