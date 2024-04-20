@@ -53,5 +53,6 @@ export const initKnowledgeItems = [
  * - 初期値に使用
  */
 export const initUrlModel = {
-    url: ""
+    url: "",
+    url_text:""
 }
