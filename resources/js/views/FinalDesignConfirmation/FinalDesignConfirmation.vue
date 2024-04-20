@@ -44,7 +44,7 @@
                                     :contenteditable="!getCheckEdit"
                                     @paste="function(e){handlePaste(e, part)}"
                                     @dragover="true"
-                                    @drop.prevent="function(e){handleInput(e,part.image_path)}"
+                                    @drop.prevent="function(e){handleInput(e,part)}"
                                     @keydown="keydown"
                                 >
                                     <div class="plan_paste_info">
@@ -247,16 +247,13 @@ export default {
             part.image_path = imagePath;
         },
 
-        handleInput:async function(e,images){
-            let image = e.dataTransfer.files[0];;
+        handleInput:async function(e,part){
+            e.preventDefault();
+            let image = e.dataTransfer.files[0];
             let binary = await ImageUtil.getDataUrlFromFile(image)
-            images.push(
-                {
-                    id:null,
-                    file:binary,
-                    image_path:URL.createObjectURL(image),
-                },
-            )
+            let imagePath = URL.createObjectURL(image);
+            part.file = binary;
+            part.image_path = imagePath;
         },
 
         // 行削除
