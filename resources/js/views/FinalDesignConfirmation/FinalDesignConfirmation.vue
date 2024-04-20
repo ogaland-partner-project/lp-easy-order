@@ -22,7 +22,7 @@
         </div>
         <div class="conteints"  >
             <!-- 最終デザイン行要素：削除用ホバーボタン付属 -->
-            <v-hover v-slot="{ hover }" style="display:flex; width:100%; flex-wrap: wrap; position:relative; padding: 10px;" v-for="(part,index) in designParts" :key="index">
+            <v-hover v-slot="{ hover }" style="display:flex; width:100%; flex-wrap: wrap; position:relative; padding: 10px;" v-for="(part,index) in designParts" :key="part.sort_order">
                 <div :class="hover ? 'part_active':'' " >
                     <!-- index:左側の番号 -->
                     <span class="mr-5" style="font-size:17px; width:2%; height:103%;">{{index + 1}}.</span>

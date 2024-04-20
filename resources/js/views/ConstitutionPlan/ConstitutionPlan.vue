@@ -109,7 +109,7 @@
                 :scroll-sensitivity="200"
                 handle=".handle"
             >
-                <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="n">
+                <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="plan.sort_order">
                     <div :class="hover ? 'plan_active':'none'">
                         <!-- 画像系 -->
                         <div style="width:55% !important; display:flex;" v-if="planTab==1">
