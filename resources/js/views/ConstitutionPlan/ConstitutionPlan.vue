@@ -398,13 +398,13 @@ export default {
         },
         // エクスプローラーから画像をアップロード
         handleInput:async function(e,imageObject,area){
+            e.preventDefault();
             if(this.getCheckEdit) return;
             if(area != 'memo' && this.isCheckMedicineStatus()) return;
             let items = e.dataTransfer.files[0];
             if(items.type.match('image.*')){
-                let image = items.getAsFile();
-                let binary = await ImageUtil.getDataUrlFromFile(image)
-                let imagePath = URL.createObjectURL(image);
+                let binary = await ImageUtil.getDataUrlFromFile(items)
+                let imagePath = URL.createObjectURL(items);
                 this.$set(imageObject, 'file', binary)
                 this.$set(imageObject, 'image_path', imagePath)
             }
