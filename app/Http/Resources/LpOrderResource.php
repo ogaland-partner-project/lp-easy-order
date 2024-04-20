@@ -23,9 +23,9 @@ class LpOrderResource extends JsonResource
             'lock' => $locks,
             'status' => $this->status,
             'requirement_flag' => $this->requirement_flag,
-            'promoter' => $this->tLevelSelects[0]->promoter,
-            'configurator' => $this->tLevelSelects[0]->configurator,
-            'designer' => $this->tLevelSelects[0]->designer,
+            'promoter' => isset($this->tLevelSelects[0]) ? $this->tLevelSelects[0]->promoter : null,
+            'configurator' => isset($this->tLevelSelects[0]) ? $this->tLevelSelects[0]->configurator : null,
+            'designer' => isset($this->tLevelSelects[0]) ? $this->tLevelSelects[0]->designer : null,
             'rightmenu' => 0,
         ];
     }
