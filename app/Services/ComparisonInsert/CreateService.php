@@ -83,7 +83,7 @@ class CreateService
         for($i=1;$i<=30;$i++){
             $data = $model->create([
                 'lp_order_id' => $param['lp_order_id'],
-                'header_name' => $i,
+                'header_name' => "{serial_number}",
                 'header_type' => "text",
                 'calculation_type' => null,
                 'calculation_row' => null,

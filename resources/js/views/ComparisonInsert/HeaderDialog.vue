@@ -19,7 +19,18 @@
                                 dense
                                 hide-details="auto"
                                 :rules="[rules.required]"
+                                :disabled="serialFlag"
                             ></v-text-field>
+                        </div>
+                        <div style="display:flex;" class="mb-5">
+                            <v-checkbox
+                                v-if="parent=='companies'"
+                                v-model="serialFlag"
+                                label="連番"
+                                hide-details
+                                :value="true"
+                                @change="serialCheck"
+                            ></v-checkbox>
                         </div>
                         <div style="display:flex;" class="mb-5">
                             <v-checkbox
@@ -101,7 +112,7 @@
                         </div>
                         <div class="select_btn_box">
                             <div class="dialog_item_edit_btn color__ComparisonInsert">
-                                <v-btn @click="headerEditDialog=false" :disabled="!valid">更新</v-btn>
+                                <v-btn @click="headerUpdate()" :disabled="!valid">更新</v-btn>
                             </div>
                             <div v-if="!getCheckEdit" class="dialog_item_delete_btn">
                                 <v-btn @click="headerDelete()">この項目を削除</v-btn>
@@ -148,10 +159,24 @@ export default {
                 required: (v) => !!v || "必須項目です。",
                 requiredSelectItems: (v) => !!v.length || "必須項目です。",
             },
+            serialFlag:false,
         };
     },
     computed:{
         ...mapGetters("common", ["getCheckEdit"]),
+    },
+    watch:{
+        // ヘッダー名が{serial_number}の場合チェックボックスにチェック
+        targetHeader: {
+            handler: function(newValue) {
+                if(newValue.header_name == '{serial_number}'){
+                    this.serialFlag = true;
+                }else{
+                    this.serialFlag = false;
+                }
+            },
+            deep:true
+        }
     },
     methods: {
         // 動き------------------------------------------------------
@@ -178,6 +203,20 @@ export default {
         // ヘッダー削除処理
         headerDelete(){
             this.$emit('headerDelete');
+        },
+
+        // 更新処理
+        headerUpdate(){
+            this.$emit('save');
+            this.close();
+        },
+
+        // 連番チェックボックスにチェックした場合、連番用のテキストを挿入
+        serialCheck(){
+            this.targetHeader.header_name = "";
+            if(this.serialFlag){
+                this.targetHeader.header_name = '{serial_number}'
+            }
         }
 
     },
