@@ -88,7 +88,7 @@ class ComparisonInsertApi extends ApiController
             ["header_name"=>"店舗名", "header_type"=>"text","comparison_insert_flag"=>1,"companies_comparison_flag"=>1],
             ["header_name"=>"商品名", "header_type"=>"text","comparison_insert_flag"=>1,"companies_comparison_flag"=>1],
             ["header_name"=>"URL", "header_type"=>"url","comparison_insert_flag"=>1,"companies_comparison_flag"=>1],
-            ["header_name"=>"商品画像", "header_type"=>"image","comparison_insert_flag"=>1,"companies_comparison_flag"=>0],
+            ["header_name"=>"商品画像", "header_type"=>"image","comparison_insert_flag"=>1,"companies_comparison_flag"=>1],
             ["header_name"=>"FV", "header_type"=>"image","comparison_insert_flag"=>0,"companies_comparison_flag"=>1],
             ["header_name"=>"価格", "header_type"=>"text","comparison_insert_flag"=>1,"companies_comparison_flag"=>0],
             ["header_name"=>"内容量or何日分", "header_type"=>"text","comparison_insert_flag"=>1,"companies_comparison_flag"=>0],
