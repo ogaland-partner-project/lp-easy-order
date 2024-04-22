@@ -1,7 +1,11 @@
 <template>
         <div class="comparison_disp">
+            <!-- スクロールバー -->
+            <div id="table-topbar" class="table-scroll-x-topbar" v-scroll.self="onScrollXTopBar">
+                <div class="inner-topbar"  :style="'width:'+tableWidth+'px;'"></div>
+            </div>
             <!-- テーブル部分 -->
-            <v-simple-table id="comparison_table">
+            <v-simple-table id="comparison_table" ref="tableContent">
                 <template v-slot:default>
                     <thead>
                         <draggable
@@ -124,6 +128,7 @@ export default {
             deleteIndex:null,
             serialNumber:0,
             serialArray:[],
+            tableWidth:0,
         };
     },
     computed:{
@@ -145,6 +150,15 @@ export default {
         this.lpOrderId = Number(this.$route.params.id);
         if(this.lpOrderId){
             this.search();
+        }
+    },
+    //基礎知識上部スクロールバーの幅セット
+    updated(){
+        if(this.$refs.tableContent){
+            console.log(this.$refs.tableContent)
+            let childRef = this.$refs.tableContent.$el.querySelector('div > table');
+            this.tableWidth = childRef.offsetWidth + 20;
+            console.log('this.tableWidth',this.tableWidth)
         }
     },
     methods: {
@@ -402,7 +416,14 @@ export default {
             let date = new Date();
             // パスに日時を埋め込むことでキャッシュを読み込ませないようにしている
             return path + '?' + date
-        }
+        },
+
+        // スクロールバー上下同期処理
+        onScrollXTopBar(e) {
+            let target = document.getElementById("comparison_table").querySelector('.v-data-table__wrapper');
+            console.log('target',target);
+            target.scrollTo(e.target.scrollLeft, 0);
+        },
     },
 };
 </script>

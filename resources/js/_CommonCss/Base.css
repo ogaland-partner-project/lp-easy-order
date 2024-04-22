@@ -1415,6 +1415,21 @@ nav > .v-navigation-drawer__border {
     padding: 4px 8px 3px 8px;
 }
 
+/***** 【基礎知識】メインエリア *****/
+.table-scroll-x-topbar {
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 20px;
+    padding-top: 25px;
+    position: fixed;
+    bottom: 6px;
+    z-index: 3;
+    width: 82%;
+}
+
+#comparison_table > .v-data-table__wrapper::-webkit-scrollbar{
+    display: none;
+}
 
 /***** 【他社構成比較】メインエリア *****/
 .main-CompaniesComparison > .main_conteaints > .container > div > .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
