@@ -155,10 +155,8 @@ export default {
     //基礎知識上部スクロールバーの幅セット
     updated(){
         if(this.$refs.tableContent){
-            console.log(this.$refs.tableContent)
             let childRef = this.$refs.tableContent.$el.querySelector('div > table');
             this.tableWidth = childRef.offsetWidth + 20;
-            console.log('this.tableWidth',this.tableWidth)
         }
     },
     methods: {
@@ -421,7 +419,6 @@ export default {
         // スクロールバー上下同期処理
         onScrollXTopBar(e) {
             let target = document.getElementById("comparison_table").querySelector('.v-data-table__wrapper');
-            console.log('target',target);
             target.scrollTo(e.target.scrollLeft, 0);
         },
     },

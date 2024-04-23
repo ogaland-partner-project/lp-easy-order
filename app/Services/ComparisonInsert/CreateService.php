@@ -80,7 +80,8 @@ class CreateService
             array_push($ids,$data->id);
 
         }
-        for($i=1;$i<=30;$i++){
+        for($i=1;$i<=CommonMsg::SERIAL_NUMBER;$i++){
+            // {serial_number} → 検索時に連番に置き換わる記号
             $data = $model->create([
                 'lp_order_id' => $param['lp_order_id'],
                 'header_name' => "{serial_number}",

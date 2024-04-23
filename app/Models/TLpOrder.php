@@ -35,7 +35,7 @@ class TLpOrder extends Model
      * t_level_selectsテーブルとのリレーション
      */
     public function tLevelSelects() {
-        return $this->hasMany('App\Models\TLevelSelect', 'lp_order_id', 'id');
+        return $this->hasOne('App\Models\TLevelSelect', 'lp_order_id', 'id');
     }
 
     /**

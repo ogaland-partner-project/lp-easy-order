@@ -8,6 +8,7 @@ class AddUrlTextToBasicKnowledgeUrls extends Migration
 {
     /**
      * Run the migrations.
+     * 基礎知識のURLに、任意のテキストを表示するためのカラム追加
      *
      * @return void
      */
