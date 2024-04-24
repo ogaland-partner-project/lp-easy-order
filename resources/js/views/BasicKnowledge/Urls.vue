@@ -44,6 +44,16 @@ export default {
             }
         }
     },
+    watch:{
+        getCheckEdit:{
+            // ページの編集終了時にURLの編集モードも解除
+            handler: function(newValue){
+                if(newValue){
+                    this.isActive = false;
+                }
+            }
+        }
+    },
 
     data() {
         return {
