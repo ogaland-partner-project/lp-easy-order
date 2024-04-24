@@ -214,7 +214,7 @@
                                                     <div style="width:70%;">
                                                         <quill-editor
                                                             class="plan_editor plan_editor_block"
-                                                            :class="memo.memo_category == '質問' ? 'plan_editor_question':''"
+                                                            :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
                                                             style="width:95%;"
                                                             ref="myTextEditor"
                                                             v-model="memo.memo"
