@@ -11,7 +11,7 @@
             <div class="titlearia" style="display:flex;">
                 <div style="width:47%; display:flex;">
                     <div class="itembox" style="margin-left: 53px;">イメージ</div>
-                    <div class="itembox" style="margin-left: 28px;">制作メモ</div>
+                    <div class="itembox" style="margin-left: 28px;">依頼者修正・メモ等</div>
                 </div>
                 <div style="width:6%;"></div>
                 <div style="width:47%; display:flex;">
@@ -22,7 +22,7 @@
         </div>
         <div class="conteints"  >
             <!-- 最終デザイン行要素：削除用ホバーボタン付属 -->
-            <v-hover v-slot="{ hover }" style="display:flex; width:100%; flex-wrap: wrap; position:relative; padding: 10px;" v-for="(part,index) in designParts" :key="index">
+            <v-hover v-slot="{ hover }" style="display:flex; width:100%; flex-wrap: wrap; position:relative; padding: 10px;" v-for="(part,index) in designParts" :key="part.sort_order">
                 <div :class="hover ? 'part_active':'' " >
                     <!-- index:左側の番号 -->
                     <span class="mr-5" style="font-size:17px; width:2%; height:103%;">{{index + 1}}.</span>
@@ -44,7 +44,7 @@
                                     :contenteditable="!getCheckEdit"
                                     @paste="function(e){handlePaste(e, part)}"
                                     @dragover="true"
-                                    @drop.prevent="function(e){handleInput(e,part.image_path)}"
+                                    @drop.prevent="function(e){handleInput(e,part)}"
                                     @keydown="keydown"
                                 >
                                     <div class="plan_paste_info">
@@ -247,16 +247,13 @@ export default {
             part.image_path = imagePath;
         },
 
-        handleInput:async function(e,images){
-            let image = e.dataTransfer.files[0];;
+        handleInput:async function(e,part){
+            e.preventDefault();
+            let image = e.dataTransfer.files[0];
             let binary = await ImageUtil.getDataUrlFromFile(image)
-            images.push(
-                {
-                    id:null,
-                    file:binary,
-                    image_path:URL.createObjectURL(image),
-                },
-            )
+            let imagePath = URL.createObjectURL(image);
+            part.file = binary;
+            part.image_path = imagePath;
         },
 
         // 行削除

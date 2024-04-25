@@ -1,7 +1,11 @@
 <template>
         <div class="comparison_disp">
+            <!-- スクロールバー -->
+            <div id="table-topbar" class="table-scroll-x-topbar" v-scroll.self="onScrollXTopBar">
+                <div class="inner-topbar"  :style="'width:'+tableWidth+'px;'"></div>
+            </div>
             <!-- テーブル部分 -->
-            <v-simple-table id="comparison_table">
+            <v-simple-table id="comparison_table" ref="tableContent">
                 <template v-slot:default>
                     <thead>
                         <draggable
@@ -17,7 +21,7 @@
                         >
                             <template v-for="(header,index) in headers">
                                 <th v-if="parentJudge(header)" style="position:relative;" @dblclick="headerEdit(header)" @click="show=false" :key="index">
-                                    <span>{{header.header_name}}</span>
+                                    <span>{{header.header_name == '{serial_number}' ? header.serial_number : header.header_name}}</span>
                                     <b v-if="index == 0 && !getCheckEdit" @click="headerAdd(index,'top')" class="th_top"></b>
                                     <b v-if="!getCheckEdit" @click="headerAdd(index,'bottom')" class="th_bottom"></b>
                                 </th>
@@ -78,7 +82,7 @@
                 </template>
             </v-simple-table>
             <!-- ヘッダー編集ダイアログ -->
-            <header-dialog ref="header_dialog" :headers="headers" :targetHeader="targetHeader" :parent="parent" @headerDelete="headerDelete"></header-dialog>
+            <header-dialog ref="header_dialog" :headers="headers" :targetHeader="targetHeader" :parent="parent" @headerDelete="headerDelete" @save="save"></header-dialog>
             <!-- 画像拡大表示ダイアログ -->
             <img-dialog ref="img_dialog"></img-dialog>
             <!-- 削除確認ダイアログ -->
@@ -121,7 +125,10 @@ export default {
             },
             targetHeader:{header_name:'',header_type:'text',calculation_type:'',calculation_row:[]},
             search_flg:false,
-            deleteIndex:null
+            deleteIndex:null,
+            serialNumber:0,
+            serialArray:[],
+            tableWidth:0,
         };
     },
     computed:{
@@ -143,6 +150,13 @@ export default {
         this.lpOrderId = Number(this.$route.params.id);
         if(this.lpOrderId){
             this.search();
+        }
+    },
+    //基礎知識上部スクロールバーの幅セット
+    updated(){
+        if(this.$refs.tableContent){
+            let childRef = this.$refs.tableContent.$el.querySelector('div > table');
+            this.tableWidth = childRef.offsetWidth + 20;
         }
     },
     methods: {
@@ -304,9 +318,12 @@ export default {
         headerAdd(headerIndex,position){
             let index = headerIndex;
             if(position == 'bottom') index++;
+            let header_name = '';
+            // 他社構成比較の場合ヘッダーを連番にする
+            if(this.parent == 'companies') header_name = '{serial_number}';
             this.headers.splice(index,0,{
                 id:null,
-                header_name:'',
+                header_name:header_name,
                 header_type:'text',
                 calculation_type:'',
                 calculation_row:[],
@@ -397,7 +414,13 @@ export default {
             let date = new Date();
             // パスに日時を埋め込むことでキャッシュを読み込ませないようにしている
             return path + '?' + date
-        }
+        },
+
+        // スクロールバー上下同期処理
+        onScrollXTopBar(e) {
+            let target = document.getElementById("comparison_table").querySelector('.v-data-table__wrapper');
+            target.scrollTo(e.target.scrollLeft, 0);
+        },
     },
 };
 </script>

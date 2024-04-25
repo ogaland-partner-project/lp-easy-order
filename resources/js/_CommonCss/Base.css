@@ -1057,9 +1057,19 @@ nav > .v-navigation-drawer__border {
 .knowledge_url_aria > .url_aria_info {
     font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
-
+.knowledge_url > p {
+    margin-bottom: 0px !important;
+}
+.knowledge_url > p > a{
+    color: #337ab7 !important;
+    border-bottom: solid 1px #337ab7;
+}
+.url_body * .ql-editing{
+    left: 55px !important;
+    top: -52px !important;
+}
 
 /***** 【他社比較入力】メインエリア *****/
 .comparison_disp{
@@ -1405,6 +1415,21 @@ nav > .v-navigation-drawer__border {
     padding: 4px 8px 3px 8px;
 }
 
+/***** 【基礎知識】メインエリア *****/
+.table-scroll-x-topbar {
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 20px;
+    padding-top: 25px;
+    position: fixed;
+    bottom: 6px;
+    z-index: 3;
+    width: 82%;
+}
+
+#comparison_table > .v-data-table__wrapper::-webkit-scrollbar{
+    display: none;
+}
 
 /***** 【他社構成比較】メインエリア *****/
 .main-CompaniesComparison > .main_conteaints > .container > div > .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
@@ -1606,7 +1631,7 @@ nav > .v-navigation-drawer__border {
     padding-right: 5px;
 }
 .wording-select * .v-menu__content{
-    min-width: 120px !important;
+    min-width: 135px !important;
 }
 .category_text{
     background-color: rgb(112, 173, 71);

@@ -60,7 +60,7 @@
                             </v-btn>
                         </template>
                     </v-snackbar>
-                    <div v-if="selectionMenu !== 0" class="ml-10">選択中：{{ this.getSelectedProductName }}</div>
+                    <div v-if="selectionMenu !== 0" class="ml-10">ID:{{ this.getSelectedProductId }}　{{ this.getSelectedProductName }}</div>
                     <div v-if="selectionMenu == 3" class="ml-10 page_sub_title">調べたことを自由に記入しましょう。</div>
                     <div style="margin-left: auto; display: flex;">
                         <div class="save_edit_area">
@@ -207,7 +207,7 @@ export default {
 
     computed: {
         // Vuex
-        ...mapGetters("common", ["getSelectionMenu", "getSelectedProductName","getCheckLock","getCheckEdit"])
+        ...mapGetters("common", ["getSelectionMenu", "getSelectedProductName","getCheckLock","getCheckEdit", "getSelectedProductId"])
     },
 
     watch: {

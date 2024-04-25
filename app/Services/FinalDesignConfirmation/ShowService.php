@@ -18,7 +18,7 @@ class ShowService
     {
         // 抽出対象の最終デザイン情報取得
         $finalDesignConfirmations = TFinalDesignConfirmation::where('lp_order_id', $lpOrderId)
-            ->orderBy('id')
+            ->orderBy('sort_order')
             ->get();
 
         // 抽出データをレスポンス用データとして設定

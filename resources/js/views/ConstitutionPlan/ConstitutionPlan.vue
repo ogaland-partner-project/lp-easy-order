@@ -109,7 +109,7 @@
                 :scroll-sensitivity="200"
                 handle=".handle"
             >
-                <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="n">
+                <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="plan.sort_order">
                     <div :class="hover ? 'plan_active':'none'">
                         <!-- 画像系 -->
                         <div style="width:55% !important; display:flex;" v-if="planTab==1">
@@ -214,7 +214,7 @@
                                                     <div style="width:70%;">
                                                         <quill-editor
                                                             class="plan_editor plan_editor_block"
-                                                            :class="memo.memo_category == '質問' ? 'plan_editor_question':''"
+                                                            :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
                                                             style="width:95%;"
                                                             ref="myTextEditor"
                                                             v-model="memo.memo"
@@ -362,7 +362,9 @@ export default {
                 {text:"テキスト",color:"#999999"},
                 {text:"アイコン",color:"#5A9650"},
                 {text:"図/表",color:"#5A9650"},
+                {text:"画像イメージ",color:"#5A9650"},
                 {text:"質問",color:"#FF784B"},
+                {text:"メモ",color:"#FF784B"},
             ],
             images:[],
             editorInput:true,
@@ -396,13 +398,13 @@ export default {
         },
         // エクスプローラーから画像をアップロード
         handleInput:async function(e,imageObject,area){
+            e.preventDefault();
             if(this.getCheckEdit) return;
             if(area != 'memo' && this.isCheckMedicineStatus()) return;
             let items = e.dataTransfer.files[0];
             if(items.type.match('image.*')){
-                let image = items.getAsFile();
-                let binary = await ImageUtil.getDataUrlFromFile(image)
-                let imagePath = URL.createObjectURL(image);
+                let binary = await ImageUtil.getDataUrlFromFile(items)
+                let imagePath = URL.createObjectURL(items);
                 this.$set(imageObject, 'file', binary)
                 this.$set(imageObject, 'image_path', imagePath)
             }

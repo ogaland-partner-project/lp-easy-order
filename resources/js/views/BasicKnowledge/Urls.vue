@@ -2,26 +2,23 @@
     <div class="knowledge_url_aria">
         <div class="url_aria_info">
             参考ページのURLはできる限り残しましょう！
-            <div style="font-size: 0.8em;">※URLを右クリックで編集モード</div>
+            <div class="knowledge_add_btn text-left">
+                <v-btn v-if="!getCheckEdit" @click="onEditURL">{{isActive ? "編集完了" : "URL編集" }}<v-icon color="rgb(154,217,224)">fa-solid fa-link</v-icon></v-btn>
+            </div>
         </div>
+            
         <template v-for="model in knowledgeModels" >
             <div v-for="(url, index) in model.urls" :key="index" class="d-flex url_wrap px-2 py-2">
                 <div class="url_label">
                     URL
                 </div>
                 <div class="url_body">
-                    <v-text-field
-                        v-if="isActive"
-                        class="pa-0 ma-0 url_text"
-                        v-model="url.url"
-                        clearable
-                        dense
-                        hide-details="auto"
-                        @input="isActive = true"
-                        :ref="'url_'+index"
-                        @blur="urlBlur"
-                    ></v-text-field>
-                    <span v-else class="link-deco" @click="onlinkClick(url.url)" @click.right.prevent="rightClick(index)">{{ url.url ? url.url : '未設定' }}</span>
+                    <div v-if="isActive" class="d-flex flex-column">
+                            <input type="text" placeholder="urlを入力" class="pa-2 mb-1 knowlefge-url-input" v-model="url.url">
+                            <input type="text" placeholder="テキストを入力" class="pa-2 knowlefge-url-input" v-model="url.url_text">
+                    </div>
+                    <a v-else-if="url.url" :href="url.url" class="link-deco" target="_blank" rel="noopener noreferrer">{{ url.url_text ? url.url_text : url.url }}</a>
+                    <span v-else @click="onlinkClick(url.url)" class="link-deco">{{ url.url ? url.url_text : '未設定' }}</span>
                 </div>
             </div>
         </template>
@@ -29,6 +26,8 @@
 </template>
 
 <script>
+import 'quill/dist/quill.snow.css'
+import { mapGetters } from "vuex";
 export default {
     props: {
         knowledgeModels: {
@@ -37,36 +36,43 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters("common", ["getCheckEdit"]),
+        urlDOM(){
+            return (url,url_text) => {
+                return `<a href="${url}" class="link-deco">${url_text}</a>`
+            }
+        }
+    },
+    watch:{
+        getCheckEdit:{
+            // ページの編集終了時にURLの編集モードも解除
+            handler: function(newValue){
+                if(newValue){
+                    this.isActive = false;
+                }
+            }
+        }
+    },
+
     data() {
         return {
             isActive: false,            // テキストとリンクの切替用
+            test_url:"",
+            option:{
+                theme: 'snow',
+                modules:{
+                    toolbar:[
+                        ['link']
+                    ]
+                }
+            }
         }
     },
 
     methods: {
-        onlinkClick(url) {
-            if(url) {
-                // 別タブでリンクを開く
-                window.open(url, '_blank')
-            }
-            return;
-        },
-        // 右クリック時入力モードにする
-        rightClick(index){
-            this.isActive = true
-            this.$nextTick(()=>{
-                let ref = 'url_'+index;
-                this.$refs[ref][0].focus();
-            })
-        },
-        // url入力からカーソルを外した時入力モードを終了する
-        urlBlur(e){
-            // 別のurl入力欄にカーソルを移した時は入力モードを終わらせないようにする処理
-            if(e.relatedTarget){
-                let classes = e.relatedTarget.parentElement.parentElement.parentElement.parentElement.classList
-                if(classes.contains('url_text')) return
-            }
-            this.isActive = false
+        onEditURL(){
+            this.isActive = !this.isActive;
         }
     }
 }
@@ -83,6 +89,7 @@ export default {
 
 .url_wrap {
     border-bottom: solid 1px #cfcccc;
+    align-items: center;
 }
 
 .url_wrap > .url_label {
@@ -92,9 +99,16 @@ export default {
 
 .url_wrap > .url_body {
     width: 90%;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
+.url_body > div > p{
+    margin-bottom: 0px !important;
+}
+
+.knowlefge-url-input{
+    border: solid 1px #ababab;
+    border-radius: 4px;
+}
 </style>

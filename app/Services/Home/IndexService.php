@@ -20,7 +20,7 @@ class IndexService
     public function getAll()
     {
 
-        $rows = TLpOrder::orderBy('id','desc')->with('tLpOrderLocks')->get();
+        $rows = TLpOrder::with(['tLpOrderLocks','tLevelSelects'])->orderBy('id','desc')->get();
         return LpOrderResource::collection($rows);
 
     }

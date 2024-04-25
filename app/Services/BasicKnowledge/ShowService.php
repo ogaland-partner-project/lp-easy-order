@@ -58,6 +58,7 @@ class ShowService extends BasicKnowledgeServiceBase
                     return [
                         'id' => $basicKnowledgeUrl->id,
                         'url' => $basicKnowledgeUrl->url,
+                        'url_text' => $basicKnowledgeUrl->url_text,
                     ];
                 })
                 ->values()->toArray();

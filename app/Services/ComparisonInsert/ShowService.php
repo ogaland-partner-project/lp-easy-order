@@ -34,7 +34,18 @@ class ShowService
             }
             return $head;
         });
+
+        // 連番付与処理
+        // ヘッダー名が{serial_number}の場合、連番を付与。
+        $serial_number = 1;
         $result['headers'] = $headers->toArray();
+        $result['headers'] = collect($result['headers'])->map(function($header)use(&$serial_number){
+            if($header['header_name'] == '{serial_number}'){
+                $header['serial_number'] = $serial_number;
+                $serial_number++;
+            }
+            return $header;
+        });
 
         // ヘッダーに紐づくテーブル情報の取得
         $items = $headers->map(function($head){
