@@ -217,6 +217,7 @@ export default {
             // 新規登録用の空行を追加
             this.blockAdd(0);
             this.save();
+            
         },
 
         // 空行の追加
