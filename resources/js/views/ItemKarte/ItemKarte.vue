@@ -293,6 +293,7 @@ export default {
                 memo:'',
                 material_list:[],
             };
+            this.save();
         }
     }
 };
