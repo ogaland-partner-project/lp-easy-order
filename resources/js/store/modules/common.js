@@ -9,7 +9,8 @@ const state = {
     // 表示中の画面が編集中かどうか
     checkLock:false,
     checkEdit:true,
-    selectedProductId:null
+    selectedProductId:null,
+    homeSearchText: ''
 };
 
 const getters = {
@@ -33,6 +34,9 @@ const getters = {
     },
     getSelectedProductId(state){
         return state.selectedProductId
+    },
+    getHomeSearchText(state){
+        return state.homeSearchText
     }
 };
 
@@ -58,6 +62,9 @@ const mutations = {
     setSelectedProductId: (state, payload) => {
         state.selectedProductId = payload
     },
+    setHomeSearchText:(state,payload) => {
+        state.homeSearchText = payload
+    }
 };
 
 const actions = {
@@ -82,6 +89,9 @@ const actions = {
     setSelectedProductId: ({ commit }, payload) => {
         commit("setSelectedProductId", payload);
     },
+    setHomeSearchText: ({ commit }, payload) => {
+        commit("setHomeSearchText",payload)
+    }
 };
 
 export default {

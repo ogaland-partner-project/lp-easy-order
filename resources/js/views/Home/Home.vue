@@ -16,6 +16,7 @@
                             hide-details
                             color="green"
                             clearable
+                            @change="searchTextSave"
                         ></v-text-field>
                     </div>
                     <v-spacer />
@@ -116,7 +117,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import NewDialog from './NewDialog.vue';
 import DeleteDialog from './DeleteDialog.vue';
 import CopyDialog from './CopyDialog.vue';
@@ -159,11 +160,16 @@ export default {
             return (status) => {
                 return getStatusName(status);
             }
-        }
+        },
+        ...mapGetters("common", ["getHomeSearchText"]),
+    },
+
+    mounted(){
+        this.searchText = this.getHomeSearchText
     },
 
     methods: {
-        ...mapActions("common",["setSelectionMenu", "setSelectedProductName", "setSelectedProductStatus", "setSelectedProductId"]),
+        ...mapActions("common",["setSelectionMenu", "setSelectedProductName", "setSelectedProductStatus", "setSelectedProductId", "setHomeSearchText"]),
 
         // APIs----------------------------
         // 検索
@@ -291,6 +297,10 @@ export default {
         tableFilter(index,searchText,row){
             const regex = new RegExp(searchText, 'i');
             return Object.values(row).some(value => regex.test(value));
+        },
+
+        searchTextSave(){
+            this.setHomeSearchText(this.searchText);
         }
     },
 };

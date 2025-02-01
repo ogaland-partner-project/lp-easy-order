@@ -119,56 +119,64 @@
                             <span style="font-size:17px; width:5%;">{{n+1}}.</span>
                             <div style="display:flex; width:95%;">
                                 <div style="width:40%;">
-                                    <div v-for="(img ,index) in imagePaths[n]" :key="index" style="width: 95%;">
-                                        <v-hover v-if="img.image_path" v-slot="{ hover }">
-                                            <div style="position:relative;" >
-                                                <img :src="img.image_path" style="width:100%;" @click="imgDialogDisp(imagePaths[n],index)">
-                                                <v-btn
-                                                    v-if="hover && checkDisabledHover()"
-                                                    class="comparison_image_delete"
-                                                    @click="imgDelete(imagePaths[n],index)"
-                                                    fab x-small depressed color="rgb(110,110,110)"
-                                                >
-                                                    <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                                                </v-btn>
-                                            </div>
-                                        </v-hover>
-                                        <v-hover v-else v-slot="{ hover }">
-                                            <div
-                                                class="plan_paste_area"
-                                                :contenteditable="!getCheckEdit || !isCheckMedicineStatus()"
-                                                :disabled="checkDisabled()"
-                                                @paste="function(e){handlePaste(e,img)}"
-                                                @dragover="true"
-                                                @drop.prevent="function(e){handleInput(e,img)}"
-                                                @keydown="keydown"
-                                            >
-                                                    <div class="plan_paste_info">
-                                                        <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
-                                                        <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
-                                                    </div>
+                                    <draggable
+                                        :disabled="!editorInput || checkDisabled()"
+                                        v-model="imagePaths[n]"
+                                        :options="{animation:300}"
+                                        :force-fallback="true"
+                                        :scroll-sensitivity="200"
+                                    >
+                                        <div v-for="(img ,index) in imagePaths[n]" :key="index" style="width: 95%;">
+                                            <v-hover v-if="img.image_path" v-slot="{ hover }">
+                                                <div style="position:relative;" >
+                                                    <img :src="img.image_path" style="width:100%;" @click="imgDialogDisp(imagePaths[n],index)">
                                                     <v-btn
                                                         v-if="hover && checkDisabledHover()"
-                                                        @click="imgDelete(imagePaths[n],index)"
                                                         class="comparison_image_delete"
-                                                        fab x-small depressed
-                                                        color="rgb(110,110,110)"
+                                                        @click="imgDelete(imagePaths[n],index)"
+                                                        fab x-small depressed color="rgb(110,110,110)"
                                                     >
                                                         <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
                                                     </v-btn>
-                                            </div>
-                                        </v-hover>
-                                        <v-hover v-slot="{ hover }">
+                                                </div>
+                                            </v-hover>
+                                            <v-hover v-else v-slot="{ hover }">
+                                                <div
+                                                    class="plan_paste_area"
+                                                    :contenteditable="!getCheckEdit || !isCheckMedicineStatus()"
+                                                    :disabled="checkDisabled()"
+                                                    @paste="function(e){handlePaste(e,img)}"
+                                                    @dragover="true"
+                                                    @drop.prevent="function(e){handleInput(e,img)}"
+                                                    @keydown="keydown"
+                                                >
+                                                        <div class="plan_paste_info">
+                                                            <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
+                                                            <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
+                                                        </div>
+                                                        <v-btn
+                                                            v-if="hover && checkDisabledHover()"
+                                                            @click="imgDelete(imagePaths[n],index)"
+                                                            class="comparison_image_delete"
+                                                            fab x-small depressed
+                                                            color="rgb(110,110,110)"
+                                                        >
+                                                            <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                                        </v-btn>
+                                                </div>
+                                            </v-hover>
+                                            <v-hover v-slot="{ hover }">
+                                                <div style="width:100%; height:20px;">
+                                                    <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
+                                                </div>
+                                            </v-hover>
+                                        </div>
+                                        <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
                                             <div style="width:100%; height:20px;">
                                                 <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
                                             </div>
                                         </v-hover>
-                                    </div>
-                                    <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
-                                        <div style="width:100%; height:20px;">
-                                            <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
-                                        </div>
-                                    </v-hover>
+                                    </draggable>
                                 </div>
                                 <div style="width:60%;">
                                     <draggable
@@ -462,6 +470,7 @@ export default {
                     this.saveDialog = false;
                     this.search();
                 })
+                console.log("🚀 ~ save:function ~ this.imagePaths:", this.imagePaths)
                 return true;
             }catch(error){
                 alert('保存に失敗しました')

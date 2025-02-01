@@ -158,7 +158,6 @@ class UpdateService
             foreach($value as $sort => $val){
                 $model = new TPlanImageMemo();
                 if(empty($val['id'])){
-                    if(empty($val['memo'])) continue;
                     $model->create([
                         'constitution_plan_id' => $plan_ids[$key],
                         'memo' => $val['memo'],
