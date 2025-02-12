@@ -2,17 +2,20 @@
 
 namespace App\Services\ConstitutionPlan;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\TConstitutionPlan;
-use App\Models\TPlanImage;
-use App\Models\TPlanImageMemo;
-use Illuminate\Support\Facades\Storage;
-use Exception;
+use App\Models\TPlanThumbnail;
 use App\Models\TConstitutionProcess;
 class ShowService
 {
 
     public function __construct(){}
+
+    public function exec($lp_order_id){
+        $plans = $this->plan_search($lp_order_id);
+        $thumbnails = $this->thumbnail_search($lp_order_id);
+
+        return compact("plans","thumbnails");
+    }
 
     /**
      * 構成案情報の検索
@@ -20,7 +23,7 @@ class ShowService
      * @param [type] $lp_order_id
      * @return void
      */
-    public function exec($lp_order_id)
+    public function plan_search($lp_order_id)
     {
         $result = [];
         $constitution_plan = [];
@@ -118,6 +121,47 @@ class ShowService
             }
         }
         return $constitution_plan;
+    }
+
+    /**
+     * 構成案情報の検索
+     *
+     * @param [type] $lp_order_id
+     * @return void
+     */
+    public function thumbnail_search($lp_order_id)
+    {
+        $plan_thumbnails = [];
+        $thumbnail_images = [];
+        $thumbnail_memos = [];
+        // 構成案の取得
+        $thumbnails = TPlanThumbnail::where('lp_order_id','=',$lp_order_id)->orderBy('sort_order')->get()->each(function($plan){
+            $plan->file = '';
+        });
+        $plan_thumbnails = $thumbnails->toArray();
+        if(!empty($plan_thumbnails)){
+            // 構成案画像の取得
+            $thumbnail_images = $thumbnails->map(function($plan){
+                $image = $plan->images->sortBy('sort_order')->values()->toArray();
+                if(empty($image)){
+                    array_push($image,[ 'id'=>null, 'file' => '', 'image_path' => '', ]);
+                }
+                return $image;
+            })->toArray();
+            // 画像メモの取得
+            $thumbnail_memos = $thumbnails->map(function($plan){
+                $memo = $plan->memos->sortBy('sort_order')->values()->toArray();
+                if(empty($memo)){
+                    $memo = [
+                        [ 'id'=>null, 'memo_category' => '大', 'memo' => '', ],
+                        [ 'id'=>null, 'memo_category' => 'テキスト', 'memo' => '', ],
+                        [ 'id'=>null, 'memo_category' => 'アイコン', 'memo' => '', ]
+                    ];
+                }
+                return $memo;
+            })->toArray();
+        }
+        return compact('plan_thumbnails','thumbnail_images','thumbnail_memos');
     }
 
 }

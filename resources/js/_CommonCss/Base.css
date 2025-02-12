@@ -1734,6 +1734,9 @@ nav > .v-navigation-drawer__border {
     margin-right: 15px;
     color: white !important;
 }
+.thumbnail-btn{
+    background-color: rgb(255,115,103);
+}
 .plan_fix_editor{
     border:2px gray solid;
     display:flex;
