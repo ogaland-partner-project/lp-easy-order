@@ -42,63 +42,65 @@
             </div>
         </div>
         <div style="display:flex; width:100%;">
-            <div v-if="planTab==0" style="width:54.3% !important; display:flex;">
+            <div v-show="planTab==0" style="width:54.3% !important; display:flex;">
                 <div style="width:3%"></div>
-                <draggable
-                    :disabled="checkDisabled()"
-                    style="width:97%;"
-                    tag="div"
-                    @end="onEnd"
-                    ref="drag"
-                    v-model="constitutionPlans"
-                    handle=".handle"
-                    :options="{animation:300}"
-                    :force-fallback="true"
-                    :scroll-sensitivity="200"
-                >
-                    <div class="tejun_input_box" style="display:flex; align-items:center; flex-wrap:wrap;" v-for="(plan,n) in constitutionPlans" :key="n">
-                        <div class="mb-1" style="display:flex; align-items:center; width: 95%;">
-                            <span class="mr-3" style="font-size:15px; width:2%;">{{n+1}}.</span>
-                            <div style="display:flex; width: 100%;">
-                                <v-textarea label="キーワードを入力"
-                                v-model="plan.block_detail"
-                                dense
-                                solo
-                                flat
-                                auto-grow
-                                rows="1"
-                                color="info"
-                                background-color="rgba(153,153,153,0.1)"
-                                hide-details="auto"
-                                clearable
-                                style="border-radius:4px 0 0 4px;"
-                                :disabled="isCheckMedicineStatus()"
-                                ></v-textarea>
-                                <div class="drag-block-handle">
-                                    <v-icon class="handle">fas fa-bars</v-icon>
+                <div class="plan-block-area">
+                    <draggable
+                        :disabled="checkDisabled()"
+                        style="width:97%;"
+                        tag="div"
+                        @end="onEnd"
+                        ref="drag"
+                        v-model="constitutionPlans"
+                        handle=".handle"
+                        :options="{animation:300}"
+                        :force-fallback="true"
+                        :scroll-sensitivity="200"
+                    >
+                        <div class="tejun_input_box" style="display:flex; align-items:center; flex-wrap:wrap;" v-for="(plan,n) in constitutionPlans" :key="n">
+                            <div class="mb-1" style="display:flex; align-items:center; width: 95%;">
+                                <span class="mr-3" style="font-size:15px; width:2%;">{{n+1}}.</span>
+                                <div style="display:flex; width: 100%;">
+                                    <v-textarea label="キーワードを入力"
+                                    v-model="plan.block_detail"
+                                    dense
+                                    solo
+                                    flat
+                                    auto-grow
+                                    rows="1"
+                                    color="info"
+                                    background-color="rgba(153,153,153,0.1)"
+                                    hide-details="auto"
+                                    clearable
+                                    style="border-radius:4px 0 0 4px;"
+                                    :disabled="isCheckMedicineStatus()"
+                                    ></v-textarea>
+                                    <div class="drag-block-handle">
+                                        <v-icon class="handle">fas fa-bars</v-icon>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div
-                            class="tejun_input_box_delbtn mr-3"
-                            style="right:18px; !important;"
-                            :style="(checkDisabled() ? 'display:none;':'')"
-                        >
-                            <v-btn
-                                @click="blockDelete(n)"
-                                fab
-                                x-small
-                                depressed
-                                color="rgb(110,110,110)"
-                            ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
-                        </div>
-                        <v-hover v-slot="{ hover }" style="width:100%; height:10px;">
-                            <div class="mb-2" style="width:100%; height:10px;">
-                                <div  v-if="hover && checkDisabledHover()" @click="blockAdd(n,'plan')" class="blockadd_gyou">&nbsp;</div>
+                            <div
+                                class="tejun_input_box_delbtn mr-3"
+                                style="right:18px; !important;"
+                                :style="(checkDisabled() ? 'display:none;':'')"
+                            >
+                                <v-btn
+                                    @click="blockDelete(n)"
+                                    fab
+                                    x-small
+                                    depressed
+                                    color="rgb(110,110,110)"
+                                ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
                             </div>
-                        </v-hover>
-                    </div>
-                </draggable>
+                            <v-hover v-slot="{ hover }" style="width:100%; height:10px;">
+                                <div class="mb-2" style="width:100%; height:10px;">
+                                    <div  v-if="hover && checkDisabledHover()" @click="blockAdd(n,'plan')" class="blockadd_gyou">&nbsp;</div>
+                                </div>
+                            </v-hover>
+                        </div>
+                    </draggable>
+                </div>
             </div>
             <div style="display:flex; flex-flow:column;" :style="planTab == 0 ? 'width:45%;':'width:100%;'">
                 <!-- thumbnail -->
