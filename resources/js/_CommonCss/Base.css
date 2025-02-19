@@ -1651,6 +1651,11 @@ nav > .v-navigation-drawer__border {
     align-items: center;
     flex-flow: column;
     border:1px solid #999999;
+    cursor: pointer;
+}
+.focus_outline:focus{
+    outline: 3px solid black;
+    outline-offset: -3px;
 }
 .plan_memo_paste_area{
     width: 100%;

@@ -148,7 +148,8 @@
                                                 <v-hover v-else v-slot="{ hover }">
                                                     <div
                                                         class="plan_paste_area"
-                                                        :contenteditable="!getCheckEdit || !isCheckMedicineStatus()"
+                                                        :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                        tabindex="0"
                                                         :disabled="checkDisabled()"
                                                         @paste="function(e){handlePaste(e,img)}"
                                                         @dragover="true"
@@ -309,7 +310,8 @@
                                             <div
                                                 v-else
                                                 class="plan_memo_paste_area"
-                                                :contenteditable="!getCheckEdit"
+                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                tabindex="0"
                                                 @paste="function(e){handlePaste(e,thumbnail,'memo')}"
                                                 @dragover="true"
                                                 @drop.prevent="function(e){handleInput(e,thumbnail,'memo')}"
@@ -367,11 +369,12 @@
                                             :options="{animation:300}"
                                             :force-fallback="true"
                                             :scroll-sensitivity="200"
+                                            handle=".img-handle"
                                         >
                                             <div v-for="(img ,index) in imagePaths[n]" :key="index" style="width: 95%;">
                                                 <v-hover v-if="img.image_path" v-slot="{ hover }">
                                                     <div style="position:relative;" >
-                                                        <img :src="img.image_path" style="width:100%;" @click="imgDialogDisp(imagePaths[n],index)">
+                                                        <img :src="img.image_path" style="width:100%;" class="img-handle" @click="imgDialogDisp(imagePaths[n],index)">
                                                         <v-btn
                                                             v-if="hover && checkDisabledHover()"
                                                             class="comparison_image_delete"
@@ -385,7 +388,8 @@
                                                 <v-hover v-else v-slot="{ hover }">
                                                     <div
                                                         class="plan_paste_area"
-                                                        :contenteditable="!getCheckEdit || !isCheckMedicineStatus()"
+                                                        tabindex="0"
+                                                        :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
                                                         :disabled="checkDisabled()"
                                                         @paste="function(e){handlePaste(e,img)}"
                                                         @dragover="true"
@@ -546,7 +550,8 @@
                                             <div
                                                 v-else
                                                 class="plan_memo_paste_area"
-                                                :contenteditable="!getCheckEdit"
+                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                tabindex="0"
                                                 @paste="function(e){handlePaste(e,plan,'memo')}"
                                                 @dragover="true"
                                                 @drop.prevent="function(e){handleInput(e,plan,'memo')}"
