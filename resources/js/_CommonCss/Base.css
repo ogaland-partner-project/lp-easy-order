@@ -1826,6 +1826,13 @@ nav > .v-navigation-drawer__border {
     padding: 10px;
 }
 
+.plan-block-area {
+    width: 49%;
+    overflow-y: scroll;
+    height: 71%;
+    position: absolute;
+}
+
 /***** 【最終デザイン確認】メインエリア *****/
 .final_design_main{
     width: 100%;
