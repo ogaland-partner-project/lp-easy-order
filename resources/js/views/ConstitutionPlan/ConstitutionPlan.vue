@@ -8,32 +8,29 @@
             </div>
             <div class="mt-5" style="width:100%; display:flex;">
                 <div style="width:55%; display:flex;">
-                    <div style="width:18%">
-                        <v-btn style="border-radius: 20px;" text v-if="planTab==1" @click="planTab=0">ブロックの順番</v-btn>
-                        <v-btn v-if="planTab==0" class="plan_tab_btn">ブロックの順番</v-btn>
-                    </div>
-                    <div style="width:18%">
-                        <v-btn style="border-radius: 20px;" text v-if="planTab==0" @click="planTab=1">構成案</v-btn>
-                        <v-btn v-if="planTab==1" class="plan_tab_btn">構成案</v-btn>
-                    </div>
+                    <v-tabs v-model="planTab">
+                        <v-tab>ブロックの順番</v-tab>
+                        <v-tab>構成案</v-tab>
+                    </v-tabs>
                 </div>
                 <div style="width:45%; display:flex;">
-                    <div style="width:18%">
-                        <v-btn style="border-radius: 20px;" text v-if="fix==1" @click="fix=0">依頼者修正</v-btn>
-                        <v-btn v-if="fix==0" class="plan_tab_btn">依頼者修正</v-btn>
-                    </div>
-                    <div style="width:18%">
-                        <v-btn style="border-radius: 20px;" text v-if="fix==0" @click="fix=1">薬事修正内容</v-btn>
-                        <v-btn v-if="fix==1" class="plan_tab_btn">薬事修正内容</v-btn>
+                    <div v-if="planTab == 1" class="d-flex">
+                        <div>
+                            <v-btn style="border-radius: 20px;" text v-if="fix==1" @click="fix=0">依頼者修正</v-btn>
+                            <v-btn v-if="fix==0" class="plan_tab_btn">依頼者修正</v-btn>
+                        </div>
+                        <div>
+                            <v-btn style="border-radius: 20px;" text v-if="fix==0" @click="fix=1">薬事修正内容</v-btn>
+                            <v-btn v-if="fix==1" class="plan_tab_btn">薬事修正内容</v-btn>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="plan_line"></div>
-            <div class="titlearia mb-2">
+            <div class="titlearia mb-2 d-flex" v-if="planTab==1">
                 <div style="width:55%; display:flex; padding-left:50px">
-                    <div v-if="planTab==0" class="itembox">構成の手順から自動入力</div>
-                    <div v-if="planTab==1" class="itembox" style="width:40%;">イメージ</div>
-                    <div v-if="planTab==1" class="itembox" style="width:60%">文言</div>
+                    <div class="itembox" style="width:40%;">イメージ</div>
+                    <div class="itembox" style="width:60%">文言</div>
                 </div>
                 <div style="width:45%; display:flex;">
                     <div class="itembox" style="width:49%">修正内容</div>
@@ -41,13 +38,14 @@
                 </div>
             </div>
         </div>
-        <div style="display:flex; width:100%;">
-            <div v-show="planTab==0" style="width:54.3% !important; display:flex;">
-                <div style="width:3%"></div>
-                <div class="plan-block-area">
+        <v-tabs-items v-model="planTab">
+            <v-tab-item>
+                <div class="titlearia mb-2">
+                    <div class="itembox ml-5">構成の手順から自動入力</div>
+                </div>
+                <div class="d-flex w-100 ml-5">
                     <draggable
                         :disabled="checkDisabled()"
-                        style="width:97%;"
                         tag="div"
                         @end="onEnd"
                         ref="drag"
@@ -56,6 +54,7 @@
                         :options="{animation:300}"
                         :force-fallback="true"
                         :scroll-sensitivity="200"
+                        class="w-100"
                     >
                         <div class="tejun_input_box" style="display:flex; align-items:center; flex-wrap:wrap;" v-for="(plan,n) in constitutionPlans" :key="n">
                             <div class="mb-1" style="display:flex; align-items:center; width: 95%;">
@@ -101,490 +100,494 @@
                         </div>
                     </draggable>
                 </div>
-            </div>
-            <div style="display:flex; flex-flow:column;" :style="planTab == 0 ? 'width:45%;':'width:100%;'">
-                <!-- thumbnail -->
-                <draggable
-                    :disabled="!editorInput || checkDisabled()"
-                    tag="div" @end="onEndThumbnail" ref="drag"
-                    v-model="planThumbnails"
-                    :options="{animation:300}"
-                    :force-fallback="true"
-                    :scroll-sensitivity="200"
-                    handle=".thumbnail-handle"
-                    class="mb-2"
-                >
-                    <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(thumbnail,n) in planThumbnails" :key="thumbnail.sort_order">
-                        <div :class="hover ? 'plan_active':'none'">
-                            <!-- サムネ画像系 -->
-                            <div style="width:55% !important; display:flex;" v-if="planTab==1">
-                                <div v-if="!getCheckEdit" class="plan-drag-block-handle">
-                                    <v-icon class="thumbnail-handle">fa-solid fa-bars</v-icon>
-                                </div>
-                                <span style="font-size:17px; width:5%;"></span>
-                                <div style="display:flex; width:95%;">
-                                    <div style="width:40%;">
-                                        <draggable
-                                            :disabled="!editorInput || checkDisabled()"
-                                            v-model="thumbnailImagePaths[n]"
-                                            :options="{animation:300}"
-                                            :force-fallback="true"
-                                            :scroll-sensitivity="200"
-                                        >
-                                            <div v-for="(img ,index) in thumbnailImagePaths[n]" :key="index" style="width: 95%;">
-                                                <v-hover v-if="img.image_path" v-slot="{ hover }">
-                                                    <div style="position:relative;" >
-                                                        <img :src="img.image_path" style="width:100%;" @click="imgDialogDisp(thumbnailImagePaths[n],index)">
-                                                        <v-btn
-                                                            v-if="hover && checkDisabledHover()"
-                                                            class="comparison_image_delete"
-                                                            @click="imgDelete(thumbnailImagePaths[n],index)"
-                                                            fab x-small depressed color="rgb(110,110,110)"
-                                                        >
-                                                            <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                                                        </v-btn>
+            </v-tab-item>
+            <v-tab-item>
+                <div style="display:flex; width:100%;">
+                    <div style="display:flex; flex-flow:column;" class="w-100">
+                        <!-- thumbnail -->
+                        <draggable
+                            :disabled="!editorInput || checkDisabled()"
+                            tag="div" @end="onEndThumbnail" ref="drag"
+                            v-model="planThumbnails"
+                            :options="{animation:300}"
+                            :force-fallback="true"
+                            :scroll-sensitivity="200"
+                            handle=".thumbnail-handle"
+                            class="mb-2"
+                        >
+                            <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(thumbnail,n) in planThumbnails" :key="thumbnail.sort_order">
+                                <div :class="hover ? 'plan_active':'none'">
+                                    <!-- サムネ画像系 -->
+                                    <div style="width:55% !important; display:flex;">
+                                        <div v-if="!getCheckEdit" class="plan-drag-block-handle">
+                                            <v-icon class="thumbnail-handle">fa-solid fa-bars</v-icon>
+                                        </div>
+                                        <span style="font-size:17px; width:5%;"></span>
+                                        <div style="display:flex; width:95%;">
+                                            <div style="width:40%;">
+                                                <draggable
+                                                    :disabled="!editorInput || checkDisabled()"
+                                                    v-model="thumbnailImagePaths[n]"
+                                                    :options="{animation:300}"
+                                                    :force-fallback="true"
+                                                    :scroll-sensitivity="200"
+                                                >
+                                                    <div v-for="(img ,index) in thumbnailImagePaths[n]" :key="index" style="width: 95%;">
+                                                        <v-hover v-if="img.image_path" v-slot="{ hover }">
+                                                            <div style="position:relative;" >
+                                                                <img :src="img.image_path" style="width:100%;" @click="imgDialogDisp(thumbnailImagePaths[n],index)">
+                                                                <v-btn
+                                                                    v-if="hover && checkDisabledHover()"
+                                                                    class="comparison_image_delete"
+                                                                    @click="imgDelete(thumbnailImagePaths[n],index)"
+                                                                    fab x-small depressed color="rgb(110,110,110)"
+                                                                >
+                                                                    <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                                                </v-btn>
+                                                            </div>
+                                                        </v-hover>
+                                                        <v-hover v-else v-slot="{ hover }">
+                                                            <div
+                                                                class="plan_paste_area"
+                                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                                tabindex="0"
+                                                                :disabled="checkDisabled()"
+                                                                @paste="function(e){handlePaste(e,img)}"
+                                                                @dragover="true"
+                                                                @drop.prevent="function(e){handleInput(e,img)}"
+                                                                @keydown="keydown"
+                                                            >
+                                                                    <div class="plan_paste_info">
+                                                                        <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
+                                                                        <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
+                                                                    </div>
+                                                                    <v-btn
+                                                                        v-if="hover && checkDisabledHover()"
+                                                                        @click="imgDelete(thumbnailImagePaths[n],index)"
+                                                                        class="comparison_image_delete"
+                                                                        fab x-small depressed
+                                                                        color="rgb(110,110,110)"
+                                                                    >
+                                                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                                                    </v-btn>
+                                                            </div>
+                                                        </v-hover>
+                                                        <v-hover v-slot="{ hover }">
+                                                            <div style="width:100%; height:20px;">
+                                                                <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(thumbnailImagePaths[n],index)">&nbsp;</div>
+                                                            </div>
+                                                        </v-hover>
+                                                    </div>
+                                                    <v-hover v-if="thumbnailImagePaths[n].length == 0" v-slot="{ hover }">
+                                                        <div style="width:100%; height:20px;">
+                                                            <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(thumbnailImagePaths[n],index)">&nbsp;</div>
+                                                        </div>
+                                                    </v-hover>
+                                                </draggable>
+                                            </div>
+                                            <div style="width:60%;">
+                                                <draggable
+                                                    v-model="thumbnailMemos[n]"
+                                                    :options="{animation:300}"
+                                                    :force-fallback="true"
+                                                    :scroll-sensitivity="200"
+                                                    :disabled="!editorInput || checkDisabled()"
+                                                    handle=".wording-handle"
+                                                >
+                                                    <div style="margin-bottom:4px;" v-for="(memo,index) in thumbnailMemos[n]" :key="index">
+                                                        <v-hover v-slot="{ hover }">
+                                                            <div class="wording-area">
+                                                                <div class="wording-select">
+                                                                    <div v-if="!getCheckEdit" class="wording-drag-handle">
+                                                                        <v-icon small class="wording-handle">fa-solid fa-bars</v-icon>
+                                                                    </div>
+                                                                    <v-combobox
+                                                                        v-model="memo.memo_category"
+                                                                        autocomplete="off"
+                                                                        :items="categories"
+                                                                        outlined
+                                                                        dense
+                                                                        :background-color="comboColor(memo.memo_category)"
+                                                                        :return-object="false"
+                                                                        item-value="text"
+                                                                        hide-details="auto"
+                                                                        class="plan_combo"
+                                                                        :class="'thumbnail_combo_attach'+n+'_'+index"
+                                                                        density="compact"
+                                                                        :attach="'.thumbnail_combo_attach'+n+'_'+index"
+                                                                        :disabled="isCheckMedicineStatus()"
+                                                                    >
+                                                                        <template slot="item" slot-scope="{ item }">
+                                                                            <v-hover v-slot="{ hover }">
+                                                                                <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
+                                                                                    <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
+                                                                                </div>
+                                                                            </v-hover>
+                                                                        </template>
+                                                                    </v-combobox>
+                                                                </div>
+                                                                <div style="width:70%;">
+                                                                    <quill-editor
+                                                                        class="plan_editor plan_editor_block"
+                                                                        :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
+                                                                        style="width:95%;"
+                                                                        ref="myTextEditor"
+                                                                        v-model="memo.memo"
+                                                                        @focus="editorInput=false"
+                                                                        @blur="editorInput=true"
+                                                                        :disabled="getCheckEdit"
+                                                                    />
+                                                                </div>
+                                                                <v-btn
+                                                                    v-if="hover && checkDisabledHover()"
+                                                                    class="plan_combo_delete"
+                                                                    @click="comboTextDelete(thumbnailMemos[n],index)"
+                                                                    fab x-small depressed
+                                                                    color="rgb(110,110,110)"
+                                                                ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
+                                                            </div>
+                                                        </v-hover>
+                                                        <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
+                                                            <div style="width:100%; height:5px;">
+                                                                <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(thumbnailMemos[n],index)" class="blockadd_gyou">&nbsp;</div>
+                                                            </div>
+                                                        </v-hover>
+                                                    </div>
+                                                </draggable>
+                                                <v-hover v-if="thumbnailMemos[n].length==0" v-slot="{ hover }" style="width:100%; height:10px;">
+                                                    <div style="width:100%; height:10px;">
+                                                        <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(thumbnailMemos[n],0)" class="blockadd_gyou">&nbsp;</div>
                                                     </div>
                                                 </v-hover>
-                                                <v-hover v-else v-slot="{ hover }">
-                                                    <div
-                                                        class="plan_paste_area"
-                                                        :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
-                                                        tabindex="0"
-                                                        :disabled="checkDisabled()"
-                                                        @paste="function(e){handlePaste(e,img)}"
-                                                        @dragover="true"
-                                                        @drop.prevent="function(e){handleInput(e,img)}"
-                                                        @keydown="keydown"
-                                                    >
-                                                            <div class="plan_paste_info">
-                                                                <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
-                                                                <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
-                                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- メモ系 -->
+                                    <div style="width: 45%;">
+                                        <div v-if="fix==0" style="width:100%; height:100%; min-height:270px;">
+                                            <quill-editor
+                                                class="plan_editor"
+                                                v-model="thumbnail.requester_fix"
+                                                @focus="editorInput=false"
+                                                @blur="editorInput=true"
+                                                :disabled="getCheckEdit"
+                                            />
+                                        </div>
+                                        <div v-if="fix==1" style="width:100%; height:100%;">
+                                            <div style="display:flex; height:100%; min-height:270px;">
+                                                <div style="width: 50%;">
+                                                    <quill-editor
+                                                        @focus="editorInput=false"
+                                                        @blur="editorInput=true"
+                                                        class="plan_editor"
+                                                        style="width:95% !important;"
+                                                        v-model="thumbnail.pharmaceutical_affairs_fix"
+                                                        :disabled="getCheckEdit"
+                                                    />
+                                                </div>
+                                                <div style="display:flex; flex-flow: column; width: 50%;">
+                                                    <quill-editor
+                                                        class="plan_editor"
+                                                        style="min-height: 190px; width:100% !important;"
+                                                        v-model="thumbnail.information_management_memo"
+                                                        @focus="editorInput=false"
+                                                        @blur="editorInput=true"
+                                                        :disabled="getCheckEdit"
+                                                    />
+                                                    <v-hover v-if="thumbnail.image_path" v-slot="{ hover }">
+                                                        <div style="position:relative;" >
+                                                            <img :src="thumbnail.image_path" style="width:100%;" @click="imgDialogDisp([thumbnail],0)">
                                                             <v-btn
-                                                                v-if="hover && checkDisabledHover()"
-                                                                @click="imgDelete(thumbnailImagePaths[n],index)"
+                                                                v-if="hover && !getCheckEdit"
                                                                 class="comparison_image_delete"
                                                                 fab x-small depressed
                                                                 color="rgb(110,110,110)"
+                                                                @click="thumbnail.image_path='';thumbnail.file='';"
                                                             >
                                                                 <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
                                                             </v-btn>
-                                                    </div>
-                                                </v-hover>
-                                                <v-hover v-slot="{ hover }">
-                                                    <div style="width:100%; height:20px;">
-                                                        <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(thumbnailImagePaths[n],index)">&nbsp;</div>
-                                                    </div>
-                                                </v-hover>
-                                            </div>
-                                            <v-hover v-if="thumbnailImagePaths[n].length == 0" v-slot="{ hover }">
-                                                <div style="width:100%; height:20px;">
-                                                    <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(thumbnailImagePaths[n],index)">&nbsp;</div>
-                                                </div>
-                                            </v-hover>
-                                        </draggable>
-                                    </div>
-                                    <div style="width:60%;">
-                                        <draggable
-                                            v-model="thumbnailMemos[n]"
-                                            :options="{animation:300}"
-                                            :force-fallback="true"
-                                            :scroll-sensitivity="200"
-                                            :disabled="!editorInput || checkDisabled()"
-                                            handle=".wording-handle"
-                                        >
-                                            <div style="margin-bottom:4px;" v-for="(memo,index) in thumbnailMemos[n]" :key="index">
-                                                <v-hover v-slot="{ hover }">
-                                                    <div class="wording-area">
-                                                        <div class="wording-select">
-                                                            <div v-if="!getCheckEdit" class="wording-drag-handle">
-                                                                <v-icon small class="wording-handle">fa-solid fa-bars</v-icon>
-                                                            </div>
-                                                            <v-combobox
-                                                                v-model="memo.memo_category"
-                                                                autocomplete="off"
-                                                                :items="categories"
-                                                                outlined
-                                                                dense
-                                                                :background-color="comboColor(memo.memo_category)"
-                                                                :return-object="false"
-                                                                item-value="text"
-                                                                hide-details="auto"
-                                                                class="plan_combo"
-                                                                :class="'thumbnail_combo_attach'+n+'_'+index"
-                                                                density="compact"
-                                                                :attach="'.thumbnail_combo_attach'+n+'_'+index"
-                                                                :disabled="isCheckMedicineStatus()"
-                                                            >
-                                                                <template slot="item" slot-scope="{ item }">
-                                                                    <v-hover v-slot="{ hover }">
-                                                                        <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
-                                                                            <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
-                                                                        </div>
-                                                                    </v-hover>
-                                                                </template>
-                                                            </v-combobox>
                                                         </div>
-                                                        <div style="width:70%;">
-                                                            <quill-editor
-                                                                class="plan_editor plan_editor_block"
-                                                                :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
-                                                                style="width:95%;"
-                                                                ref="myTextEditor"
-                                                                v-model="memo.memo"
-                                                                @focus="editorInput=false"
-                                                                @blur="editorInput=true"
-                                                                :disabled="getCheckEdit"
-                                                            />
-                                                        </div>
-                                                        <v-btn
-                                                            v-if="hover && checkDisabledHover()"
-                                                            class="plan_combo_delete"
-                                                            @click="comboTextDelete(thumbnailMemos[n],index)"
-                                                            fab x-small depressed
-                                                            color="rgb(110,110,110)"
-                                                        ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
-                                                    </div>
-                                                </v-hover>
-                                                <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
-                                                    <div style="width:100%; height:5px;">
-                                                        <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(thumbnailMemos[n],index)" class="blockadd_gyou">&nbsp;</div>
-                                                    </div>
-                                                </v-hover>
-                                            </div>
-                                        </draggable>
-                                        <v-hover v-if="thumbnailMemos[n].length==0" v-slot="{ hover }" style="width:100%; height:10px;">
-                                            <div style="width:100%; height:10px;">
-                                                <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(thumbnailMemos[n],0)" class="blockadd_gyou">&nbsp;</div>
-                                            </div>
-                                        </v-hover>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- メモ系 -->
-                            <div :style="'width:'+(planTab == 0 ? '100%;':'45%;')">
-                                <div v-if="fix==0" style="width:100%; height:100%; min-height:270px;">
-                                    <quill-editor
-                                        class="plan_editor"
-                                        v-model="thumbnail.requester_fix"
-                                        @focus="editorInput=false"
-                                        @blur="editorInput=true"
-                                        :disabled="getCheckEdit"
-                                    />
-                                </div>
-                                <div v-if="fix==1" style="width:100%; height:100%;">
-                                    <div style="display:flex; height:100%; min-height:270px;">
-                                        <div style="width: 50%;">
-                                            <quill-editor
-                                                @focus="editorInput=false"
-                                                @blur="editorInput=true"
-                                                class="plan_editor"
-                                                style="width:95% !important;"
-                                                v-model="thumbnail.pharmaceutical_affairs_fix"
-                                                :disabled="getCheckEdit"
-                                            />
-                                        </div>
-                                        <div style="display:flex; flex-flow: column; width: 50%;">
-                                            <quill-editor
-                                                class="plan_editor"
-                                                style="min-height: 190px; width:100% !important;"
-                                                v-model="thumbnail.information_management_memo"
-                                                @focus="editorInput=false"
-                                                @blur="editorInput=true"
-                                                :disabled="getCheckEdit"
-                                            />
-                                            <v-hover v-if="thumbnail.image_path" v-slot="{ hover }">
-                                                <div style="position:relative;" >
-                                                    <img :src="thumbnail.image_path" style="width:100%;" @click="imgDialogDisp([thumbnail],0)">
-                                                    <v-btn
-                                                        v-if="hover && !getCheckEdit"
-                                                        class="comparison_image_delete"
-                                                        fab x-small depressed
-                                                        color="rgb(110,110,110)"
-                                                        @click="thumbnail.image_path='';thumbnail.file='';"
-                                                    >
-                                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                                                    </v-btn>
-                                                </div>
-                                            </v-hover>
-                                            <div
-                                                v-else
-                                                class="plan_memo_paste_area"
-                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
-                                                tabindex="0"
-                                                @paste="function(e){handlePaste(e,thumbnail,'memo')}"
-                                                @dragover="true"
-                                                @drop.prevent="function(e){handleInput(e,thumbnail,'memo')}"
-                                                @keydown="keydown"
-                                            >
-                                                <div class="plan_memo_img_paste_inf">
-                                                    <v-icon style="font-size: 20px;">fa-regular fa-image</v-icon>
-                                                    スクショをペースト
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
-                                <div style="width:100%; height:10px;">
-                                    <div v-if="hover && checkDisabledHover()" @click="blockAdd(n,'thumbnail')" class="blockadd_gyou">&nbsp;</div>
-                                </div>
-                            </v-hover>
-                            <v-btn
-                                v-if="hover && checkDisabledHover()"
-                                class="comparison_image_delete"
-                                @click="thumbnailBlockDelete(n)"
-                                fab x-small depressed
-                                color="rgb(110,110,110)"
-                            >
-                                <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                            </v-btn>
-                        </div>
-                    </v-hover>
-                </draggable>
-                <!-- plan -->
-                <draggable
-                    :disabled="!editorInput || checkDisabled()"
-                    tag="div" @end="onEnd" ref="drag"
-                    v-model="constitutionPlans"
-                    :options="{animation:300}"
-                    :force-fallback="true"
-                    :scroll-sensitivity="200"
-                    handle=".handle"
-                >
-                    <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="plan.sort_order">
-                        <div :class="hover ? 'plan_active':'none'">
-                            <!-- 画像系 -->
-                            <div style="width:55% !important; display:flex;" v-if="planTab==1">
-                                <div v-if="!getCheckEdit" class="plan-drag-block-handle">
-                                    <v-icon class="handle">fa-solid fa-bars</v-icon>
-                                </div>
-                                <span style="font-size:17px; width:5%;">{{n+1}}.</span>
-                                <div style="display:flex; width:95%;">
-                                    <div style="width:40%;">
-                                        <draggable
-                                            :disabled="!editorInput || checkDisabled()"
-                                            v-model="imagePaths[n]"
-                                            :options="{animation:300}"
-                                            :force-fallback="true"
-                                            :scroll-sensitivity="200"
-                                            handle=".img-handle"
-                                        >
-                                            <div v-for="(img ,index) in imagePaths[n]" :key="index" style="width: 95%;">
-                                                <v-hover v-if="img.image_path" v-slot="{ hover }">
-                                                    <div style="position:relative;" >
-                                                        <img :src="img.image_path" style="width:100%;" class="img-handle" @click="imgDialogDisp(imagePaths[n],index)">
-                                                        <v-btn
-                                                            v-if="hover && checkDisabledHover()"
-                                                            class="comparison_image_delete"
-                                                            @click="imgDelete(imagePaths[n],index)"
-                                                            fab x-small depressed color="rgb(110,110,110)"
-                                                        >
-                                                            <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                                                        </v-btn>
-                                                    </div>
-                                                </v-hover>
-                                                <v-hover v-else v-slot="{ hover }">
+                                                    </v-hover>
                                                     <div
-                                                        class="plan_paste_area"
-                                                        tabindex="0"
+                                                        v-else
+                                                        class="plan_memo_paste_area"
                                                         :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
-                                                        :disabled="checkDisabled()"
-                                                        @paste="function(e){handlePaste(e,img)}"
+                                                        tabindex="0"
+                                                        @paste="function(e){handlePaste(e,thumbnail,'memo')}"
                                                         @dragover="true"
-                                                        @drop.prevent="function(e){handleInput(e,img)}"
+                                                        @drop.prevent="function(e){handleInput(e,thumbnail,'memo')}"
                                                         @keydown="keydown"
                                                     >
-                                                            <div class="plan_paste_info">
-                                                                <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
-                                                                <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
+                                                        <div class="plan_memo_img_paste_inf">
+                                                            <v-icon style="font-size: 20px;">fa-regular fa-image</v-icon>
+                                                            スクショをペースト
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
+                                        <div style="width:100%; height:10px;">
+                                            <div v-if="hover && checkDisabledHover()" @click="blockAdd(n,'thumbnail')" class="blockadd_gyou">&nbsp;</div>
+                                        </div>
+                                    </v-hover>
+                                    <v-btn
+                                        v-if="hover && checkDisabledHover()"
+                                        class="comparison_image_delete"
+                                        @click="thumbnailBlockDelete(n)"
+                                        fab x-small depressed
+                                        color="rgb(110,110,110)"
+                                    >
+                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                    </v-btn>
+                                </div>
+                            </v-hover>
+                        </draggable>
+                        <!-- plan -->
+                        <draggable
+                            :disabled="!editorInput || checkDisabled()"
+                            tag="div" @end="onEnd" ref="drag"
+                            v-model="constitutionPlans"
+                            :options="{animation:300}"
+                            :force-fallback="true"
+                            :scroll-sensitivity="200"
+                            handle=".handle"
+                        >
+                            <v-hover v-slot="{ hover }" class="plan_hover_bar" v-for="(plan,n) in constitutionPlans" :key="plan.sort_order">
+                                <div :class="hover ? 'plan_active':'none'">
+                                    <!-- 画像系 -->
+                                    <div style="width:55% !important; display:flex;">
+                                        <div v-if="!getCheckEdit" class="plan-drag-block-handle">
+                                            <v-icon class="handle">fa-solid fa-bars</v-icon>
+                                        </div>
+                                        <span style="font-size:17px; width:5%;">{{n+1}}.</span>
+                                        <div style="display:flex; width:95%;">
+                                            <div style="width:40%;">
+                                                <draggable
+                                                    :disabled="!editorInput || checkDisabled()"
+                                                    v-model="imagePaths[n]"
+                                                    :options="{animation:300}"
+                                                    :force-fallback="true"
+                                                    :scroll-sensitivity="200"
+                                                    handle=".img-handle"
+                                                >
+                                                    <div v-for="(img ,index) in imagePaths[n]" :key="index" style="width: 95%;">
+                                                        <v-hover v-if="img.image_path" v-slot="{ hover }">
+                                                            <div style="position:relative;" >
+                                                                <img :src="img.image_path" style="width:100%;" class="img-handle" @click="imgDialogDisp(imagePaths[n],index)">
+                                                                <v-btn
+                                                                    v-if="hover && checkDisabledHover()"
+                                                                    class="comparison_image_delete"
+                                                                    @click="imgDelete(imagePaths[n],index)"
+                                                                    fab x-small depressed color="rgb(110,110,110)"
+                                                                >
+                                                                    <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                                                </v-btn>
                                                             </div>
+                                                        </v-hover>
+                                                        <v-hover v-else v-slot="{ hover }">
+                                                            <div
+                                                                class="plan_paste_area"
+                                                                tabindex="0"
+                                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                                :disabled="checkDisabled()"
+                                                                @paste="function(e){handlePaste(e,img)}"
+                                                                @dragover="true"
+                                                                @drop.prevent="function(e){handleInput(e,img)}"
+                                                                @keydown="keydown"
+                                                            >
+                                                                    <div class="plan_paste_info">
+                                                                        <v-icon color="#999999" style="caret-color: transparent;" class="plan_paste_icon">fa-regular fa-image</v-icon>
+                                                                        <div class="plan_img_paste_inf" style="caret-color: transparent; pointer-events: none;">スクショをペースト</div>
+                                                                    </div>
+                                                                    <v-btn
+                                                                        v-if="hover && checkDisabledHover()"
+                                                                        @click="imgDelete(imagePaths[n],index)"
+                                                                        class="comparison_image_delete"
+                                                                        fab x-small depressed
+                                                                        color="rgb(110,110,110)"
+                                                                    >
+                                                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                                                    </v-btn>
+                                                            </div>
+                                                        </v-hover>
+                                                        <v-hover v-slot="{ hover }">
+                                                            <div style="width:100%; height:20px;">
+                                                                <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
+                                                            </div>
+                                                        </v-hover>
+                                                    </div>
+                                                    <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
+                                                        <div style="width:100%; height:20px;">
+                                                            <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
+                                                        </div>
+                                                    </v-hover>
+                                                </draggable>
+                                            </div>
+                                            <div style="width:60%;">
+                                                <draggable
+                                                    v-model="memos[n]"
+                                                    :options="{animation:300}"
+                                                    :force-fallback="true"
+                                                    :scroll-sensitivity="200"
+                                                    :disabled="!editorInput || checkDisabled()"
+                                                    handle=".wording-handle"
+                                                >
+                                                    <div style="margin-bottom:4px;" v-for="(memo,index) in memos[n]" :key="index">
+                                                        <v-hover v-slot="{ hover }">
+                                                            <div class="wording-area">
+                                                                <div class="wording-select">
+                                                                    <div v-if="!getCheckEdit" class="wording-drag-handle">
+                                                                        <v-icon small class="wording-handle">fa-solid fa-bars</v-icon>
+                                                                    </div>
+                                                                    <v-combobox
+                                                                        v-model="memo.memo_category"
+                                                                        autocomplete="off"
+                                                                        :items="categories"
+                                                                        outlined
+                                                                        dense
+                                                                        :background-color="comboColor(memo.memo_category)"
+                                                                        :return-object="false"
+                                                                        item-value="text"
+                                                                        hide-details="auto"
+                                                                        class="plan_combo"
+                                                                        :class="'plan_combo_attach'+n+'_'+index"
+                                                                        density="compact"
+                                                                        :attach="'.plan_combo_attach'+n+'_'+index"
+                                                                        :disabled="isCheckMedicineStatus()"
+                                                                    >
+                                                                        <template slot="item" slot-scope="{ item }">
+                                                                            <v-hover v-slot="{ hover }">
+                                                                                <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
+                                                                                    <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
+                                                                                </div>
+                                                                            </v-hover>
+                                                                        </template>
+                                                                    </v-combobox>
+                                                                </div>
+                                                                <div style="width:70%;">
+                                                                    <quill-editor
+                                                                        class="plan_editor plan_editor_block"
+                                                                        :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
+                                                                        style="width:95%;"
+                                                                        ref="myTextEditor"
+                                                                        v-model="memo.memo"
+                                                                        @focus="editorInput=false"
+                                                                        @blur="editorInput=true"
+                                                                        :disabled="getCheckEdit"
+                                                                    />
+                                                                </div>
+                                                                <v-btn
+                                                                    v-if="hover && checkDisabledHover()"
+                                                                    class="plan_combo_delete"
+                                                                    @click="comboTextDelete(memos[n],index)"
+                                                                    fab x-small depressed
+                                                                    color="rgb(110,110,110)"
+                                                                ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
+                                                            </div>
+                                                        </v-hover>
+                                                        <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
+                                                            <div style="width:100%; height:5px;">
+                                                                <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],index)" class="blockadd_gyou">&nbsp;</div>
+                                                            </div>
+                                                        </v-hover>
+                                                    </div>
+                                                </draggable>
+                                                <v-hover v-if="memos[n].length==0" v-slot="{ hover }" style="width:100%; height:10px;">
+                                                    <div style="width:100%; height:10px;">
+                                                        <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],0)" class="blockadd_gyou">&nbsp;</div>
+                                                    </div>
+                                                </v-hover>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- メモ系 -->
+                                    <div style="width:45%;">
+                                        <div v-if="fix==0" style="width:100%; height:100%; min-height:270px;">
+                                            <quill-editor
+                                                class="plan_editor"
+                                                v-model="plan.requester_fix"
+                                                @focus="editorInput=false"
+                                                @blur="editorInput=true"
+                                                :disabled="getCheckEdit"
+                                            />
+                                        </div>
+                                        <div v-if="fix==1" style="width:100%; height:100%;">
+                                            <div style="display:flex; height:100%; min-height:270px;">
+                                                <div style="width: 50%;">
+                                                    <quill-editor
+                                                        @focus="editorInput=false"
+                                                        @blur="editorInput=true"
+                                                        class="plan_editor"
+                                                        style="width:95% !important;"
+                                                        v-model="plan.pharmaceutical_affairs_fix"
+                                                        :disabled="getCheckEdit"
+                                                    />
+                                                </div>
+                                                <div style="display:flex; flex-flow: column; width: 50%;">
+                                                    <quill-editor
+                                                        class="plan_editor"
+                                                        style="min-height: 190px; width:100% !important;"
+                                                        v-model="plan.information_management_memo"
+                                                        @focus="editorInput=false"
+                                                        @blur="editorInput=true"
+                                                        :disabled="getCheckEdit"
+                                                    />
+                                                    <v-hover v-if="plan.image_path" v-slot="{ hover }">
+                                                        <div style="position:relative;" >
+                                                            <img :src="plan.image_path" style="width:100%;" @click="imgDialogDisp([plan],0)">
                                                             <v-btn
-                                                                v-if="hover && checkDisabledHover()"
-                                                                @click="imgDelete(imagePaths[n],index)"
+                                                                v-if="hover && !getCheckEdit"
                                                                 class="comparison_image_delete"
                                                                 fab x-small depressed
                                                                 color="rgb(110,110,110)"
+                                                                @click="plan.image_path='';plan.file='';"
                                                             >
                                                                 <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
                                                             </v-btn>
-                                                    </div>
-                                                </v-hover>
-                                                <v-hover v-slot="{ hover }">
-                                                    <div style="width:100%; height:20px;">
-                                                        <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
-                                                    </div>
-                                                </v-hover>
-                                            </div>
-                                            <v-hover v-if="imagePaths[n].length == 0" v-slot="{ hover }">
-                                                <div style="width:100%; height:20px;">
-                                                    <div v-if="hover && checkDisabledHover()" class="blockadd_gyou" @click="addImageArea(imagePaths[n],index)">&nbsp;</div>
-                                                </div>
-                                            </v-hover>
-                                        </draggable>
-                                    </div>
-                                    <div style="width:60%;">
-                                        <draggable
-                                            v-model="memos[n]"
-                                            :options="{animation:300}"
-                                            :force-fallback="true"
-                                            :scroll-sensitivity="200"
-                                            :disabled="!editorInput || checkDisabled()"
-                                            handle=".wording-handle"
-                                        >
-                                            <div style="margin-bottom:4px;" v-for="(memo,index) in memos[n]" :key="index">
-                                                <v-hover v-slot="{ hover }">
-                                                    <div class="wording-area">
-                                                        <div class="wording-select">
-                                                            <div v-if="!getCheckEdit" class="wording-drag-handle">
-                                                                <v-icon small class="wording-handle">fa-solid fa-bars</v-icon>
-                                                            </div>
-                                                            <v-combobox
-                                                                v-model="memo.memo_category"
-                                                                autocomplete="off"
-                                                                :items="categories"
-                                                                outlined
-                                                                dense
-                                                                :background-color="comboColor(memo.memo_category)"
-                                                                :return-object="false"
-                                                                item-value="text"
-                                                                hide-details="auto"
-                                                                class="plan_combo"
-                                                                :class="'plan_combo_attach'+n+'_'+index"
-                                                                density="compact"
-                                                                :attach="'.plan_combo_attach'+n+'_'+index"
-                                                                :disabled="isCheckMedicineStatus()"
-                                                            >
-                                                                <template slot="item" slot-scope="{ item }">
-                                                                    <v-hover v-slot="{ hover }">
-                                                                        <div class="plan_pulldown" :style="'background-color:'+(hover ? item.color:'white')+';'">
-                                                                            <span :style="'font-size: 14px; color:' + (hover ? 'white' : item.color) + ';'">{{item.text}}</span>
-                                                                        </div>
-                                                                    </v-hover>
-                                                                </template>
-                                                            </v-combobox>
                                                         </div>
-                                                        <div style="width:70%;">
-                                                            <quill-editor
-                                                                class="plan_editor plan_editor_block"
-                                                                :class="(memo.memo_category == '質問' || memo.memo_category == 'メモ') ? 'plan_editor_question':''"
-                                                                style="width:95%;"
-                                                                ref="myTextEditor"
-                                                                v-model="memo.memo"
-                                                                @focus="editorInput=false"
-                                                                @blur="editorInput=true"
-                                                                :disabled="getCheckEdit"
-                                                            />
-                                                        </div>
-                                                        <v-btn
-                                                            v-if="hover && checkDisabledHover()"
-                                                            class="plan_combo_delete"
-                                                            @click="comboTextDelete(memos[n],index)"
-                                                            fab x-small depressed
-                                                            color="rgb(110,110,110)"
-                                                        ><v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon></v-btn>
-                                                    </div>
-                                                </v-hover>
-                                                <v-hover v-slot="{ hover }" style="width:97%; height:5px;">
-                                                    <div style="width:100%; height:5px;">
-                                                        <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],index)" class="blockadd_gyou">&nbsp;</div>
-                                                    </div>
-                                                </v-hover>
-                                            </div>
-                                        </draggable>
-                                        <v-hover v-if="memos[n].length==0" v-slot="{ hover }" style="width:100%; height:10px;">
-                                            <div style="width:100%; height:10px;">
-                                                <div v-if="hover && checkDisabledHover()" @click="comboTextAdd(memos[n],0)" class="blockadd_gyou">&nbsp;</div>
-                                            </div>
-                                        </v-hover>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- メモ系 -->
-                            <div :style="'width:'+(planTab == 0 ? '100%;':'45%;')">
-                                <div v-if="fix==0" style="width:100%; height:100%; min-height:270px;">
-                                    <quill-editor
-                                        class="plan_editor"
-                                        v-model="plan.requester_fix"
-                                        @focus="editorInput=false"
-                                        @blur="editorInput=true"
-                                        :disabled="getCheckEdit"
-                                    />
-                                </div>
-                                <div v-if="fix==1" style="width:100%; height:100%;">
-                                    <div style="display:flex; height:100%; min-height:270px;">
-                                        <div style="width: 50%;">
-                                            <quill-editor
-                                                @focus="editorInput=false"
-                                                @blur="editorInput=true"
-                                                class="plan_editor"
-                                                style="width:95% !important;"
-                                                v-model="plan.pharmaceutical_affairs_fix"
-                                                :disabled="getCheckEdit"
-                                            />
-                                        </div>
-                                        <div style="display:flex; flex-flow: column; width: 50%;">
-                                            <quill-editor
-                                                class="plan_editor"
-                                                style="min-height: 190px; width:100% !important;"
-                                                v-model="plan.information_management_memo"
-                                                @focus="editorInput=false"
-                                                @blur="editorInput=true"
-                                                :disabled="getCheckEdit"
-                                            />
-                                            <v-hover v-if="plan.image_path" v-slot="{ hover }">
-                                                <div style="position:relative;" >
-                                                    <img :src="plan.image_path" style="width:100%;" @click="imgDialogDisp([plan],0)">
-                                                    <v-btn
-                                                        v-if="hover && !getCheckEdit"
-                                                        class="comparison_image_delete"
-                                                        fab x-small depressed
-                                                        color="rgb(110,110,110)"
-                                                        @click="plan.image_path='';plan.file='';"
+                                                    </v-hover>
+                                                    <div
+                                                        v-else
+                                                        class="plan_memo_paste_area"
+                                                        :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
+                                                        tabindex="0"
+                                                        @paste="function(e){handlePaste(e,plan,'memo')}"
+                                                        @dragover="true"
+                                                        @drop.prevent="function(e){handleInput(e,plan,'memo')}"
+                                                        @keydown="keydown"
                                                     >
-                                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                                                    </v-btn>
-                                                </div>
-                                            </v-hover>
-                                            <div
-                                                v-else
-                                                class="plan_memo_paste_area"
-                                                :class="(!getCheckEdit && !isCheckMedicineStatus()) ? 'focus_outline':''"
-                                                tabindex="0"
-                                                @paste="function(e){handlePaste(e,plan,'memo')}"
-                                                @dragover="true"
-                                                @drop.prevent="function(e){handleInput(e,plan,'memo')}"
-                                                @keydown="keydown"
-                                            >
-                                                <div class="plan_memo_img_paste_inf">
-                                                    <v-icon style="font-size: 20px;">fa-regular fa-image</v-icon>
-                                                    スクショをペースト
+                                                        <div class="plan_memo_img_paste_inf">
+                                                            <v-icon style="font-size: 20px;">fa-regular fa-image</v-icon>
+                                                            スクショをペースト
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
-                                <div style="width:100%; height:10px;">
-                                    <div v-if="hover && checkDisabledHover()" @click="blockAdd(n,'plan')" class="blockadd_gyou">&nbsp;</div>
+                                    <v-hover v-slot="{ hover }" style="width:100%; height:10px; position:absolute; bottom: 0px;">
+                                        <div style="width:100%; height:10px;">
+                                            <div v-if="hover && checkDisabledHover()" @click="blockAdd(n,'plan')" class="blockadd_gyou">&nbsp;</div>
+                                        </div>
+                                    </v-hover>
+                                    <v-btn
+                                        v-if="hover && checkDisabledHover()"
+                                        class="comparison_image_delete"
+                                        @click="blockDelete(n)"
+                                        fab x-small depressed
+                                        color="rgb(110,110,110)"
+                                    >
+                                        <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
+                                    </v-btn>
                                 </div>
                             </v-hover>
-                            <v-btn
-                                v-if="hover && checkDisabledHover()"
-                                class="comparison_image_delete"
-                                @click="blockDelete(n)"
-                                fab x-small depressed
-                                color="rgb(110,110,110)"
-                            >
-                                <v-icon color="white" style="font-size:14px;">fa-solid fa-xmark</v-icon>
-                            </v-btn>
-                        </div>
-                    </v-hover>
-                </draggable>
-            </div>
-        </div>
+                        </draggable>
+                    </div>
+                </div>
+            </v-tab-item>
+        </v-tabs-items>
         <saving-dialog v-model="saveDialog" />
         <!-- 画像拡大表示ダイアログ -->
         <img-dialog ref="img_dialog"></img-dialog>
