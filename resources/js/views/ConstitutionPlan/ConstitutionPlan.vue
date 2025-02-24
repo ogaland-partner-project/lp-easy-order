@@ -633,6 +633,10 @@ export default {
             fileSelected:true,
             search_flg:false,
             saveDialog: false,
+            tabScrollPositions: {
+                0: 0, // ブロックの順番タブ
+                1: 0  // 構成案タブ
+            },
         }
     },
     computed:{
@@ -641,6 +645,12 @@ export default {
     mounted(){
         this.lpOrderId = Number(this.$route.params.id);
         this.search();
+    },
+    watch: {
+        planTab(newVal, oldVal) {
+            this.saveScrollPosition(oldVal);
+            this.restoreScrollPosition(newVal);
+        }
     },
     methods:{
         ...mapActions("common", ["setSelectionMenu"]),
@@ -910,8 +920,19 @@ export default {
             return !this.getCheckEdit && !this.isCheckMedicineStatus();
         },
 
-        thumbnailAdd(){
-
+        // スクロール位置を保存するメソッド
+        saveScrollPosition(oldTabIndex) {
+            const scrollPosition = document.querySelector('.plan_main').scrollTop;
+            this.tabScrollPositions[oldTabIndex] = scrollPosition;
+        },
+        // スクロール位置を復元するメソッド
+        restoreScrollPosition(tabIndex) {
+            setTimeout(() => {
+                const planMainElement = document.querySelector('.plan_main');
+                if (planMainElement) {
+                    planMainElement.scrollTop = this.tabScrollPositions[tabIndex] || 0;
+                }
+            }, 300);
         }
     },
 }
