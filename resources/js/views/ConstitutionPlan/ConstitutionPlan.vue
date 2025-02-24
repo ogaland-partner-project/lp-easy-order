@@ -745,6 +745,9 @@ export default {
             this.constitutionPlans = [];
             this.imagePaths = [];
             this.memos = [];
+            this.planThumbnails = [];
+            this.thumbnailImagePaths = [];
+            this.thumbnailMemos = [];
             this.save();
         },
         blockAdd(n,type){
