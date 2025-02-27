@@ -124,7 +124,7 @@ class ShowService
     }
 
     /**
-     * 構成案情報の検索
+     * サムネイル情報の検索
      *
      * @param [type] $lp_order_id
      * @return void

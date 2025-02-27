@@ -193,15 +193,15 @@ class UpdateService
     }
 
     /**
-     * ## t_constitution_plans の登録更新削除
+     * ## t_plan_thumbnails の登録更新削除
      *
-     * 1. t_constitution_plans の登録、更新処理を下記条件で行う
+     * 1. t_plan_thumbnails の登録、更新処理を下記条件で行う
      * * リクエストパラメータのidがnullの場合
-     *    * t_constitution_plans の登録処理
+     *    * t_plan_thumbnails の登録処理
      * * リクエストパラメータのidに数値が入っている場合
-     *    * t_constitution_plans の更新処理
+     *    * t_plan_thumbnails の更新処理
      *
-     * 1.リクエストパラメータのid群とt_constitution_plansのid群を比較し削除処理を行う
+     * 1.リクエストパラメータのid群とt_plan_thumbnailsのid群を比較し削除処理を行う
      *
      * @param [type] $param
      * @return void
@@ -242,17 +242,17 @@ class UpdateService
     }
 
     /**
-     * ## t_plan_images への登録更新削除,画像の保存処理
+     * ## t_plan_thumbnail_images への登録更新削除,画像の保存処理
      *
-     * 1. t_plan_images の登録、更新処理を下記条件で行う
+     * 1. t_plan_thumbnail_images の登録、更新処理を下記条件で行う
      * * リクエストパラメータのidがnullの場合
-     *    * t_plan_images の登録処理、画像の保存
+     *    * t_plan_thumbnail_images の登録処理、画像の保存
      * * リクエストパラメータのidに数値が入っている場合
-     *    * t_plan_images の更新処理
+     *    * t_plan_thumbnail_images の更新処理
      *
-     * 1.リクエストパラメータのid群とt_constitution_plansのid群を比較し削除処理を行う
+     * 1.リクエストパラメータのid群とt_plan_thumbnailsのid群を比較し削除処理を行う
      *
-     * @param [type] $plan_ids
+     * @param [type] $thumbnail_ids
      * @return void
      */
     private function ThumbnailImageUpdate($param,$thumbnail_ids)
@@ -286,18 +286,18 @@ class UpdateService
     }
 
     /**
-     * t_plan_image_memos への登録更新削除
+     * t_plan_thumbnail_image_memos への登録更新削除
      *
-     * 1. t_plan_image_memos の登録、更新処理を下記条件で行う
+     * 1. t_plan_thumbnail_image_memos の登録、更新処理を下記条件で行う
      * * リクエストパラメータのidがnullの場合
-     *    * t_plan_image_memos の登録処理
+     *    * t_thumbnail_image_memos の登録処理
      * * リクエストパラメータのidに数値が入っている場合
-     *    * t_plan_image_memos の更新処理
+     *    * t_plan_thumbnail_image_memos の更新処理
      *
-     * 1.リクエストパラメータのid群とt_constitution_plansのid群を比較し削除処理を行う
+     * 1.リクエストパラメータのid群とt_plan_thumbnailsのid群を比較し削除処理を行う
      *
      * @param [type] $param
-     * @param [type] $plan_ids
+     * @param [type] $thumbnail_ids
      * @return void
      */
     private function ThumbnailImageMemoUpdate($param,$thumbnail_ids)
