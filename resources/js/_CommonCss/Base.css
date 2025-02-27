@@ -1651,6 +1651,11 @@ nav > .v-navigation-drawer__border {
     align-items: center;
     flex-flow: column;
     border:1px solid #999999;
+    cursor: pointer;
+}
+.focus_outline:focus{
+    outline: 3px solid black;
+    outline-offset: -3px;
 }
 .plan_memo_paste_area{
     width: 100%;
@@ -1734,6 +1739,9 @@ nav > .v-navigation-drawer__border {
     margin-right: 15px;
     color: white !important;
 }
+.thumbnail-btn{
+    background-color: rgb(255,115,103);
+}
 .plan_fix_editor{
     border:2px gray solid;
     display:flex;
@@ -1742,7 +1750,6 @@ nav > .v-navigation-drawer__border {
     padding:10px;
     margin:0px 5px 5px 5px;
 }
-
 .plan_header > .titlearia {
     width: 100%;
     display: flex;
@@ -1822,7 +1829,6 @@ nav > .v-navigation-drawer__border {
     position:relative;
     padding: 10px;
 }
-
 /***** 【最終デザイン確認】メインエリア *****/
 .final_design_main{
     width: 100%;
